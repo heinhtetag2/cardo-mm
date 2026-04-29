@@ -1,0 +1,121 @@
+export type Creation = {
+  id: string
+  kind: 'card' | 'logo'
+  name: string
+  role?: string
+  industry?: string
+  tone?: string
+  styleId: string
+  variation: number
+  createdAt: number
+}
+
+export type Contact = {
+  id: string
+  name: string
+  role: string
+  company: string
+  city: string
+  phone: string
+  email: string
+  website?: string
+  bio?: string
+  metAt?: string
+  tags?: string[]
+  accent: string
+  avatar?: string
+}
+
+export const contacts: Contact[] = [
+  {
+    id: 'c1',
+    name: 'Aung Ko Ko',
+    role: 'Sales Manager',
+    company: 'Logistics MM',
+    city: 'Yangon',
+    phone: '+95 9 421 887 332',
+    email: 'aung.koko@logisticsmm.com',
+    website: 'logisticsmm.com',
+    bio: 'Building logistics infra across Myanmar. Always open to a coffee chat.',
+    metAt: 'Yangon Trade Fair · 2026 Mar',
+    tags: ['Lead', 'Logistics'],
+    accent: 'from-blue-500/40 to-violet-500/40',
+  },
+  {
+    id: 'c2',
+    name: 'Su Su Win',
+    role: 'Designer',
+    company: 'Studio Maw',
+    city: 'Mandalay',
+    phone: '+95 9 776 224 901',
+    email: 'su@studiomaw.co',
+    website: 'studiomaw.co',
+    bio: 'Brand identity & packaging. Curious about local craft.',
+    metAt: 'Mandalay Design Week · 2026 Feb',
+    tags: ['Creative', 'Partner'],
+    accent: 'from-pink-500/40 to-orange-400/40',
+  },
+  {
+    id: 'c3',
+    name: 'U Thant Zin',
+    role: 'Director',
+    company: 'Trade Co.',
+    city: 'Yangon',
+    phone: '+95 9 251 008 446',
+    email: 'thantzin@trade.co.mm',
+    bio: '20 yrs in cross-border trade. Connects east and west.',
+    metAt: 'Naypyidaw Business Forum · 2026 Jan',
+    tags: ['Mentor'],
+    accent: 'from-emerald-500/40 to-cyan-400/40',
+  },
+  {
+    id: 'c4',
+    name: 'Khin Khin',
+    role: 'Marketing',
+    company: 'AdHouse YGN',
+    city: 'Yangon',
+    phone: '+95 9 678 412 089',
+    email: 'khin@adhouse.mm',
+    bio: 'Social-first growth. Shares great memes.',
+    metAt: 'Tech Meetup YGN',
+    tags: ['Friend'],
+    accent: 'from-amber-400/40 to-rose-500/40',
+  },
+  {
+    id: 'c5',
+    name: 'Min Aung',
+    role: 'Engineer',
+    company: 'TechBM',
+    city: 'Naypyidaw',
+    phone: '+95 9 551 322 778',
+    email: 'min@techbm.io',
+    bio: 'Backend systems · React Native · OSS contributor',
+    metAt: 'DevDay 2026',
+    tags: ['Tech'],
+    accent: 'from-cyan-400/40 to-blue-500/40',
+  },
+  {
+    id: 'c6',
+    name: 'Hnin Yu',
+    role: 'Founder',
+    company: 'Tea & Co.',
+    city: 'Mandalay',
+    phone: '+95 9 922 110 553',
+    email: 'hnin@teaandco.mm',
+    bio: 'Specialty tea house & e-commerce. Always experimenting.',
+    metAt: 'F&B Expo · 2026 Mar',
+    tags: ['Founder', 'Lead'],
+    accent: 'from-violet-500/40 to-fuchsia-500/40',
+  },
+]
+
+export const me = {
+  name: 'Hein Htet',
+  role: 'Product Designer',
+  company: 'Independent',
+  city: 'Yangon',
+  phone: '+95 9 123 456 789',
+  email: 'hein@cardo.mm',
+  website: 'cardo.mm/heinhtet',
+  bio: 'Designer building products for Myanmar professionals.',
+}
