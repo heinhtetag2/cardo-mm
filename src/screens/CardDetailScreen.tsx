@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  Phone, Mail, Globe, MapPin, Tag, Calendar, MessageCircle, Save, Share2,
+  Phone, Mail, Globe, MapPin, Tag, Calendar, MessageCircle, Share2,
   MoreHorizontal, StickyNote, X, Star, Bell, Pencil, Trash2, AlertTriangle, Plus,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
@@ -158,14 +158,13 @@ export function CardDetailScreen({ contact, onBack }: { contact: Contact; onBack
       <div className="px-5 pb-8 space-y-2.5">
         <button
           onClick={() => toast.show('Saved to phone contacts')}
-          className="w-full h-12 rounded-2xl bg-ink text-canvas font-semibold text-[14px] flex items-center justify-center gap-2"
+          className="w-full h-12 pt-px rounded-2xl bg-ink text-canvas font-semibold text-[14px] flex items-center justify-center"
         >
-          <Save size={15} strokeWidth={2.2} />
-          <span>Save to phone contacts</span>
+          Save to phone contacts
         </button>
         <button
           onClick={() => setConfirmDelete(true)}
-          className="w-full h-12 rounded-2xl border border-line/70 bg-surface text-[14px] font-medium text-ink-muted"
+          className="w-full h-12 pt-px rounded-2xl border border-line/70 bg-surface text-[14px] font-medium text-ink-muted flex items-center justify-center"
         >
           Delete contact
         </button>
@@ -184,8 +183,8 @@ export function CardDetailScreen({ contact, onBack }: { contact: Contact; onBack
               className="w-full rounded-2xl border border-line/70 bg-surface p-3.5 text-[13.5px] outline-none resize-none placeholder:text-ink-dim"
             />
             <div className="flex gap-2 mt-3">
-              <button onClick={() => setEditingNotes(false)} className="flex-1 h-12 rounded-2xl border border-line/70 bg-surface text-[14px] font-semibold text-ink-muted">Cancel</button>
-              <button onClick={() => { setEditingNotes(false); toast.show('Note saved') }} className="flex-1 h-12 rounded-2xl bg-ink text-canvas text-[14px] font-semibold">Save</button>
+              <button onClick={() => setEditingNotes(false)} className="flex-1 h-12 pt-px rounded-2xl border border-line/70 bg-surface text-[14px] font-semibold text-ink-muted inline-flex items-center justify-center">Cancel</button>
+              <button onClick={() => { setEditingNotes(false); toast.show('Note saved') }} className="flex-1 h-12 pt-px rounded-2xl bg-ink text-canvas text-[14px] font-semibold inline-flex items-center justify-center">Save</button>
             </div>
           </div>
         </Sheet>

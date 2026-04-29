@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import {
-  Search, X, Filter, Check, Camera, Calendar, Trash2,
-  Save as SaveIcon, MapPin, ChevronRight,
+  Search, X, Check, Camera, Calendar, Trash2,
+  MapPin, ChevronRight,
   Share2, Copy, Mail, MessageCircle, Gift,
   ArrowUpRight, Users, ArrowRightLeft,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
+import { LocationPicker } from '../components/LocationPicker'
 import { useToast } from '../components/Toast'
 import { contacts, me } from '../data'
 import type { View } from '../nav'
@@ -38,6 +39,7 @@ export function EditProfileScreen({ onBack }: { onBack: () => void }) {
   const [email, setEmail] = useState(me.email)
   const [website, setWebsite] = useState(me.website)
   const [bio, setBio] = useState(me.bio)
+  const [cityPickerOpen, setCityPickerOpen] = useState(false)
 
   const save = () => {
     toast.show('Profile saved')
@@ -49,7 +51,7 @@ export function EditProfileScreen({ onBack }: { onBack: () => void }) {
       <SubScreenHeader
         title="Edit Profile"
         onBack={onBack}
-        right={<button onClick={save} className="px-3.5 h-9 rounded-full bg-ink text-canvas text-[12.5px] font-semibold inline-flex items-center justify-center leading-none">Save</button>}
+        right={<button onClick={save} className="px-3.5 h-9 pt-px rounded-full bg-ink text-canvas text-[12.5px] font-semibold inline-flex items-center justify-center">Save</button>}
       />
 
       <div className="px-5 pb-8">
@@ -74,7 +76,7 @@ export function EditProfileScreen({ onBack }: { onBack: () => void }) {
           <Field label="Full name" value={name} onChange={setName} />
           <Field label="Role / Title" value={role} onChange={setRole} />
           <Field label="Company" value={company} onChange={setCompany} />
-          <Field label="City" value={city} onChange={setCity} />
+          <FieldButton label="City" value={city} onTap={() => setCityPickerOpen(true)} />
         </Group>
 
         <SectionLabel>Contact</SectionLabel>
@@ -104,6 +106,14 @@ export function EditProfileScreen({ onBack }: { onBack: () => void }) {
           <span>Reset profile</span>
         </button>
       </div>
+
+      {cityPickerOpen && (
+        <LocationPicker
+          current={city}
+          onSelect={(loc) => { setCity(loc.name); setCityPickerOpen(false) }}
+          onClose={() => setCityPickerOpen(false)}
+        />
+      )}
     </div>
   )
 }
@@ -118,6 +128,22 @@ function Field({ label, value, onChange }: { label: string; value: string; onCha
         className="w-full bg-transparent outline-none text-[14px] py-1"
       />
     </div>
+  )
+}
+
+function FieldButton({ label, value, onTap }: { label: string; value: string; onTap: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onTap}
+      className="w-full text-left px-4 py-2.5 border-b border-line/40 last:border-0 active:bg-surface-elevated transition flex items-center gap-3"
+    >
+      <div className="flex-1 min-w-0">
+        <p className="text-[12px] font-medium text-ink-dim mb-1">{label}</p>
+        <p className="text-[14px] py-1 truncate">{value || '—'}</p>
+      </div>
+      <ChevronRight size={16} className="text-ink-dim flex-shrink-0" />
+    </button>
   )
 }
 
@@ -418,7 +444,7 @@ function TermsModal({ onClose }: { onClose: () => void }) {
         <div className="px-5 pt-3 pb-6 border-t border-line/40 bg-canvas flex-shrink-0">
           <button
             onClick={onClose}
-            className="w-full h-12 rounded-2xl bg-ink text-canvas font-semibold text-[14px] active:scale-[0.98] transition-transform"
+            className="w-full h-12 pt-px rounded-2xl bg-ink text-canvas font-semibold text-[14px] active:scale-[0.98] transition-transform inline-flex items-center justify-center"
           >
             Got it
           </button>
@@ -572,9 +598,8 @@ export function FilterScreen({ onBack }: { onBack: () => void }) {
       </div>
 
       <div className="absolute bottom-0 inset-x-0 px-5 pb-6 pt-3 bg-gradient-to-t from-canvas via-canvas to-canvas/0">
-        <button onClick={apply} className="w-full h-12 rounded-2xl bg-ink text-canvas font-semibold text-[14.5px] flex items-center justify-center gap-2">
-          <Filter size={15} strokeWidth={2} />
-          <span>Show results</span>
+        <button onClick={apply} className="w-full h-12 pt-px rounded-2xl bg-ink text-canvas font-semibold text-[14.5px] flex items-center justify-center">
+          Show results
         </button>
       </div>
     </div>
@@ -638,10 +663,9 @@ export function ExchangeScreen({ onBack, name, role, accent }: { onBack: () => v
 
             <button
               onClick={send}
-              className="w-full h-12 rounded-2xl bg-ink text-canvas font-semibold text-[14.5px] flex items-center justify-center gap-2"
+              className="w-full h-12 pt-px rounded-2xl bg-ink text-canvas font-semibold text-[14.5px] flex items-center justify-center"
             >
-              <ArrowRightLeft size={15} strokeWidth={2} />
-              <span>Send exchange request</span>
+              Send exchange request
             </button>
             <button
               onClick={() => { toast.show('Card saved without exchange'); onBack() }}
@@ -671,9 +695,9 @@ export function ExchangeScreen({ onBack, name, role, accent }: { onBack: () => v
             <p className="text-[12.5px] text-ink-dim mt-1.5">{name} is now in your Cardo.</p>
             <button
               onClick={onBack}
-              className="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-ink text-canvas text-[13.5px] font-semibold"
+              className="mt-6 inline-flex items-center px-5 py-3 rounded-2xl bg-ink text-canvas text-[13.5px] font-semibold"
             >
-              <SaveIcon size={14} strokeWidth={2.2} /> View their card
+              View their card
             </button>
           </div>
         )}

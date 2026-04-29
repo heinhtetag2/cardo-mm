@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Sparkles, ArrowRight, Check, RefreshCw, Type, Hash, Shapes, Layers } from 'lucide-react'
+import { Sparkles, Check, Type, Hash, Shapes, Layers } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import type { Creation } from '../data'
 
@@ -191,21 +191,16 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
       {!generating && (
         <div className="absolute bottom-0 inset-x-0 px-5 pb-6 pt-3 bg-canvas border-t border-line/40">
           {step < 2 ? (
-            <button onClick={next} className="w-full py-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center gap-2">
-              <span>{step === 1 ? 'Generate' : 'Next'}</span>
-              {step === 1
-                ? <Sparkles size={15} strokeWidth={2.2} />
-                : <ArrowRight size={15} strokeWidth={2.2} />}
+            <button onClick={next} className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center">
+              {step === 1 ? 'Generate' : 'Next'}
             </button>
           ) : (
             <div className="flex flex-col gap-2">
-              <button onClick={save} className="w-full py-3.5 rounded-2xl bg-brand-gradient text-white font-semibold text-[15px] shadow-glow flex items-center justify-center gap-2">
-                <Check size={15} strokeWidth={2.4} />
-                <span>{isLogo ? 'Save as my logo' : 'Save as my card'}</span>
+              <button onClick={save} className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand-gradient text-white font-semibold text-[15px] shadow-glow flex items-center justify-center">
+                {isLogo ? 'Save as my logo' : 'Save as my card'}
               </button>
-              <button className="w-full py-3 rounded-2xl border border-line/70 bg-surface text-[13.5px] font-medium text-ink-muted flex items-center justify-center gap-2">
-                <RefreshCw size={14} strokeWidth={1.8} />
-                <span>Regenerate <span className="text-ink-dim">(1 credit)</span></span>
+              <button className="w-full pt-[13px] pb-3 rounded-2xl border border-line/70 bg-surface text-[13.5px] font-medium text-ink-muted flex items-center justify-center">
+                Regenerate <span className="text-ink-dim ml-1">(1 credit)</span>
               </button>
             </div>
           )}
@@ -322,7 +317,7 @@ function SelectField({ label, value, onChange, options }: { label: string; value
       <div className="flex flex-wrap gap-1.5">
         {options.map((o) => (
           <button key={o} onClick={() => onChange(o)}
-            className={`px-3.5 h-9 rounded-full text-[12.5px] font-medium border transition inline-flex items-center justify-center leading-none ${
+            className={`px-3.5 h-9 pt-px rounded-full text-[12.5px] font-medium border transition inline-flex items-center justify-center ${
               value === o ? 'bg-ink text-canvas border-ink' : 'bg-surface text-ink-muted border-line/70'
             }`}>
             {o}

@@ -19,7 +19,7 @@ export function CardoScreen({ go }: { go: (v: View) => void }) {
           className="inline-flex items-center gap-1.5 h-10 px-3.5 rounded-full bg-brand/12 border border-brand/30 text-brand text-[13px] font-semibold hover:bg-brand/20 transition"
         >
           <Plus size={15} strokeWidth={2.4} />
-          <span>New card</span>
+          <span>Add card</span>
         </button>
       </div>
 

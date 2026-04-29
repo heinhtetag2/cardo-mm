@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronLeft, Zap, ZapOff, Image as ImageIcon, Check, RotateCcw, Info } from 'lucide-react'
+import { ChevronLeft, Zap, ZapOff, Image as ImageIcon, RotateCcw, Info } from 'lucide-react'
 import { useToast } from '../components/Toast'
 import { ContactForm } from '../components/ContactForm'
 
@@ -137,7 +137,6 @@ export function ScanScreen({ onBack, mode = 'card' }: { onBack: () => void; mode
             city: 'No. 142, Pyay Road, Sanchaung, Yangon',
           }}
           saveLabel="Save to Cardo"
-          saveIcon={<Check size={15} strokeWidth={2.4} />}
           onSave={() => {
             toast.show('Card saved to Cardo')
             setTimeout(onBack, 500)

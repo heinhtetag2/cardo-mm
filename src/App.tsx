@@ -26,9 +26,12 @@ import {
   EditProfileScreen, AnalyticsScreen, InviteScreen, SearchScreen, FilterScreen, ExchangeScreen,
 } from './screens/ExtraScreens'
 import { ToastProvider } from './components/Toast'
+import { OnboardingScreen } from './screens/OnboardingScreen'
 import { useTheme } from './theme'
 import type { Tab, View } from './nav'
 import type { Creation } from './data'
+
+const ONBOARD_KEY = 'cardo:onboarded'
 
 export default function App() {
   useTheme()
@@ -36,6 +39,10 @@ export default function App() {
   const [stack, setStack] = useState<View[]>([])
   const [view, setView] = useState<'phone' | 'dashboard'>('phone')
   const [creations, setCreations] = useState<Creation[]>([])
+  const [onboarded, setOnboarded] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return localStorage.getItem(ONBOARD_KEY) === '1'
+  })
 
   const current = stack[stack.length - 1]
   const inSubScreen = !!current
@@ -50,8 +57,31 @@ export default function App() {
   const updateCreation = (id: string, patch: Partial<Creation>) =>
     setCreations((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)))
 
+  const handleLogout = () => {
+    localStorage.removeItem(ONBOARD_KEY)
+    setStack([])
+    setTab('home')
+    setCreations([])
+    setOnboarded(false)
+  }
+
   if (view === 'dashboard') {
     return <DashboardApp onExit={() => setView('phone')} />
+  }
+
+  if (!onboarded) {
+    return (
+      <div className="relative h-full w-full flex items-center justify-center bg-canvas overflow-auto">
+        <PhoneFrame>
+          <OnboardingScreen
+            onDone={() => {
+              localStorage.setItem(ONBOARD_KEY, '1')
+              setOnboarded(true)
+            }}
+          />
+        </PhoneFrame>
+      </div>
+    )
   }
 
   return (
@@ -96,7 +126,7 @@ export default function App() {
                 onUpdate={updateCreation}
               />
             )}
-            {!inSubScreen && tab === 'me' && <MyInfoScreen go={go} />}
+            {!inSubScreen && tab === 'me' && <MyInfoScreen go={go} onLogout={handleLogout} />}
           </main>
 
           {/* Sub-screens */}
@@ -107,7 +137,7 @@ export default function App() {
           {current?.kind === 'scan' && <ScanScreen onBack={back} mode="card" />}
           {current?.kind === 'manual' && <ManualEntryScreen onBack={back} />}
           {current?.kind === 'qr-scan' && <ScanScreen onBack={back} mode="qr" />}
-          {current?.kind === 'settings' && <SettingsScreen onBack={back} go={go} />}
+          {current?.kind === 'settings' && <SettingsScreen onBack={back} go={go} onLogout={handleLogout} />}
           {current?.kind === 'nearby' && <NearbyScreen onBack={back} go={go} />}
           {current?.kind === 'subscription' && <SubscriptionScreen onBack={back} />}
           {current?.kind === 'privacy' && <PrivacyScreen onBack={back} />}

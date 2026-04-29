@@ -4,12 +4,20 @@ import {
   HelpCircle, Info, Share2, LogOut,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
+import { LogoutConfirm } from '../components/LogoutConfirm'
 import type { View } from '../nav'
 
-export function SettingsScreen({ onBack, go }: { onBack: () => void; go: (v: View) => void }) {
+export function SettingsScreen({
+  onBack, go, onLogout,
+}: {
+  onBack: () => void
+  go: (v: View) => void
+  onLogout: () => void
+}) {
   const [push, setPush] = useState(true)
   const [nearby, setNearby] = useState(true)
   const [reduceMotion, setReduceMotion] = useState(false)
+  const [confirmLogout, setConfirmLogout] = useState(false)
 
   return (
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
@@ -59,11 +67,21 @@ export function SettingsScreen({ onBack, go }: { onBack: () => void; go: (v: Vie
           <NavRow icon={<Info size={15} />} label="About Cardo" sub="Version 1.0.0" onClick={() => go({ kind: 'about' })} />
         </Group>
 
-        <button className="w-full mt-1 p-3.5 rounded-2xl border border-line/70 bg-surface/60 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400">
+        <button
+          onClick={() => setConfirmLogout(true)}
+          className="w-full mt-1 p-3.5 rounded-2xl border border-line/70 bg-surface/60 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400 hover:border-rose-500/40 transition"
+        >
           <LogOut size={15} strokeWidth={1.8} />
           <span>Log out</span>
         </button>
       </div>
+
+      {confirmLogout && (
+        <LogoutConfirm
+          onClose={() => setConfirmLogout(false)}
+          onConfirm={() => { setConfirmLogout(false); onLogout() }}
+        />
+      )}
     </div>
   )
 }

@@ -485,14 +485,14 @@ function EditSheet({ creation, onSave, onClose }: { creation: Creation; onSave: 
         <div className="flex gap-2 mt-5 mb-1">
           <button
             onClick={onClose}
-            className="flex-1 h-12 rounded-2xl border border-line/70 bg-surface text-[14px] font-semibold text-ink-muted"
+            className="flex-1 h-12 pt-px rounded-2xl border border-line/70 bg-surface text-[14px] font-semibold text-ink-muted inline-flex items-center justify-center"
           >
             Cancel
           </button>
           <button
             onClick={save}
             disabled={!name.trim()}
-            className="flex-1 h-12 rounded-2xl bg-ink text-canvas text-[14px] font-semibold disabled:opacity-40"
+            className="flex-1 h-12 pt-px rounded-2xl bg-ink text-canvas text-[14px] font-semibold disabled:opacity-40 inline-flex items-center justify-center"
           >
             Save changes
           </button>
@@ -522,7 +522,7 @@ function Chips({ label, value, onChange, options }: { label: string; value: stri
       <div className="flex flex-wrap gap-1.5">
         {options.map((o) => (
           <button key={o} onClick={() => onChange(o)}
-            className={`px-3.5 h-9 rounded-full text-[12.5px] font-medium border transition inline-flex items-center justify-center leading-none ${
+            className={`px-3.5 h-9 pt-px rounded-full text-[12.5px] font-medium border transition inline-flex items-center justify-center ${
               value === o ? 'bg-ink text-canvas border-ink' : 'bg-surface text-ink-muted border-line/70'
             }`}>
             {o}

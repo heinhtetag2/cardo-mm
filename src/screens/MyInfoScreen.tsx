@@ -1,9 +1,10 @@
+import { useState } from 'react'
 import { ChevronRight, IdCard, Settings, MapPin, Bell, HelpCircle, FileText, LogOut, Pencil } from 'lucide-react'
-import { useToast } from '../components/Toast'
+import { LogoutConfirm } from '../components/LogoutConfirm'
 import type { View } from '../nav'
 
-export function MyInfoScreen({ go }: { go: (v: View) => void }) {
-  const toast = useToast()
+export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout: () => void }) {
+  const [confirmLogout, setConfirmLogout] = useState(false)
   return (
     <div className="px-5 pt-2 animate-fade-in">
       {/* Profile header */}
@@ -43,12 +44,22 @@ export function MyInfoScreen({ go }: { go: (v: View) => void }) {
         <Row icon={<FileText size={16} />} label="Terms & Policies" sub="Privacy, ToS, data handling" onClick={() => go({ kind: 'terms' })} />
       </Group>
 
-      <button onClick={() => toast.show('Logged out (mock)', 'info')} className="w-full mt-5 p-3.5 rounded-2xl border border-line/70 bg-surface/60 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400">
+      <button
+        onClick={() => setConfirmLogout(true)}
+        className="w-full mt-5 p-3.5 rounded-2xl border border-line/70 bg-surface/60 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400 hover:border-rose-500/40 transition"
+      >
         <LogOut size={15} strokeWidth={1.8} />
         <span>Log out</span>
       </button>
 
       <p className="text-center text-[11px] text-ink-dim mt-5">Cardo Myanmar · v1.0.0</p>
+
+      {confirmLogout && (
+        <LogoutConfirm
+          onClose={() => setConfirmLogout(false)}
+          onConfirm={() => { setConfirmLogout(false); onLogout() }}
+        />
+      )}
     </div>
   )
 }
