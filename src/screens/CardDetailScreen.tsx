@@ -1,13 +1,27 @@
 import { useState } from 'react'
 import {
   Phone, Mail, Globe, MapPin, Tag, Calendar, MessageCircle, Share2,
-  MoreHorizontal, StickyNote, X, Star, Bell, Pencil, Trash2, AlertTriangle, Plus,
+  MoreHorizontal, X, Star, Bell, Pencil, Trash2, AlertTriangle, Plus,
+  Copy, ExternalLink,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { useToast } from '../components/Toast'
 import type { Contact } from '../data'
+import type { View } from '../nav'
 
-export function CardDetailScreen({ contact, onBack }: { contact: Contact; onBack: () => void }) {
+export function CardDetailScreen({
+  contact,
+  onBack,
+  go,
+  isFavorite,
+  onToggleFavorite,
+}: {
+  contact: Contact
+  onBack: () => void
+  go: (v: View) => void
+  isFavorite: boolean
+  onToggleFavorite: () => void
+}) {
   const toast = useToast()
   const [showMenu, setShowMenu] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -15,7 +29,6 @@ export function CardDetailScreen({ contact, onBack }: { contact: Contact; onBack
   const [addingTag, setAddingTag] = useState(false)
   const [newTag, setNewTag] = useState('')
   const [notes, setNotes] = useState('')
-  const [editingNotes, setEditingNotes] = useState(false)
 
   const initials = contact.name.split(' ').map((p) => p[0]).slice(0, 2).join('')
 
@@ -81,9 +94,9 @@ export function CardDetailScreen({ contact, onBack }: { contact: Contact; onBack
       {/* Info list */}
       <div className="px-5 mb-5">
         <div className="rounded-[20px] border border-line/60 bg-surface/60 overflow-hidden">
-          <InfoRow icon={<Phone size={15} />} label="Phone" value={contact.phone} action="Copy" onAction={() => copy('Phone', contact.phone)} />
-          <InfoRow icon={<Mail size={15} />} label="Email" value={contact.email} action="Copy" onAction={() => copy('Email', contact.email)} />
-          {contact.website && <InfoRow icon={<Globe size={15} />} label="Website" value={contact.website} action="Open" onAction={() => { window.open(`https://${contact.website}`, '_blank'); toast.show('Opening website…', 'info') }} />}
+          {contact.phone && <InfoRow icon={<Phone size={15} />} label="Phone" value={contact.phone} action="copy" onAction={() => copy('Phone', contact.phone)} />}
+          {contact.email && <InfoRow icon={<Mail size={15} />} label="Email" value={contact.email} action="copy" onAction={() => copy('Email', contact.email)} />}
+          {contact.website && <InfoRow icon={<Globe size={15} />} label="Website" value={contact.website} action="open" onAction={() => { window.open(`https://${contact.website}`, '_blank'); toast.show('Opening website…', 'info') }} />}
           <InfoRow icon={<MapPin size={15} />} label="Location" value={contact.city} />
         </div>
       </div>
@@ -139,62 +152,44 @@ export function CardDetailScreen({ contact, onBack }: { contact: Contact; onBack
       {/* Notes */}
       <SectionLabel>Notes</SectionLabel>
       <div className="px-5 mb-5">
-        <button
-          onClick={() => setEditingNotes(true)}
-          className="w-full rounded-[20px] border border-line/60 bg-surface/60 p-4 flex items-start gap-3.5 text-left"
-        >
-          <div className="h-10 w-10 rounded-xl bg-surface-higher border border-line/60 grid place-items-center flex-shrink-0">
-            <StickyNote size={15} className="text-ink-muted" strokeWidth={1.8} />
-          </div>
-          <div className="flex-1">
-            {notes
-              ? <p className="text-[13px] text-ink leading-relaxed whitespace-pre-wrap">{notes}</p>
-              : <p className="text-[13px] text-ink-dim italic">No notes yet — tap to add context, things you discussed, or follow-up reminders.</p>}
-          </div>
-        </button>
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          onBlur={() => { if (notes.trim()) toast.show('Note saved') }}
+          placeholder="Where you met, what you discussed, follow-up reminders…"
+          rows={4}
+          className="w-full p-4 rounded-2xl border border-line/70 bg-surface text-[14px] outline-none focus:border-brand/60 resize-none placeholder:text-ink-dim"
+        />
       </div>
 
       {/* Actions */}
-      <div className="px-5 pb-8 space-y-2.5">
-        <button
-          onClick={() => toast.show('Saved to phone contacts')}
-          className="w-full h-12 pt-px rounded-2xl bg-ink text-canvas font-semibold text-[14px] flex items-center justify-center"
-        >
-          Save to phone contacts
-        </button>
+      <div className="px-5 pb-8">
         <button
           onClick={() => setConfirmDelete(true)}
-          className="w-full h-12 pt-px rounded-2xl border border-line/70 bg-surface text-[14px] font-medium text-ink-muted flex items-center justify-center"
+          className="w-full p-3.5 rounded-2xl border border-rose-500/30 bg-rose-500/8 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400 transition"
         >
-          Delete contact
+          <Trash2 size={15} strokeWidth={1.8} />
+          <span>Delete contact</span>
         </button>
       </div>
-
-      {/* Notes editor sheet */}
-      {editingNotes && (
-        <Sheet onClose={() => setEditingNotes(false)} title={`Notes about ${contact.name.split(' ')[0]}`}>
-          <div className="px-2 pt-1 pb-1">
-            <textarea
-              autoFocus
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={6}
-              placeholder="What did you discuss? Any follow-ups?"
-              className="w-full rounded-2xl border border-line/70 bg-surface p-3.5 text-[13.5px] outline-none resize-none placeholder:text-ink-dim"
-            />
-            <div className="flex gap-2 mt-3">
-              <button onClick={() => setEditingNotes(false)} className="flex-1 h-12 pt-px rounded-2xl border border-line/70 bg-surface text-[14px] font-semibold text-ink-muted inline-flex items-center justify-center">Cancel</button>
-              <button onClick={() => { setEditingNotes(false); toast.show('Note saved') }} className="flex-1 h-12 pt-px rounded-2xl bg-ink text-canvas text-[14px] font-semibold inline-flex items-center justify-center">Save</button>
-            </div>
-          </div>
-        </Sheet>
-      )}
 
       {/* More menu sheet */}
       {showMenu && (
         <Sheet onClose={() => setShowMenu(false)}>
-          <SheetItem icon={<Pencil size={17} strokeWidth={1.8} />} label="Edit contact"            onClick={() => { setShowMenu(false); toast.show('Edit (mock)', 'info') }} />
-          <SheetItem icon={<Star size={17} strokeWidth={1.8} />}   label="Add to favorites"        onClick={() => { setShowMenu(false); toast.show('Added to favorites') }} />
+          <SheetItem
+            icon={<Pencil size={17} strokeWidth={1.8} />}
+            label="Edit contact"
+            onClick={() => { setShowMenu(false); go({ kind: 'edit-contact', contact }) }}
+          />
+          <SheetItem
+            icon={<Star size={17} strokeWidth={1.8} className={isFavorite ? 'fill-brand text-brand' : ''} />}
+            label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            onClick={() => {
+              setShowMenu(false)
+              onToggleFavorite()
+              toast.show(isFavorite ? 'Removed from favorites' : 'Added to favorites')
+            }}
+          />
           <SheetItem icon={<Bell size={17} strokeWidth={1.8} />}   label="Set follow-up reminder"  onClick={() => { setShowMenu(false); toast.show('Reminder set for 1 week') }} />
           <SheetItem icon={<Share2 size={17} strokeWidth={1.8} />} label="Share card"              onClick={() => { setShowMenu(false); toast.show('Share sheet (mock)', 'info') }} />
           <div className="border-t border-line/40 my-1" />
@@ -220,7 +215,21 @@ function ActionPill({ icon, label, onClick, href }: { icon: React.ReactNode; lab
   return <button onClick={onClick} className={cls}><span className="text-ink">{icon}</span><span className="text-[11px] font-medium text-ink-muted">{label}</span></button>
 }
 
-function InfoRow({ icon, label, value, action, onAction }: { icon: React.ReactNode; label: string; value: string; action?: string; onAction?: () => void }) {
+function InfoRow({
+  icon,
+  label,
+  value,
+  action,
+  onAction,
+}: {
+  icon: React.ReactNode
+  label: string
+  value: string
+  action?: 'copy' | 'open'
+  onAction?: () => void
+}) {
+  const ActionIcon = action === 'copy' ? Copy : action === 'open' ? ExternalLink : null
+  const actionLabel = action === 'copy' ? `Copy ${label.toLowerCase()}` : `Open ${label.toLowerCase()}`
   return (
     <div className="flex items-center gap-3.5 px-4 py-3.5 border-b border-line/40 last:border-0">
       <div className="h-9 w-9 rounded-xl bg-surface-higher border border-line/60 grid place-items-center text-ink-muted flex-shrink-0">
@@ -230,7 +239,15 @@ function InfoRow({ icon, label, value, action, onAction }: { icon: React.ReactNo
         <p className="text-[11px] text-ink-dim">{label}</p>
         <p className="text-[13.5px] font-semibold truncate">{value}</p>
       </div>
-      {action && <button onClick={onAction} className="text-[12px] text-brand font-semibold">{action}</button>}
+      {ActionIcon && (
+        <button
+          onClick={onAction}
+          aria-label={actionLabel}
+          className="h-8 w-8 grid place-items-center rounded-full text-ink-muted hover:text-ink hover:bg-surface-elevated transition flex-shrink-0"
+        >
+          <ActionIcon size={15} strokeWidth={1.8} />
+        </button>
+      )}
     </div>
   )
 }

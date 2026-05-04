@@ -1,10 +1,19 @@
 import { useState } from 'react'
-import { Search, Share2, MapPin, Plus } from 'lucide-react'
+import { Search, Share2, MapPin, Plus, Star } from 'lucide-react'
 import type { View } from '../nav'
 import { contacts, type Contact } from '../data'
 
-export function CardoScreen({ go }: { go: (v: View) => void }) {
+export function CardoScreen({
+  go,
+  favorites,
+}: {
+  go: (v: View) => void
+  favorites: Set<string>
+}) {
   const [activeChip, setActiveChip] = useState('All')
+
+  const favoriteContacts = contacts.filter((c) => favorites.has(c.id))
+  const visibleContacts = activeChip === 'Favorites' ? favoriteContacts : contacts
 
   return (
     <div className="px-5 pt-2 animate-fade-in">
@@ -31,25 +40,41 @@ export function CardoScreen({ go }: { go: (v: View) => void }) {
       </div>
 
       <div className="flex items-center gap-1.5 mb-5 overflow-x-auto scrollbar-hide -mx-5 px-5">
-        {['All', 'Recently added', 'Yangon', 'Mandalay', 'Tech', 'Sales'].map((c) => (
+        {['All', 'Favorites', 'Recently added', 'Yangon', 'Mandalay', 'Tech', 'Sales'].map((c) => (
           <button
             key={c}
             onClick={() => setActiveChip(c)}
-            className={`flex-shrink-0 px-3 h-8 rounded-full text-[12px] font-medium border transition ${
+            className={`flex-shrink-0 inline-flex items-center gap-1 px-3 h-8 rounded-full text-[12px] font-medium border transition ${
               activeChip === c ? 'bg-ink text-canvas border-ink' : 'bg-surface text-ink-muted border-line/70'
             }`}
           >
+            {c === 'Favorites' && (
+              <Star size={11} strokeWidth={2} className={activeChip === c ? 'fill-canvas' : 'fill-brand text-brand'} />
+            )}
             {c}
           </button>
         ))}
       </div>
 
-      <div className="space-y-4">
-        {contacts.map((c) => <CardFeatureItem key={c.id} contact={c} onClick={() => go({ kind: 'card-detail', contact: c })} />)}
-      </div>
+      {visibleContacts.length === 0 ? (
+        <div className="py-16 text-center">
+          <div className="mx-auto h-14 w-14 rounded-2xl bg-surface-elevated border border-line/60 grid place-items-center mb-3">
+            <Star size={20} className="text-ink-dim" strokeWidth={1.6} />
+          </div>
+          <p className="text-[14.5px] font-semibold">No favorites yet</p>
+          <p className="text-[12.5px] text-ink-dim mt-1">Tap a card's menu and choose<br/>"Add to favorites" to pin it here.</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {visibleContacts.map((c) => (
+            <CardFeatureItem key={c.id} contact={c} onClick={() => go({ kind: 'card-detail', contact: c })} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
+
 
 function CardFeatureItem({ contact, onClick }: { contact: Contact; onClick: () => void }) {
   const initials = contact.name.split(' ').map((p) => p[0]).slice(0, 2).join('')

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import {
   CreditCard, Palette, Gift, Wand2, ChevronRight, MoreHorizontal,
   Share2, Download, PencilLine, Trash2, X, Check, Info, Copy,
-  Mail, MessageCircle, Link as LinkIcon, FileImage, FileText, FileCode,
+  Mail, MessageCircle, Link as LinkIcon, FileImage, FileText, FileCode, Plus,
 } from 'lucide-react'
 import type { View } from '../nav'
 import type { Creation } from '../data'
@@ -21,11 +21,17 @@ export function AICardScreen({
   const toast = useToast()
   const [actionFor, setActionFor] = useState<Creation | null>(null)
   const [subAction, setSubAction] = useState<SubAction>(null)
+  const [showPicker, setShowPicker] = useState(false)
 
   const cards = creations.filter((c) => c.kind === 'card')
   const logos = creations.filter((c) => c.kind === 'logo')
 
   const closeAll = () => { setActionFor(null); setSubAction(null) }
+
+  const startCreate = (mode: 'card' | 'logo') => {
+    setShowPicker(false)
+    go({ kind: 'ai-create', mode })
+  }
 
   return (
     <div className="px-5 pt-2 animate-fade-in">
@@ -36,21 +42,6 @@ export function AICardScreen({
         <p className="text-[13px] text-ink-dim mt-2.5 leading-relaxed max-w-[280px]">
           Cards and logos, crafted around the way you work.
         </p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <BigAction
-          onClick={() => go({ kind: 'ai-create', mode: 'card' })}
-          icon={<CreditCard size={20} />}
-          title="Create card"
-          subtitle="Three styles, one tap"
-        />
-        <BigAction
-          onClick={() => go({ kind: 'ai-create', mode: 'logo' })}
-          icon={<Palette size={20} />}
-          title="Create logo"
-          subtitle="Brand mark in 30s"
-        />
       </div>
 
       <div className="grid grid-cols-3 gap-2.5 mb-6">
@@ -71,13 +62,18 @@ export function AICardScreen({
       </button>
 
       {creations.length === 0 ? (
-        <div className="rounded-[20px] border border-dashed border-line-strong bg-surface/40 p-6 text-center">
-          <div className="h-14 w-14 mx-auto rounded-2xl bg-surface-higher border border-line/60 grid place-items-center mb-3">
-            <Wand2 size={20} className="text-ink-muted" strokeWidth={1.6} />
+        <button
+          onClick={() => setShowPicker(true)}
+          className="w-full rounded-[20px] border border-dashed border-line-strong bg-surface/40 p-8 text-center transition hover:border-brand/50 hover:bg-surface/60 active:scale-[0.99] group"
+        >
+          <div className="h-14 w-14 mx-auto rounded-2xl bg-surface-higher border border-line/60 grid place-items-center mb-4 transition group-hover:border-brand/40">
+            <Plus size={22} className="text-ink-muted transition group-hover:text-brand" strokeWidth={2.2} />
           </div>
-          <p className="text-[14.5px] font-semibold mb-1">Your cards and logos live here</p>
-          <p className="text-[12.5px] text-ink-dim">Pick an option above to generate your first design.</p>
-        </div>
+          <p className="text-[14.5px] font-semibold mb-1">Make your first design</p>
+          <p className="text-[12.5px] text-ink-dim leading-relaxed max-w-[260px] mx-auto">
+            Cardo's AI shapes a card or logo around your brand — ready in 30s.
+          </p>
+        </button>
       ) : (
         <div>
           <div className="flex items-center justify-between mb-3">
@@ -93,8 +89,38 @@ export function AICardScreen({
                 onMore={() => setActionFor(c)}
               />
             ))}
+            <button
+              onClick={() => setShowPicker(true)}
+              className="w-full mt-1 p-3.5 rounded-[18px] border border-dashed border-line-strong bg-surface/40 flex items-center justify-center gap-1.5 text-[13px] font-medium text-ink-muted hover:border-brand/40 hover:text-brand transition"
+            >
+              <Plus size={14} strokeWidth={2.2} />
+              <span>Create another</span>
+            </button>
           </div>
         </div>
+      )}
+
+      {/* Create picker */}
+      {showPicker && (
+        <ActionSheet onClose={() => setShowPicker(false)} title="What do you want to create?">
+          <div className="grid grid-cols-2 gap-3 px-2 pt-1 pb-2">
+            <PickerCard
+              icon={<CreditCard size={20} strokeWidth={1.8} />}
+              title="Card"
+              subtitle="Three styles, one tap"
+              onClick={() => startCreate('card')}
+            />
+            <PickerCard
+              icon={<Palette size={20} strokeWidth={1.8} />}
+              title="Logo"
+              subtitle="Brand mark in 30s"
+              onClick={() => startCreate('logo')}
+            />
+          </div>
+          <p className="text-[11.5px] text-ink-dim text-center mt-2 mb-1">
+            Each generation uses 1 credit
+          </p>
+        </ActionSheet>
       )}
 
       {/* Action sheet */}
@@ -118,20 +144,17 @@ export function AICardScreen({
   )
 }
 
-function BigAction({ icon, title, subtitle, gradient, onClick }: { icon: React.ReactNode; title: string; subtitle: string; gradient?: boolean; onClick?: () => void }) {
+function PickerCard({ icon, title, subtitle, onClick }: { icon: React.ReactNode; title: string; subtitle: string; onClick: () => void }) {
   return (
-    <button onClick={onClick} className={`relative p-4 rounded-2xl border text-left overflow-hidden transition-all
-      ${gradient
-        ? 'border-brand/40 bg-gradient-to-br from-brand/20 via-surface to-surface shadow-glow'
-        : 'border-line/70 bg-surface'
-      }`}>
-      <div className={`h-11 w-11 rounded-xl grid place-items-center mb-8
-        ${gradient ? 'bg-brand-gradient' : 'bg-surface-higher border border-line-strong'}`}>
-        <span className="text-white">{icon}</span>
+    <button
+      onClick={onClick}
+      className="relative p-4 rounded-2xl border border-line/70 bg-surface text-left overflow-hidden transition active:scale-[0.98] hover:border-brand/40"
+    >
+      <div className="h-11 w-11 rounded-xl bg-surface-higher border border-line-strong grid place-items-center mb-8 text-ink">
+        {icon}
       </div>
       <p className="text-[15px] font-semibold">{title}</p>
       <p className="text-[12px] text-ink-dim mt-0.5">{subtitle}</p>
-      {gradient && <div className="absolute -bottom-10 -right-10 h-28 w-28 rounded-full bg-brand/15 blur-2xl" />}
     </button>
   )
 }

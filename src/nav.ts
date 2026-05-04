@@ -5,6 +5,7 @@ export type Tab = 'home' | 'cardo' | 'ai' | 'me'
 export type View =
   | { kind: 'tab'; tab: Tab }
   | { kind: 'card-detail'; contact: Contact }
+  | { kind: 'edit-contact'; contact: Contact }
   | { kind: 'my-card' }
   | { kind: 'ai-create'; mode: 'card' | 'logo' }
   | { kind: 'register' }
@@ -25,12 +26,16 @@ export type View =
   | { kind: 'help' }
   | { kind: 'about' }
   | { kind: 'notifications' }
-  | { kind: 'edit-profile' }
+  | { kind: 'edit-card' }
+  | { kind: 'account' }
+  | { kind: 'account-display-name' }
+  | { kind: 'account-email' }
+  | { kind: 'account-linked' }
   | { kind: 'analytics' }
   | { kind: 'invite' }
   | { kind: 'search' }
   | { kind: 'filter' }
-  | { kind: 'exchange'; name: string; role: string; accent: string }
+  | { kind: 'exchange'; name: string; role: string; accent: string; phone: string; email: string; website?: string; city: string }
 
 export type Nav = {
   go: (v: View) => void

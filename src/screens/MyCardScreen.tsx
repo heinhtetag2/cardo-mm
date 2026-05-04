@@ -1,4 +1,4 @@
-import { Share2, Wallet, Pencil, Sparkles, Copy, Check } from 'lucide-react'
+import { Pencil, Copy, Check } from 'lucide-react'
 import { useState } from 'react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { useToast } from '../components/Toast'
@@ -13,7 +13,7 @@ export function MyCardScreen({ onBack, go }: { onBack: () => void; go: (v: View)
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
       <div className="absolute inset-x-0 top-0 h-[420px] bg-glow-radial pointer-events-none" />
       <SubScreenHeader title="My Card" onBack={onBack} right={
-        <button onClick={() => go({ kind: 'edit-profile' })} className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80">
+        <button onClick={() => go({ kind: 'edit-card' })} className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80">
           <Pencil size={16} strokeWidth={1.8} />
         </button>
       } />
@@ -57,44 +57,8 @@ export function MyCardScreen({ onBack, go }: { onBack: () => void; go: (v: View)
           </button>
         </div>
 
-        {/* Share options */}
-        <p className="text-[12px] font-medium text-ink-dim mb-2.5 ml-1">Share via</p>
-        <div className="grid grid-cols-3 gap-2.5 mb-5">
-          <ShareTile label="NFC tap" icon={<NfcIcon />} highlight onClick={() => toast.show('Hold near another phone…', 'info')} />
-          <ShareTile label="Smart link" icon={<Share2 size={18} strokeWidth={1.8} />} onClick={() => { navigator.clipboard?.writeText(me.website); toast.show('Smart link copied') }} />
-          <ShareTile label="Wallet pass" icon={<Wallet size={18} strokeWidth={1.8} />} onClick={() => toast.show('Add to Wallet (mock)', 'info')} />
-        </div>
-
-        {/* Insights */}
-        <button onClick={() => go({ kind: 'analytics' })} className="w-full rounded-[20px] border border-line/60 bg-surface/60 p-4 flex items-center gap-3.5 text-left">
-          <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-emerald-500/40 to-cyan-500/40 grid place-items-center">
-            <Sparkles size={16} className="text-white" strokeWidth={1.8} />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[14px] font-semibold">Your card was viewed 12×</p>
-            <p className="text-[11.5px] text-ink-dim mt-0.5">Up 200% from last week</p>
-          </div>
-          <span className="text-[12px] text-brand font-semibold">View</span>
-        </button>
       </div>
     </div>
-  )
-}
-
-function ShareTile({ icon, label, highlight, onClick }: { icon: React.ReactNode; label: string; highlight?: boolean; onClick?: () => void }) {
-  return (
-    <button onClick={onClick} className={`flex flex-col items-center gap-2 py-4 rounded-2xl border ${highlight ? 'border-brand/40 bg-gradient-to-b from-brand/15 to-transparent' : 'border-line/70 bg-surface'}`}>
-      <span className={highlight ? 'text-brand' : 'text-ink'}>{icon}</span>
-      <span className="text-[11.5px] font-medium text-ink">{label}</span>
-    </button>
-  )
-}
-
-function NfcIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 9c1.5 0 4 1 4 5"/><path d="M9 5c0 0 6 .5 6 7"/><path d="M5 14h14"/><circle cx="6" cy="18" r="1"/>
-    </svg>
   )
 }
 

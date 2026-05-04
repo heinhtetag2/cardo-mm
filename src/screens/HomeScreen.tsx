@@ -1,29 +1,104 @@
+import { useEffect, useRef, useState } from 'react'
 import { Search, QrCode, Wand2, Plus, Radar, Gift, ChevronRight } from 'lucide-react'
 import type { Tab, View } from '../nav'
-import { contacts } from '../data'
+import { contacts, ads, type Ad } from '../data'
 import { SectionHeader } from '../components/SectionHeader'
+
+const SLIDE_INTERVAL_MS = 5000
+const RESUME_DELAY_MS = 4000
 
 export function HomeScreen({ go, setTab }: { go: (v: View) => void; setTab: (t: Tab) => void }) {
   const recent = contacts.slice(0, 3)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const resumeTimer = useRef<number | undefined>(undefined)
+  const [slide, setSlide] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const totalSlides = 1 + ads.length
+
+  const onScroll = () => {
+    const el = scrollRef.current
+    if (!el) return
+    const idx = Math.round(el.scrollLeft / el.clientWidth)
+    if (idx !== slide && idx >= 0 && idx < totalSlides) setSlide(idx)
+  }
+
+  useEffect(() => {
+    if (paused) return
+    const id = window.setInterval(() => {
+      const el = scrollRef.current
+      if (!el) return
+      const current = Math.round(el.scrollLeft / el.clientWidth)
+      const next = (current + 1) % totalSlides
+      el.scrollTo({ left: next * el.clientWidth, behavior: 'smooth' })
+    }, SLIDE_INTERVAL_MS)
+    return () => window.clearInterval(id)
+  }, [paused, totalSlides])
+
+  const pause = () => {
+    if (resumeTimer.current) window.clearTimeout(resumeTimer.current)
+    setPaused(true)
+  }
+  const scheduleResume = () => {
+    if (resumeTimer.current) window.clearTimeout(resumeTimer.current)
+    resumeTimer.current = window.setTimeout(() => setPaused(false), RESUME_DELAY_MS)
+  }
+  useEffect(() => () => {
+    if (resumeTimer.current) window.clearTimeout(resumeTimer.current)
+  }, [])
+
   return (
     <div className="px-5 pt-2 animate-fade-in">
-      {/* Hero card */}
-      <div className="relative overflow-hidden rounded-[24px] border border-line/60 bg-hero-card p-5 mb-7">
-        <div className="mb-12">
-          <p className="text-[12px] font-semibold text-brand mb-2">Connect smarter</p>
-          <h1 className="text-[26px] font-bold tracking-tight leading-[1.1] text-balance">
-            The paper card,<br/>reimagined.
-          </h1>
+      {/* Hero + Sponsored carousel */}
+      <div
+        ref={scrollRef}
+        onScroll={onScroll}
+        onPointerDown={pause}
+        onPointerUp={scheduleResume}
+        onPointerCancel={scheduleResume}
+        onMouseLeave={scheduleResume}
+        className="-mx-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+      >
+        <div className="flex">
+          {/* Hero slide */}
+          <div className="snap-center shrink-0 min-w-full px-5">
+            <div className="relative overflow-hidden rounded-[24px] border border-line/60 bg-hero-card p-5">
+              <div className="mb-12">
+                <p className="text-[12px] font-semibold text-brand mb-2">Connect smarter</p>
+                <h1 className="text-[26px] font-bold tracking-tight leading-[1.1] text-balance">
+                  The paper card,<br/>reimagined.
+                </h1>
+              </div>
+              <div className="flex items-center gap-3">
+                <button onClick={() => go({ kind: 'my-card' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-canvas text-[13px] font-semibold whitespace-nowrap">
+                  <QrCode size={15} strokeWidth={2.4} /> Share My Card
+                </button>
+                <button onClick={() => go({ kind: 'register' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-line bg-surface/60 text-[13px] font-medium whitespace-nowrap">
+                  <Plus size={15} strokeWidth={2.4} /> Add Card
+                </button>
+              </div>
+              <div className="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-brand/10 blur-3xl" />
+            </div>
+          </div>
+
+          {/* Sponsored slides */}
+          {ads.map((ad) => (
+            <div key={ad.id} className="snap-center shrink-0 min-w-full px-5">
+              <AdSlide ad={ad} />
+            </div>
+          ))}
         </div>
-        <div className="flex items-center gap-3">
-          <button onClick={() => go({ kind: 'my-card' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-canvas text-[13px] font-semibold whitespace-nowrap">
-            <QrCode size={15} strokeWidth={2.4} /> Share My Card
-          </button>
-          <button onClick={() => go({ kind: 'register' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-line bg-surface/60 text-[13px] font-medium whitespace-nowrap">
-            <Plus size={15} strokeWidth={2.4} /> Add Card
-          </button>
-        </div>
-        <div className="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-brand/10 blur-3xl" />
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex justify-center gap-1.5 mt-3 mb-7">
+        {Array.from({ length: totalSlides }).map((_, i) => (
+          <span
+            key={i}
+            className={`h-1.5 rounded-full transition-all ${
+              i === slide ? 'w-5 bg-ink' : 'w-1.5 bg-ink-dim/40'
+            }`}
+          />
+        ))}
       </div>
 
       {/* Search */}
@@ -48,6 +123,7 @@ export function HomeScreen({ go, setTab }: { go: (v: View) => void; setTab: (t: 
       {/* Recently saved */}
       <SectionHeader
         title="Recently saved"
+        size="sm"
         action={<button onClick={() => setTab('cardo')} className="text-[12.5px] text-ink-muted font-medium">See all</button>}
       />
       <div className="space-y-2.5 mb-7">
@@ -81,6 +157,38 @@ export function HomeScreen({ go, setTab }: { go: (v: View) => void; setTab: (t: 
         <ChevronRight size={18} className="text-ink-dim" strokeWidth={1.8} />
       </button>
     </div>
+  )
+}
+
+function AdSlide({ ad }: { ad: Ad }) {
+  const handleClick = () => {
+    if (ad.href) window.open(ad.href, '_blank', 'noopener,noreferrer')
+  }
+  return (
+    <button
+      onClick={handleClick}
+      className="relative w-full overflow-hidden rounded-[24px] border border-line/60 p-5 text-left"
+    >
+      <div className={`absolute inset-0 bg-gradient-to-br ${ad.accent} pointer-events-none`} />
+      {ad.image && (
+        <img src={ad.image} alt="" className="absolute inset-0 h-full w-full object-cover pointer-events-none" />
+      )}
+      <div className="relative">
+        <div className="mb-12">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-canvas/60 backdrop-blur text-[9.5px] font-semibold tracking-wider uppercase text-ink-muted mb-3">
+            Sponsored · {ad.sponsor}
+          </span>
+          <h2 className="text-[22px] font-bold tracking-tight leading-[1.15] text-balance">
+            {ad.title}
+          </h2>
+          <p className="text-[12.5px] text-ink-dim mt-2 max-w-[88%]">{ad.subtitle}</p>
+        </div>
+        <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-ink text-canvas text-[13px] font-semibold">
+          Learn more <ChevronRight size={15} strokeWidth={2.4} />
+        </span>
+      </div>
+      <div className="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-brand/10 blur-3xl pointer-events-none" />
+    </button>
   )
 }
 

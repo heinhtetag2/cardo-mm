@@ -4,10 +4,10 @@ import { useToast } from '../components/Toast'
 import type { View } from '../nav'
 
 const nearby = [
-  { name: 'Kyaw Min',  role: 'Engineer · TechBM',     distance: '12 m', accent: 'from-cyan-400 to-blue-500',      top: '22%', left: '38%' },
-  { name: 'Thida Aye', role: 'PM · CleverApp',        distance: '34 m', accent: 'from-rose-400 to-pink-500',      top: '40%', left: '78%' },
-  { name: 'Zaw Lin',   role: 'Founder · GreenStart',  distance: '58 m', accent: 'from-emerald-400 to-teal-500',   top: '58%', left: '68%' },
-  { name: 'May Nyein', role: 'Designer · Studio Co.', distance: '90 m', accent: 'from-violet-400 to-fuchsia-500', top: '72%', left: '32%' },
+  { name: 'Kyaw Min',  role: 'Engineer · TechBM',     distance: '12 m', accent: 'from-cyan-400 to-blue-500',      top: '22%', left: '38%', phone: '+95 9 551 322 778', email: 'kyaw.min@techbm.io',     website: 'techbm.io',     city: 'Yangon' },
+  { name: 'Thida Aye', role: 'PM · CleverApp',        distance: '34 m', accent: 'from-rose-400 to-pink-500',      top: '40%', left: '78%', phone: '+95 9 884 217 003', email: 'thida@cleverapp.mm',     website: 'cleverapp.mm',  city: 'Yangon' },
+  { name: 'Zaw Lin',   role: 'Founder · GreenStart',  distance: '58 m', accent: 'from-emerald-400 to-teal-500',   top: '58%', left: '68%', phone: '+95 9 712 446 158', email: 'zaw@greenstart.mm',      website: 'greenstart.mm', city: 'Yangon' },
+  { name: 'May Nyein', role: 'Designer · Studio Co.', distance: '90 m', accent: 'from-violet-400 to-fuchsia-500', top: '72%', left: '32%', phone: '+95 9 369 528 411', email: 'may@studio.co',                                    city: 'Yangon' },
 ]
 
 export function NearbyScreen({ onBack, go }: { onBack: () => void; go: (v: View) => void }) {
@@ -65,7 +65,7 @@ export function NearbyScreen({ onBack, go }: { onBack: () => void; go: (v: View)
           return (
             <button
               key={p.name}
-              onClick={() => go({ kind: 'exchange', name: p.name, role: p.role, accent: p.accent })}
+              onClick={() => go({ kind: 'exchange', name: p.name, role: p.role, accent: p.accent, phone: p.phone, email: p.email, website: p.website, city: p.city })}
               className="w-full flex items-center gap-3 p-3 rounded-2xl border border-line/60 bg-surface/60 hover:bg-surface-elevated transition"
             >
               <div className={`relative h-12 w-12 rounded-xl bg-gradient-to-br ${p.accent} grid place-items-center text-[14px] font-bold text-white`}>

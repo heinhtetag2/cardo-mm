@@ -109,6 +109,40 @@ export const contacts: Contact[] = [
   },
 ]
 
+export type Ad = {
+  id: string
+  title: string
+  subtitle: string
+  sponsor: string
+  href?: string
+  image?: string
+  accent: string
+}
+
+export const ads: Ad[] = [
+  {
+    id: 'a1',
+    title: 'Print premium NFC cards',
+    subtitle: 'Tap-to-share, ships in 3 days · 20% off',
+    sponsor: 'Cardo Print',
+    accent: 'from-brand/25 to-brand-violet/25',
+  },
+  {
+    id: 'a2',
+    title: 'Open a business account',
+    subtitle: 'Free transfers across Myanmar',
+    sponsor: 'KBZ Pay',
+    accent: 'from-emerald-500/25 to-cyan-400/25',
+  },
+  {
+    id: 'a3',
+    title: 'Yangon Trade Fair 2026',
+    subtitle: 'Get your free pass · May 18–20',
+    sponsor: 'YTF',
+    accent: 'from-amber-400/25 to-rose-500/25',
+  },
+]
+
 export const me = {
   name: 'Hein Htet',
   role: 'Product Designer',
@@ -118,4 +152,13 @@ export const me = {
   email: 'hein@cardo.mm',
   website: 'cardo.mm/heinhtet',
   bio: 'Designer building products for Myanmar professionals.',
+}
+
+export const account = {
+  displayName: 'Hein Htet',
+  loginPhoneMasked: '+95 9 •••• 3421',
+  recoveryEmail: 'hein@cardo.mm',
+  plan: 'free' as 'free' | 'pro',
+  credits: 3,
+  linked: ['Google'] as Array<'Google' | 'Apple' | 'Facebook'>,
 }

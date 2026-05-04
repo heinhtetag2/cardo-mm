@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ChevronRight, IdCard, Settings, MapPin, Bell, HelpCircle, FileText, LogOut, Pencil } from 'lucide-react'
 import { LogoutConfirm } from '../components/LogoutConfirm'
+import { account } from '../data'
 import type { View } from '../nav'
 
 export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout: () => void }) {
@@ -8,27 +9,30 @@ export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout
   return (
     <div className="px-5 pt-2 animate-fade-in">
       {/* Profile header */}
-      <div className="relative overflow-hidden rounded-[24px] border border-line/60 bg-gradient-to-br from-[#1a2440] via-surface to-surface p-5 mb-5">
+      <button
+        onClick={() => go({ kind: 'account' })}
+        className="relative w-full text-left overflow-hidden rounded-[24px] border border-line/60 bg-gradient-to-br from-[#1a2440] via-surface to-surface p-5 mb-5"
+      >
         <div className="flex items-center gap-4">
           <div className="relative h-16 w-16 rounded-full bg-gradient-to-br from-brand to-brand-violet p-[2px]">
             <div className="h-full w-full rounded-full bg-canvas grid place-items-center">
-              <span className="text-[18px] font-bold">HH</span>
+              <span className="text-[18px] font-bold">{account.displayName.split(' ').map((p) => p[0]).slice(0, 2).join('')}</span>
             </div>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[18px] font-bold leading-tight">Hein Htet</p>
-            <p className="text-[13px] text-ink-dim mt-0.5 truncate">Product Designer · Yangon</p>
+            <p className="text-[18px] font-bold leading-tight">{account.displayName}</p>
+            <p className="text-[12px] text-ink-dim mt-1 truncate">{account.loginPhoneMasked}</p>
             <div className="flex items-center gap-1.5 mt-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-brand/15 border border-brand/30 text-brand text-[10.5px] font-semibold">FREE</span>
-              <span className="text-[11px] text-ink-dim">3 AI credits left</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-brand/15 border border-brand/30 text-brand text-[10.5px] font-semibold uppercase">{account.plan}</span>
+              <span className="text-[11px] text-ink-dim">{account.credits} AI credits left</span>
             </div>
           </div>
-          <button onClick={() => go({ kind: 'edit-profile' })} className="h-9 w-9 grid place-items-center rounded-full border border-line/70 bg-surface/60">
+          <span className="h-9 w-9 grid place-items-center rounded-full border border-line/70 bg-surface/60">
             <Pencil size={14} strokeWidth={1.8} />
-          </button>
+          </span>
         </div>
         <div className="absolute -top-12 -right-12 h-40 w-40 rounded-full bg-brand/8 blur-3xl pointer-events-none" />
-      </div>
+      </button>
 
       <SectionLabel>My Activity</SectionLabel>
       <Group>
@@ -46,7 +50,7 @@ export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout
 
       <button
         onClick={() => setConfirmLogout(true)}
-        className="w-full mt-5 p-3.5 rounded-2xl border border-line/70 bg-surface/60 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400 hover:border-rose-500/40 transition"
+        className="w-full mt-5 p-3.5 rounded-2xl border border-rose-500/30 bg-rose-500/8 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400 transition"
       >
         <LogOut size={15} strokeWidth={1.8} />
         <span>Log out</span>

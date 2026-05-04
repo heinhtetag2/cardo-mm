@@ -4,11 +4,12 @@ import {
   MapPin, ChevronRight,
   Share2, Copy, Mail, MessageCircle, Gift,
   ArrowUpRight, Users, ArrowRightLeft,
+  Smartphone, Link2, Star, User, Image as ImageIcon, Plug, AlertTriangle,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { LocationPicker } from '../components/LocationPicker'
 import { useToast } from '../components/Toast'
-import { contacts, me } from '../data'
+import { contacts, me, account, type Contact } from '../data'
 import type { View } from '../nav'
 
 /* shared */
@@ -27,9 +28,9 @@ function Page({ title, onBack, right, children }: { title: string; onBack: () =>
   )
 }
 
-/* ---------- Edit Profile ---------- */
+/* ---------- Edit Card ---------- */
 
-export function EditProfileScreen({ onBack }: { onBack: () => void }) {
+export function EditCardScreen({ onBack }: { onBack: () => void }) {
   const toast = useToast()
   const [name, setName] = useState(me.name)
   const [role, setRole] = useState(me.role)
@@ -42,14 +43,14 @@ export function EditProfileScreen({ onBack }: { onBack: () => void }) {
   const [cityPickerOpen, setCityPickerOpen] = useState(false)
 
   const save = () => {
-    toast.show('Profile saved')
+    toast.show('Card saved')
     setTimeout(onBack, 600)
   }
 
   return (
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
       <SubScreenHeader
-        title="Edit Profile"
+        title="Edit Card"
         onBack={onBack}
         right={<button onClick={save} className="px-3.5 h-9 pt-px rounded-full bg-ink text-canvas text-[12.5px] font-semibold inline-flex items-center justify-center">Save</button>}
       />
@@ -103,7 +104,7 @@ export function EditProfileScreen({ onBack }: { onBack: () => void }) {
           className="w-full p-3.5 rounded-2xl border border-rose-500/30 bg-rose-500/8 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400"
         >
           <Trash2 size={15} strokeWidth={1.8} />
-          <span>Reset profile</span>
+          <span>Reset card</span>
         </button>
       </div>
 
@@ -144,6 +145,286 @@ function FieldButton({ label, value, onTap }: { label: string; value: string; on
       </div>
       <ChevronRight size={16} className="text-ink-dim flex-shrink-0" />
     </button>
+  )
+}
+
+/* ---------- Account ---------- */
+
+export function AccountScreen({ onBack, go }: { onBack: () => void; go: (v: View) => void }) {
+  const toast = useToast()
+  const [avatarSheet, setAvatarSheet] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const planLabel = account.plan === 'pro' ? 'Cardo Pro' : 'Free plan'
+
+  return (
+    <Page title="Account" onBack={onBack}>
+      <div className="rounded-[20px] border border-line/60 bg-surface/60 p-4 mb-5 flex items-center gap-3.5">
+        <button onClick={() => setAvatarSheet(true)} className="relative h-12 w-12 rounded-full bg-gradient-to-br from-brand to-brand-violet p-[2px]" aria-label="Change avatar">
+          <div className="h-full w-full rounded-full bg-canvas grid place-items-center">
+            <span className="text-[14px] font-bold">{account.displayName.split(' ').map((p) => p[0]).slice(0, 2).join('')}</span>
+          </div>
+          <span className="absolute -bottom-0.5 -right-0.5 h-5 w-5 rounded-full bg-ink text-canvas grid place-items-center border-2 border-surface">
+            <Camera size={10} strokeWidth={2.4} />
+          </span>
+        </button>
+        <div className="flex-1 min-w-0">
+          <p className="text-[15px] font-semibold leading-tight truncate">{account.displayName}</p>
+          <p className="text-[12px] text-ink-dim mt-0.5">{planLabel} · {account.credits} AI credits</p>
+        </div>
+      </div>
+
+      <SectionLabel>Profile</SectionLabel>
+      <Group>
+        <AccountRow icon={<User size={15} />} label="Display name" value={account.displayName} onClick={() => go({ kind: 'account-display-name' })} />
+      </Group>
+
+      <SectionLabel>Sign-in</SectionLabel>
+      <Group>
+        <AccountRow icon={<Smartphone size={15} />} label="Phone" value={account.loginPhoneMasked} onClick={() => go({ kind: 'security' })} />
+        <AccountRow icon={<Mail size={15} />} label="Recovery email" value={account.recoveryEmail} onClick={() => go({ kind: 'account-email' })} />
+        <AccountRow icon={<Link2 size={15} />} label="Linked accounts" value={account.linked.join(', ') || 'None'} onClick={() => go({ kind: 'account-linked' })} />
+      </Group>
+
+      <SectionLabel>Plan</SectionLabel>
+      <Group>
+        <AccountRow icon={<Star size={15} />} label="Subscription" value={planLabel} onClick={() => go({ kind: 'subscription' })} />
+      </Group>
+
+      <button
+        onClick={() => setConfirmDelete(true)}
+        className="w-full p-3.5 rounded-2xl border border-rose-500/30 bg-rose-500/8 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400"
+      >
+        <Trash2 size={15} strokeWidth={1.8} />
+        <span>Delete account</span>
+      </button>
+
+      {avatarSheet && (
+        <AvatarSheet
+          onClose={() => setAvatarSheet(false)}
+          onAction={(action) => {
+            setAvatarSheet(false)
+            const labels: Record<string, string> = { camera: 'Open camera (mock)', library: 'Open photo library (mock)', remove: 'Photo removed' }
+            toast.show(labels[action], action === 'remove' ? 'success' : 'info')
+          }}
+        />
+      )}
+      {confirmDelete && (
+        <DeleteAccountConfirm
+          onClose={() => setConfirmDelete(false)}
+          onConfirm={() => { setConfirmDelete(false); toast.show('Account scheduled for deletion (mock)', 'info') }}
+        />
+      )}
+    </Page>
+  )
+}
+
+function AccountRow({ icon, label, value, onClick }: { icon: React.ReactNode; label: string; value: string; onClick?: () => void }) {
+  return (
+    <button onClick={onClick} className="w-full flex items-center gap-3.5 px-4 py-3.5 border-b border-line/40 last:border-0 hover:bg-surface-elevated transition">
+      <div className="h-9 w-9 rounded-xl bg-surface-higher border border-line/60 grid place-items-center text-ink-muted flex-shrink-0">{icon}</div>
+      <div className="flex-1 text-left min-w-0">
+        <p className="text-[14px] font-semibold leading-tight">{label}</p>
+        <p className="text-[11.5px] text-ink-dim mt-0.5 truncate">{value}</p>
+      </div>
+      <ChevronRight size={16} className="text-ink-dim flex-shrink-0" strokeWidth={1.8} />
+    </button>
+  )
+}
+
+function AvatarSheet({ onClose, onAction }: { onClose: () => void; onAction: (a: 'camera' | 'library' | 'remove') => void }) {
+  return (
+    <div className="absolute inset-0 z-50 flex items-end animate-fade-in">
+      <button onClick={onClose} aria-label="Close" className="absolute inset-0 bg-canvas/75 backdrop-blur-sm" />
+      <div className="relative w-full rounded-t-[24px] border-t border-x border-line/70 bg-surface p-4 pb-6 animate-slide-up">
+        <div className="mx-auto h-1 w-10 rounded-full bg-line/70 mb-3" />
+        <p className="text-center text-[12px] font-medium text-ink-dim mb-3">Change avatar</p>
+        <div className="rounded-[20px] border border-line/60 bg-surface/60 overflow-hidden mb-2">
+          <SheetRow icon={<Camera size={16} />} label="Take photo" onClick={() => onAction('camera')} />
+          <SheetRow icon={<ImageIcon size={16} />} label="Choose from library" onClick={() => onAction('library')} />
+          <SheetRow icon={<Trash2 size={16} />} label="Remove current photo" danger onClick={() => onAction('remove')} />
+        </div>
+        <button onClick={onClose} className="w-full h-12 rounded-2xl border border-line/70 bg-surface-elevated text-[14px] font-semibold">Cancel</button>
+      </div>
+    </div>
+  )
+}
+
+function SheetRow({ icon, label, danger, onClick }: { icon: React.ReactNode; label: string; danger?: boolean; onClick?: () => void }) {
+  return (
+    <button onClick={onClick} className={`w-full flex items-center gap-3.5 px-4 py-3.5 border-b border-line/40 last:border-0 hover:bg-surface-elevated transition ${danger ? 'text-rose-400' : ''}`}>
+      <div className={`h-9 w-9 rounded-xl border grid place-items-center flex-shrink-0 ${danger ? 'bg-rose-500/10 border-rose-500/30 text-rose-400' : 'bg-surface-higher border-line/60 text-ink-muted'}`}>{icon}</div>
+      <span className="text-[14px] font-semibold">{label}</span>
+    </button>
+  )
+}
+
+function DeleteAccountConfirm({ onClose, onConfirm }: { onClose: () => void; onConfirm: () => void }) {
+  const [text, setText] = useState('')
+  const ok = text.trim().toUpperCase() === 'DELETE'
+  return (
+    <div className="absolute inset-0 z-50 flex items-center justify-center px-6 animate-fade-in">
+      <button onClick={onClose} aria-label="Close" className="absolute inset-0 bg-canvas/75 backdrop-blur-sm" />
+      <div className="relative w-full max-w-[340px] rounded-[24px] border border-line/70 bg-surface p-5 animate-pop-in">
+        <div className="h-12 w-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 grid place-items-center mb-4 mx-auto">
+          <AlertTriangle size={20} className="text-rose-400" strokeWidth={1.8} />
+        </div>
+        <h2 className="text-[16px] font-semibold text-center">Delete your account?</h2>
+        <p className="text-[12.5px] text-ink-dim text-center mt-1.5 leading-relaxed">
+          This permanently removes your card, saved contacts, and AI credits. Type <span className="font-semibold text-ink">DELETE</span> to confirm.
+        </p>
+        <input
+          autoFocus
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Type DELETE"
+          className="w-full mt-4 h-11 px-3 rounded-xl border border-line/70 bg-surface-elevated text-[14px] outline-none focus:border-rose-500/50"
+        />
+        <div className="flex gap-2 mt-4">
+          <button onClick={onClose} className="flex-1 h-11 rounded-xl border border-line/70 bg-surface-elevated text-[13.5px] font-semibold">Cancel</button>
+          <button
+            onClick={onConfirm}
+            disabled={!ok}
+            className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[13.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ---------- Edit Display Name ---------- */
+
+export function EditDisplayNameScreen({ onBack }: { onBack: () => void }) {
+  const toast = useToast()
+  const [name, setName] = useState(account.displayName)
+  const dirty = name.trim().length > 0 && name !== account.displayName
+  const save = () => {
+    if (!dirty) return
+    toast.show('Display name saved')
+    setTimeout(onBack, 400)
+  }
+  return (
+    <Page
+      title="Display name"
+      onBack={onBack}
+      right={
+        <button onClick={save} disabled={!dirty} className="px-3.5 h-9 pt-px rounded-full bg-ink text-canvas text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+          Save
+        </button>
+      }
+    >
+      <SectionLabel>Your name in Cardo</SectionLabel>
+      <div className="rounded-[20px] border border-line/60 bg-surface/60 p-4 mb-3">
+        <input
+          autoFocus
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          maxLength={40}
+          className="w-full bg-transparent outline-none text-[15px] font-semibold"
+          placeholder="Enter display name"
+        />
+        <p className="text-[11px] text-ink-dim mt-1.5 text-right">{name.length} / 40</p>
+      </div>
+      <p className="text-[11.5px] text-ink-dim leading-relaxed px-1">
+        This is how you appear inside the Cardo app. Your card name (shown to people who scan your card) is set separately under My Card.
+      </p>
+    </Page>
+  )
+}
+
+/* ---------- Edit Recovery Email ---------- */
+
+export function EditRecoveryEmailScreen({ onBack }: { onBack: () => void }) {
+  const toast = useToast()
+  const [email, setEmail] = useState(account.recoveryEmail)
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  const dirty = email !== account.recoveryEmail
+  const save = () => {
+    if (!valid || !dirty) return
+    toast.show('Verification email sent')
+    setTimeout(onBack, 500)
+  }
+  return (
+    <Page
+      title="Recovery email"
+      onBack={onBack}
+      right={
+        <button onClick={save} disabled={!valid || !dirty} className="px-3.5 h-9 pt-px rounded-full bg-ink text-canvas text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+          Save
+        </button>
+      }
+    >
+      <SectionLabel>Email address</SectionLabel>
+      <div className="rounded-[20px] border border-line/60 bg-surface/60 p-4 mb-3">
+        <input
+          autoFocus
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full bg-transparent outline-none text-[15px] font-semibold"
+          placeholder="you@example.com"
+        />
+      </div>
+      <p className="text-[11.5px] text-ink-dim leading-relaxed px-1">
+        We use this email to recover your account if you lose access to your phone number. We'll send a verification link before the change takes effect.
+      </p>
+    </Page>
+  )
+}
+
+/* ---------- Linked Accounts ---------- */
+
+type Provider = 'Google' | 'Apple' | 'Facebook'
+const ALL_PROVIDERS: Provider[] = ['Google', 'Apple', 'Facebook']
+
+export function LinkedAccountsScreen({ onBack }: { onBack: () => void }) {
+  const toast = useToast()
+  const [linked, setLinked] = useState<Record<Provider, boolean>>({
+    Google: account.linked.includes('Google'),
+    Apple: account.linked.includes('Apple'),
+    Facebook: account.linked.includes('Facebook'),
+  })
+  const toggle = (p: Provider) => {
+    setLinked((s) => {
+      const next = !s[p]
+      toast.show(next ? `${p} connected` : `${p} disconnected`, next ? 'success' : 'info')
+      return { ...s, [p]: next }
+    })
+  }
+  return (
+    <Page title="Linked accounts" onBack={onBack}>
+      <SectionLabel>Sign in with</SectionLabel>
+      <Group>
+        {ALL_PROVIDERS.map((p, i) => (
+          <div key={p} className={`flex items-center gap-3.5 px-4 py-3.5 ${i < ALL_PROVIDERS.length - 1 ? 'border-b border-line/40' : ''}`}>
+            <div className="h-9 w-9 rounded-xl bg-surface-higher border border-line/60 grid place-items-center text-ink-muted flex-shrink-0">
+              <Plug size={15} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[14px] font-semibold leading-tight">{p}</p>
+              <p className="text-[11.5px] text-ink-dim mt-0.5">{linked[p] ? 'Connected' : 'Not connected'}</p>
+            </div>
+            <button
+              onClick={() => toggle(p)}
+              className={`h-8 px-3.5 rounded-full text-[12px] font-semibold transition ${
+                linked[p]
+                  ? 'border border-line/70 bg-surface-elevated text-ink-muted'
+                  : 'bg-ink text-canvas'
+              }`}
+            >
+              {linked[p] ? 'Disconnect' : 'Connect'}
+            </button>
+          </div>
+        ))}
+      </Group>
+      <p className="text-[11.5px] text-ink-dim leading-relaxed px-1">
+        Connecting a provider lets you sign in to Cardo with that account in addition to your phone number. You can disconnect any provider at any time.
+      </p>
+    </Page>
   )
 }
 
@@ -620,7 +901,27 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
 
 /* ---------- Exchange (after tapping a Nearby person) ---------- */
 
-export function ExchangeScreen({ onBack, name, role, accent }: { onBack: () => void; name: string; role: string; accent: string }) {
+export function ExchangeScreen({
+  onBack,
+  name,
+  role,
+  accent,
+  phone,
+  email,
+  website,
+  city,
+  onViewCard,
+}: {
+  onBack: () => void
+  name: string
+  role: string
+  accent: string
+  phone: string
+  email: string
+  website?: string
+  city: string
+  onViewCard: (c: Contact) => void
+}) {
   const toast = useToast()
   const [phase, setPhase] = useState<'request' | 'sent' | 'done'>('request')
   const initials = name.split(' ').map((p) => p[0]).slice(0, 2).join('')
@@ -630,19 +931,55 @@ export function ExchangeScreen({ onBack, name, role, accent }: { onBack: () => v
     setTimeout(() => setPhase('done'), 1400)
   }
 
+  const viewTheirCard = () => {
+    const [parsedRole, parsedCompany] = role.split(' · ')
+    onViewCard({
+      id: `nearby-${name.replace(/\s+/g, '-').toLowerCase()}`,
+      name,
+      role: parsedRole || role,
+      company: parsedCompany || '',
+      city,
+      phone,
+      email,
+      website,
+      bio: 'Met via Nearby exchange.',
+      metAt: 'Nearby exchange · just now',
+      tags: ['Nearby'],
+      accent,
+    })
+  }
+
   return (
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
       <SubScreenHeader title="Exchange cards" onBack={onBack} />
 
       <div className="px-5 pb-8">
-        {/* Avatars */}
+        {/* Avatars — exchange stage */}
         <div className="relative h-36 mb-5 grid place-items-center">
-          <div className="relative flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full bg-surface-elevated border border-line/60 grid place-items-center text-ink font-semibold text-[16px]">HH</div>
-            <div className="h-8 w-8 rounded-full border border-line/60 bg-surface grid place-items-center">
-              <ArrowRightLeft size={14} className="text-ink-muted" strokeWidth={1.8} />
+          {/* Connecting beam */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-px bg-gradient-to-r from-transparent via-line-strong to-transparent pointer-events-none" />
+
+          {/* Particles flowing both directions */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+            <span className="block absolute -mt-1.5 -ml-0.5 h-1.5 w-1.5 rounded-full bg-ink animate-flow-right" />
+            <span className="block absolute mt-1 -ml-0.5 h-1.5 w-1.5 rounded-full bg-brand animate-flow-left" />
+          </div>
+
+          <div className="relative flex items-center gap-4 animate-pop-in">
+            {/* HH (me) */}
+            <div className="h-16 w-16 rounded-full bg-surface-elevated border border-line/60 grid place-items-center text-ink font-semibold text-[16px]">
+              HH
             </div>
-            <div className={`h-16 w-16 rounded-full bg-gradient-to-br ${accent} grid place-items-center text-white font-semibold text-[16px]`}>{initials}</div>
+
+            {/* Exchange icon */}
+            <div className="h-9 w-9 rounded-full border border-line/60 bg-canvas grid place-items-center">
+              <ArrowRightLeft size={14} className="text-ink-muted" strokeWidth={2} />
+            </div>
+
+            {/* Their avatar */}
+            <div className={`h-16 w-16 rounded-full bg-gradient-to-br ${accent} grid place-items-center text-white font-semibold text-[16px]`}>
+              {initials}
+            </div>
           </div>
         </div>
 
@@ -677,25 +1014,25 @@ export function ExchangeScreen({ onBack, name, role, accent }: { onBack: () => v
         )}
 
         {phase === 'sent' && (
-          <div className="py-12 text-center">
-            <div className="mx-auto h-16 w-16 rounded-3xl bg-brand-gradient grid place-items-center shadow-glow mb-4">
-              <div className="h-7 w-7 rounded-2xl border-[3px] border-white/30 border-t-white animate-spin" />
-            </div>
-            <p className="text-[16px] font-semibold">Sending request…</p>
-            <p className="text-[12.5px] text-ink-dim mt-1">Waiting for {name.split(' ')[0]} to accept</p>
+          <div className="py-10 text-center animate-fade-in">
+            <div className="mx-auto mb-5 h-12 w-12 rounded-full border-[2.5px] border-line border-t-brand animate-spin" />
+            <p className="text-[15px] font-semibold">Sending request…</p>
+            <p className="text-[12.5px] text-ink-dim mt-1.5">Waiting for {name.split(' ')[0]} to accept</p>
           </div>
         )}
 
         {phase === 'done' && (
-          <div className="py-8 text-center">
-            <div className="mx-auto h-16 w-16 rounded-3xl bg-emerald-500 grid place-items-center mb-4">
-              <Check size={26} className="text-white" strokeWidth={3} />
+          <div className="py-8 text-center animate-fade-in">
+            <div className="mx-auto mb-4 h-14 w-14 rounded-full bg-brand/12 border border-brand/30 grid place-items-center">
+              <Check size={22} className="text-brand" strokeWidth={2.4} />
             </div>
-            <p className="text-[18px] font-bold">Exchanged!</p>
-            <p className="text-[12.5px] text-ink-dim mt-1.5">{name} is now in your Cardo.</p>
+            <p className="text-[17px] font-bold">Exchanged</p>
+            <p className="text-[12.5px] text-ink-dim mt-1.5 leading-relaxed max-w-[240px] mx-auto">
+              {name} is now in your Cardo.
+            </p>
             <button
-              onClick={onBack}
-              className="mt-6 inline-flex items-center px-5 py-3 rounded-2xl bg-ink text-canvas text-[13.5px] font-semibold"
+              onClick={viewTheirCard}
+              className="mt-6 w-full h-12 pt-px rounded-2xl bg-ink text-canvas text-[14.5px] font-semibold inline-flex items-center justify-center"
             >
               View their card
             </button>

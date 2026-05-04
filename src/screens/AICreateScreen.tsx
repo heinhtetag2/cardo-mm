@@ -1,7 +1,10 @@
-import { useState } from 'react'
-import { Sparkles, Check, Type, Hash, Shapes, Layers } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Sparkles, Check, Type, Hash, Shapes, Layers, RefreshCw, Info } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import type { Creation } from '../data'
+
+const CARD_STATUS = ['Analyzing your brand…', 'Generating layouts…', 'Polishing details…']
+const LOGO_STATUS = ['Analyzing your brand…', 'Sketching marks…', 'Polishing details…']
 
 type Mode = 'card' | 'logo'
 
@@ -47,6 +50,16 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
   const [styleId, setStyleId] = useState(isLogo ? 'symbol' : 'gradient')
   const [generating, setGenerating] = useState(false)
   const [picked, setPicked] = useState(0)
+  const [statusIdx, setStatusIdx] = useState(0)
+
+  useEffect(() => {
+    if (!generating) {
+      setStatusIdx(0)
+      return
+    }
+    const id = setInterval(() => setStatusIdx((s) => Math.min(s + 1, 2)), 600)
+    return () => clearInterval(id)
+  }, [generating])
 
   const next = () => {
     if (step === 1) {
@@ -57,26 +70,41 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
     }
   }
   const prev = () => setStep((s) => Math.max(s - 1, 0))
+  const regenerate = () => {
+    setStep(0)
+    setPicked(0)
+  }
 
   return (
-    <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
-      <div className="absolute inset-x-0 top-0 h-[420px] bg-glow-radial pointer-events-none" />
-      <SubScreenHeader title={isLogo ? 'AI Logo Studio' : 'AI Card Studio'} onBack={step === 0 ? onBack : prev} right={
-        <span className="px-2.5 py-0.5 rounded-full bg-brand/15 border border-brand/30 text-brand text-[10.5px] font-semibold tabular-nums">
-          {step + 1} / 3
-        </span>
-      } />
+    <div className="absolute inset-0 bg-canvas flex flex-col animate-fade-in">
+      {/* Static background glow */}
+      <div className="absolute inset-x-0 top-0 h-[420px] bg-glow-radial pointer-events-none z-0" />
 
-      {/* Stepper */}
-      <div className="px-5 mt-1 mb-5">
-        <div className="flex gap-1.5">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className={`flex-1 h-1 rounded-full transition-all ${i <= step ? 'bg-brand' : 'bg-line'}`} />
-          ))}
+      {/* Fixed top: header + stepper */}
+      <div className="relative z-30 flex-shrink-0 bg-canvas/80 backdrop-blur">
+        <SubScreenHeader
+          title={isLogo ? 'AI Logo Studio' : 'AI Card Studio'}
+          onBack={step === 0 ? onBack : prev}
+          variant="overlay"
+          right={
+            <span className="px-2.5 py-0.5 rounded-full bg-brand/15 border border-brand/30 text-brand text-[10.5px] font-semibold tabular-nums">
+              {step + 1} / 3
+            </span>
+          }
+        />
+        <div className="px-5 mt-1 pb-4">
+          <div className="flex gap-1.5">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className={`flex-1 h-1 rounded-full transition-all ${i <= step ? 'bg-brand' : 'bg-line'}`} />
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="relative px-5 pb-32">
+      {/* Scrollable area + floating bottom CTA share the same flex-1 container */}
+      <div className="relative flex-1 min-h-0">
+        <div className="absolute inset-0 overflow-y-auto scrollbar-hide">
+          <div className="px-5 pt-2 pb-40">
         {step === 0 && (
           <div className="animate-fade-in">
             {isLogo ? (
@@ -97,9 +125,9 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
               </>
             )}
 
-            <div className="rounded-[20px] border border-brand/30 bg-brand/8 p-4 flex items-start gap-3 mt-3">
-              <Sparkles size={16} className="text-brand mt-0.5" strokeWidth={2} />
-              <p className="text-[12.5px] text-ink-muted leading-relaxed">
+            <div className="flex items-start gap-2.5 px-3.5 py-3 mt-3 rounded-2xl border border-line/60 bg-surface-elevated">
+              <Info size={14} className="text-ink-muted mt-0.5 flex-shrink-0" strokeWidth={1.8} />
+              <p className="text-[12px] text-ink-dim leading-relaxed">
                 {isLogo
                   ? "We'll suggest mark types, color, and typography that match your brand. You can edit anything after."
                   : "We'll use these to suggest a tone, palette, and layout. You can always edit after."}
@@ -157,14 +185,64 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
         )}
 
         {step === 1 && generating && (
-          <div className="animate-fade-in py-12 text-center">
-            <div className="mx-auto h-20 w-20 rounded-3xl bg-brand-gradient grid place-items-center shadow-glow mb-5">
-              <Sparkles size={28} className="text-white animate-pulse" />
+          <div className="animate-fade-in py-10 text-center relative">
+            {/* Ambient glow */}
+            <div className="absolute inset-x-0 top-2 h-[260px] pointer-events-none">
+              <div className="absolute left-1/2 top-6 -translate-x-1/2 h-44 w-44 rounded-full bg-brand-violet/30 blur-3xl animate-soft-pulse" />
+              <div
+                className="absolute left-1/2 top-10 -translate-x-1/2 h-36 w-36 rounded-full bg-brand/35 blur-3xl animate-soft-pulse"
+                style={{ animationDelay: '0.9s' }}
+              />
             </div>
-            <h1 className="text-[20px] font-bold">{isLogo ? 'Generating your logos…' : 'Generating your cards…'}</h1>
-            <p className="text-[13px] text-ink-dim mt-1.5">This takes about 30 seconds.</p>
-            <div className="mt-6 max-w-[220px] mx-auto h-1 rounded-full bg-line overflow-hidden">
-              <div className="h-full bg-brand-gradient animate-pulse" style={{ width: '70%' }} />
+
+            {/* Orb */}
+            <div className="relative mx-auto mt-4 h-32 w-32 grid place-items-center">
+              {/* Outer pulse ring */}
+              <span className="absolute inset-0 rounded-full border border-brand/30 animate-ping" />
+              {/* Rotating dashed rings */}
+              <span className="absolute inset-1 rounded-full border border-dashed border-brand/45 animate-spin-slow" />
+              <span className="absolute inset-4 rounded-full border border-dashed border-brand-violet/50 animate-spin-rev" />
+              {/* Core orb — glassy radial */}
+              <div className="relative h-20 w-20 rounded-full grid place-items-center shadow-glow overflow-hidden">
+                {/* Radial base */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'radial-gradient(120% 100% at 30% 18%, #C5DBFF 0%, #5B8DEF 38%, #6B4FCF 78%, #2E1773 100%)',
+                  }}
+                />
+                {/* Rotating conic shimmer */}
+                <div
+                  className="absolute -inset-2 mix-blend-overlay opacity-70 animate-spin-slow"
+                  style={{
+                    background:
+                      'conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.45) 60deg, transparent 130deg, transparent 240deg, rgba(255,255,255,0.35) 310deg, transparent 360deg)',
+                  }}
+                />
+                {/* Top highlight */}
+                <div className="absolute inset-x-3 top-1.5 h-3 rounded-full bg-white/40 blur-[6px] pointer-events-none" />
+                {/* Inner edge */}
+                <div className="absolute inset-0 rounded-full border border-white/15 pointer-events-none" />
+                {/* Icon */}
+                <Sparkles size={26} className="relative text-white drop-shadow-[0_2px_8px_rgba(255,255,255,0.5)]" strokeWidth={1.8} />
+              </div>
+              {/* Floating sparkle particles */}
+              <span className="absolute top-2 right-3 h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.8)] animate-float-a" />
+              <span className="absolute bottom-4 left-1 h-1 w-1 rounded-full bg-brand-violet shadow-[0_0_6px_rgba(139,92,246,0.8)] animate-float-b" />
+              <span className="absolute top-10 left-1 h-1 w-1 rounded-full bg-brand shadow-[0_0_6px_rgba(91,141,239,0.8)] animate-float-c" />
+            </div>
+
+            <h1 className="text-[20px] font-bold mt-7">
+              {isLogo ? 'Generating your logos…' : 'Generating your cards…'}
+            </h1>
+            <p key={statusIdx} className="text-[13px] text-ink-dim mt-1.5 h-5 animate-fade-in">
+              {(isLogo ? LOGO_STATUS : CARD_STATUS)[statusIdx]}
+            </p>
+
+            {/* Real progress bar */}
+            <div className="mt-6 max-w-[240px] mx-auto h-1 rounded-full bg-line overflow-hidden">
+              <div className="h-full origin-left bg-brand-gradient animate-progress-fill" />
             </div>
           </div>
         )}
@@ -185,27 +263,39 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
             </div>
           </div>
         )}
-      </div>
-
-      {/* Bottom CTA */}
-      {!generating && (
-        <div className="absolute bottom-0 inset-x-0 px-5 pb-6 pt-3 bg-canvas border-t border-line/40">
-          {step < 2 ? (
-            <button onClick={next} className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center">
-              {step === 1 ? 'Generate' : 'Next'}
-            </button>
-          ) : (
-            <div className="flex flex-col gap-2">
-              <button onClick={save} className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand-gradient text-white font-semibold text-[15px] shadow-glow flex items-center justify-center">
-                {isLogo ? 'Save as my logo' : 'Save as my card'}
-              </button>
-              <button className="w-full pt-[13px] pb-3 rounded-2xl border border-line/70 bg-surface text-[13.5px] font-medium text-ink-muted flex items-center justify-center">
-                Regenerate <span className="text-ink-dim ml-1">(1 credit)</span>
-              </button>
-            </div>
-          )}
+          </div>
         </div>
-      )}
+
+        {/* Floating bottom CTA */}
+        {!generating && (
+          <div className="absolute bottom-0 inset-x-0 z-20 px-5 pb-6 pt-8 bg-gradient-to-t from-canvas via-canvas to-canvas/0 pointer-events-none">
+            <div className="pointer-events-auto">
+              {step < 2 ? (
+                <button onClick={next} className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center">
+                  {step === 1 ? 'Generate' : 'Next'}
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={save}
+                    className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center active:scale-[0.99] transition"
+                  >
+                    {isLogo ? 'Save as my logo' : 'Save as my card'}
+                  </button>
+                  <button
+                    onClick={regenerate}
+                    className="w-full mt-1 py-3 text-[13px] text-ink-muted font-medium inline-flex items-center justify-center gap-1.5 hover:text-ink transition"
+                  >
+                    <RefreshCw size={13} strokeWidth={2} />
+                    Regenerate
+                    <span className="text-ink-dim">· 1 credit</span>
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -46,6 +46,15 @@ export default {
         'slide-in':      'slideIn 320ms cubic-bezier(0.16, 1, 0.3, 1)',
         'scale-in':      'scaleIn 220ms cubic-bezier(0.16, 1, 0.3, 1)',
         'pop-in':        'popIn 280ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'flow-right':    'flowRight 2.4s ease-in-out infinite',
+        'flow-left':     'flowLeft 2.4s ease-in-out infinite 1.2s',
+        'soft-pulse':    'softPulse 2.6s ease-in-out infinite',
+        'spin-slow':     'spin 12s linear infinite',
+        'spin-rev':      'spin 8s linear infinite reverse',
+        'progress-fill': 'progressFill 1800ms cubic-bezier(0.45, 0, 0.15, 1) forwards',
+        'float-a':       'floatA 3.6s ease-in-out infinite',
+        'float-b':       'floatB 4.2s ease-in-out infinite 0.6s',
+        'float-c':       'floatC 4.8s ease-in-out infinite 1.2s',
       },
       keyframes: {
         fadeIn: {
@@ -67,6 +76,38 @@ export default {
         popIn: {
           '0%':   { opacity: '0', transform: 'scale(0.92)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        flowRight: {
+          '0%':   { transform: 'translateX(-46px) scale(0.6)', opacity: '0' },
+          '15%':  { transform: 'translateX(-30px) scale(1)',   opacity: '1' },
+          '85%':  { transform: 'translateX(30px) scale(1)',    opacity: '1' },
+          '100%': { transform: 'translateX(46px) scale(0.6)',  opacity: '0' },
+        },
+        flowLeft: {
+          '0%':   { transform: 'translateX(46px) scale(0.6)',  opacity: '0' },
+          '15%':  { transform: 'translateX(30px) scale(1)',    opacity: '1' },
+          '85%':  { transform: 'translateX(-30px) scale(1)',   opacity: '1' },
+          '100%': { transform: 'translateX(-46px) scale(0.6)', opacity: '0' },
+        },
+        softPulse: {
+          '0%, 100%': { transform: 'scale(1)',    opacity: '0.65' },
+          '50%':      { transform: 'scale(1.18)', opacity: '0.35' },
+        },
+        progressFill: {
+          '0%':   { transform: 'scaleX(0)' },
+          '100%': { transform: 'scaleX(1)' },
+        },
+        floatA: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)',     opacity: '0.4' },
+          '50%':      { transform: 'translate(8px, -10px) scale(1.3)', opacity: '1' },
+        },
+        floatB: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)',      opacity: '0.5' },
+          '50%':      { transform: 'translate(-6px, -8px) scale(1.4)', opacity: '1' },
+        },
+        floatC: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(0.9)',    opacity: '0.3' },
+          '50%':      { transform: 'translate(5px, 6px) scale(1.2)',  opacity: '0.9' },
         },
       },
     },

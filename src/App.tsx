@@ -10,6 +10,7 @@ import { RegisterScreen } from './screens/RegisterScreen'
 import { AICardScreen } from './screens/AICardScreen'
 import { MyInfoScreen } from './screens/MyInfoScreen'
 import { CardDetailScreen } from './screens/CardDetailScreen'
+import { EditContactScreen } from './screens/EditContactScreen'
 import { MyCardScreen } from './screens/MyCardScreen'
 import { AICreateScreen } from './screens/AICreateScreen'
 import { ScanScreen } from './screens/ScanScreen'
@@ -23,7 +24,8 @@ import {
   HelpScreen, AboutScreen,
 } from './screens/SettingsSubScreens'
 import {
-  EditProfileScreen, AnalyticsScreen, InviteScreen, SearchScreen, FilterScreen, ExchangeScreen,
+  EditCardScreen, AccountScreen, EditDisplayNameScreen, EditRecoveryEmailScreen, LinkedAccountsScreen,
+  AnalyticsScreen, InviteScreen, SearchScreen, FilterScreen, ExchangeScreen,
 } from './screens/ExtraScreens'
 import { ToastProvider } from './components/Toast'
 import { OnboardingScreen } from './screens/OnboardingScreen'
@@ -39,10 +41,20 @@ export default function App() {
   const [stack, setStack] = useState<View[]>([])
   const [view, setView] = useState<'phone' | 'dashboard'>('phone')
   const [creations, setCreations] = useState<Creation[]>([])
+  const [favorites, setFavorites] = useState<Set<string>>(new Set())
   const [onboarded, setOnboarded] = useState(() => {
     if (typeof window === 'undefined') return true
     return localStorage.getItem(ONBOARD_KEY) === '1'
   })
+
+  const toggleFavorite = (id: string) => {
+    setFavorites((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
 
   const current = stack[stack.length - 1]
   const inSubScreen = !!current
@@ -62,6 +74,7 @@ export default function App() {
     setStack([])
     setTab('home')
     setCreations([])
+    setFavorites(new Set())
     setOnboarded(false)
   }
 
@@ -117,7 +130,7 @@ export default function App() {
 
           <main className="relative flex-1 overflow-y-auto scrollbar-hide pb-28">
             {!inSubScreen && tab === 'home' && <HomeScreen go={go} setTab={goTab} />}
-            {!inSubScreen && tab === 'cardo' && <CardoScreen go={go} />}
+            {!inSubScreen && tab === 'cardo' && <CardoScreen go={go} favorites={favorites} />}
             {!inSubScreen && tab === 'ai' && (
               <AICardScreen
                 go={go}
@@ -130,7 +143,18 @@ export default function App() {
           </main>
 
           {/* Sub-screens */}
-          {current?.kind === 'card-detail' && <CardDetailScreen contact={current.contact} onBack={back} />}
+          {current?.kind === 'card-detail' && (
+            <CardDetailScreen
+              contact={current.contact}
+              onBack={back}
+              go={go}
+              isFavorite={favorites.has(current.contact.id)}
+              onToggleFavorite={() => toggleFavorite(current.contact.id)}
+            />
+          )}
+          {current?.kind === 'edit-contact' && (
+            <EditContactScreen contact={current.contact} onBack={back} />
+          )}
           {current?.kind === 'my-card' && <MyCardScreen onBack={back} go={go} />}
           {current?.kind === 'ai-create' && <AICreateScreen onBack={back} mode={current.mode} onSave={addCreation} />}
           {current?.kind === 'register' && <RegisterScreen go={go} onBack={back} />}
@@ -151,13 +175,27 @@ export default function App() {
           {current?.kind === 'help' && <HelpScreen onBack={back} />}
           {current?.kind === 'about' && <AboutScreen onBack={back} />}
           {current?.kind === 'notifications' && <NotificationsScreen onBack={back} go={go} />}
-          {current?.kind === 'edit-profile' && <EditProfileScreen onBack={back} />}
+          {current?.kind === 'edit-card' && <EditCardScreen onBack={back} />}
+          {current?.kind === 'account' && <AccountScreen onBack={back} go={go} />}
+          {current?.kind === 'account-display-name' && <EditDisplayNameScreen onBack={back} />}
+          {current?.kind === 'account-email' && <EditRecoveryEmailScreen onBack={back} />}
+          {current?.kind === 'account-linked' && <LinkedAccountsScreen onBack={back} />}
           {current?.kind === 'analytics' && <AnalyticsScreen onBack={back} />}
           {current?.kind === 'invite' && <InviteScreen onBack={back} />}
           {current?.kind === 'search' && <SearchScreen onBack={back} go={go} />}
           {current?.kind === 'filter' && <FilterScreen onBack={back} />}
           {current?.kind === 'exchange' && (
-            <ExchangeScreen onBack={back} name={current.name} role={current.role} accent={current.accent} />
+            <ExchangeScreen
+              onBack={back}
+              name={current.name}
+              role={current.role}
+              accent={current.accent}
+              phone={current.phone}
+              email={current.email}
+              website={current.website}
+              city={current.city}
+              onViewCard={(c) => setStack((s) => [...s.slice(0, -1), { kind: 'card-detail', contact: c }])}
+            />
           )}
 
           {showBottomNav && <BottomNav active={tab} onChange={goTab} />}

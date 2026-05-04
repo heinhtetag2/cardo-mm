@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import {
   ChevronLeft, ChevronDown, Sparkles, Camera, Bell, Radar, Check,
-  User, Briefcase, Building2, Mail, X, Search, Phone,
+  User, Briefcase, Building2, Mail, X, Search, Phone, Wand2,
 } from 'lucide-react'
 import { InputRow } from '../components/InputRow'
 import { LocationPicker, LocationPickerRow } from '../components/LocationPicker'
@@ -82,6 +82,7 @@ export function OnboardingScreen({
 }) {
   const [step, setStep] = useState<Step>('welcome')
   const [slide, setSlide] = useState(0)
+  const [isSignIn, setIsSignIn] = useState(false)
   const totalSlides = slides.length
 
   const [country, setCountry] = useState<Country>(countries[0])
@@ -117,7 +118,10 @@ export function OnboardingScreen({
       return setStep('phone')
     }
     if (step === 'phone') return setStep('otp')
-    if (step === 'otp') return setStep('profile')
+    if (step === 'otp') {
+      if (isSignIn) return onDone(data)
+      return setStep('profile')
+    }
     if (step === 'profile') return setStep('permissions')
     if (step === 'permissions') return setStep('done')
     onDone(data)
@@ -128,7 +132,11 @@ export function OnboardingScreen({
       if (slide > 0) return setSlide(slide - 1)
       return setStep('welcome')
     }
-    if (step === 'phone') { setSlide(totalSlides - 1); return setStep('feat') }
+    if (step === 'phone') {
+      if (isSignIn) { setIsSignIn(false); return setStep('welcome') }
+      setSlide(totalSlides - 1)
+      return setStep('feat')
+    }
     if (step === 'otp') return setStep('phone')
     if (step === 'profile') return setStep('otp')
     if (step === 'permissions') return setStep('profile')
@@ -140,7 +148,7 @@ export function OnboardingScreen({
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[460px] bg-glow-radial" />
 
       {step === 'welcome' && (
-        <Welcome onContinue={next} onSignIn={() => setStep('phone')} />
+        <Welcome onContinue={next} onSignIn={() => { setIsSignIn(true); setStep('phone') }} />
       )}
 
       {step === 'feat' && (
@@ -158,6 +166,7 @@ export function OnboardingScreen({
           country={country} setCountry={setCountry}
           phone={phone} setPhone={setPhone}
           onBack={back} onNext={next}
+          isSignIn={isSignIn}
         />
       )}
 
@@ -293,11 +302,12 @@ function Features({
 /* ───────── Phone ───────── */
 
 function PhonePane({
-  country, setCountry, phone, setPhone, onBack, onNext,
+  country, setCountry, phone, setPhone, onBack, onNext, isSignIn,
 }: {
   country: Country; setCountry: (c: Country) => void
   phone: string; setPhone: (v: string) => void
   onBack: () => void; onNext: () => void
+  isSignIn: boolean
 }) {
   const [pickerOpen, setPickerOpen] = useState(false)
   const digits = phone.replace(/\D/g, '')
@@ -325,9 +335,13 @@ function PhonePane({
 
       <div className="flex-1 flex flex-col px-5 pt-4 pb-10">
         <div className="px-2">
-          <StepEyebrow>Step 1 of 4</StepEyebrow>
-          <Headline>What's your<br />number?</Headline>
-          <SubBody>We'll text you a 6-digit code to verify it's really you. Standard rates may apply.</SubBody>
+          <StepEyebrow>{isSignIn ? 'Sign in · Step 1 of 2' : 'Step 1 of 4'}</StepEyebrow>
+          <Headline>{isSignIn ? <>Welcome<br />back.</> : <>What's your<br />number?</>}</Headline>
+          <SubBody>
+            {isSignIn
+              ? 'Enter the phone number on your Cardo account. We\'ll text a 6-digit code to confirm.'
+              : 'We\'ll text you a 6-digit code to verify it\'s really you. Standard rates may apply.'}
+          </SubBody>
         </div>
 
         <div className="mt-6">
@@ -613,7 +627,6 @@ function PermissionsPane({
             sub="Let other Cardo users at the same event see you. Off when you leave the venue."
             value={nearbyOn}
             onChange={setNearbyOn}
-            accent
           />
         </div>
 
@@ -629,19 +642,15 @@ function PermissionsPane({
 }
 
 function PermissionRow({
-  icon, title, sub, value, onChange, accent,
+  icon, title, sub, value, onChange,
 }: {
   icon: React.ReactNode; title: string; sub: string
-  value: boolean; onChange: (v: boolean) => void; accent?: boolean
+  value: boolean; onChange: (v: boolean) => void
 }) {
   return (
-    <div className={`relative p-4 rounded-[20px] border bg-surface/60 transition
-      ${value ? (accent ? 'border-brand-violet/40' : 'border-brand/40') : 'border-line/60'}`}>
+    <div className="relative p-4 rounded-[20px] border border-line/60 bg-surface/60">
       <div className="flex items-start gap-3.5">
-        <div className={`h-11 w-11 rounded-2xl grid place-items-center flex-shrink-0 border
-          ${value
-            ? (accent ? 'bg-brand-violet/15 border-brand-violet/40 text-brand-violet' : 'bg-brand/15 border-brand/40 text-brand')
-            : 'bg-surface-higher border-line-strong text-ink-muted'}`}>
+        <div className="h-11 w-11 rounded-2xl bg-surface-higher border border-line-strong grid place-items-center text-ink-muted flex-shrink-0">
           {icon}
         </div>
         <div className="flex-1 min-w-0 pt-0.5">
@@ -651,10 +660,10 @@ function PermissionRow({
         <button
           onClick={() => onChange(!value)}
           aria-label={`Toggle ${title}`}
-          className={`relative h-7 w-12 rounded-full transition flex-shrink-0 mt-1
-            ${value ? (accent ? 'bg-brand-violet' : 'bg-brand') : 'bg-surface-higher border border-line/70'}`}
+          className={`relative h-6 w-10 rounded-full transition flex-shrink-0 mt-1
+            ${value ? 'bg-brand' : 'bg-surface-higher border border-line/70'}`}
         >
-          <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-white transition-all ${value ? 'left-[22px]' : 'left-0.5'}`} />
+          <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all ${value ? 'left-[18px]' : 'left-0.5'}`} />
         </button>
       </div>
     </div>
@@ -675,8 +684,8 @@ function DonePane({
 
       <div className="flex-1 flex flex-col px-7 pt-2 pb-10">
         <div className="animate-slide-up">
-          <div className="h-12 w-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/40 grid place-items-center mb-5">
-            <Check size={20} className="text-emerald-400" strokeWidth={2.2} />
+          <div className="h-12 w-12 rounded-full bg-brand/12 border border-brand/30 grid place-items-center mb-5">
+            <Check size={20} className="text-brand" strokeWidth={2.4} />
           </div>
           <p className="text-[12px] font-semibold text-brand mb-2">
             You're all set
@@ -880,22 +889,22 @@ function Dots({ total, active }: { total: number; active: number }) {
 function CaptureVisual() {
   return (
     <div className="relative">
-      <div className="absolute -top-3 -left-1.5 h-[150px] w-[240px] rounded-[18px] bg-surface-higher border border-line/60 rotate-[8deg]" />
-      <div className="absolute top-1 left-1.5 h-[150px] w-[240px] rounded-[18px] bg-surface-elevated border border-line/70 rotate-[3deg]" />
+      <div className="absolute -top-3 -left-1.5 h-[200px] w-[320px] rounded-[22px] bg-surface-higher border border-line/60 rotate-[8deg]" />
+      <div className="absolute top-1 left-1.5 h-[200px] w-[320px] rounded-[22px] bg-surface-elevated border border-line/70 rotate-[3deg]" />
 
-      <div className="relative h-[150px] w-[240px] rounded-[18px] bg-hero-card border border-line/70 shadow-soft overflow-hidden -rotate-[2deg]">
-        <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-brand/25 blur-2xl" />
-        <div className="absolute inset-0 p-4 flex flex-col justify-between">
+      <div className="relative h-[200px] w-[320px] rounded-[22px] bg-hero-card border border-line/70 shadow-soft overflow-hidden -rotate-[2deg]">
+        <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-brand/25 blur-3xl" />
+        <div className="absolute inset-0 p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between">
-            <p className="text-[8.5px] tracking-[0.22em] font-bold text-brand">CARDO·</p>
-            <div className="h-6 w-6 rounded-md bg-white/95 grid place-items-center text-canvas font-black text-[9px]">C</div>
+            <p className="text-[10px] tracking-[0.22em] font-bold text-brand">CARDO·</p>
+            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-canvas font-black text-[11px]">C</div>
           </div>
           <div>
-            <p className="text-[14px] font-bold text-white tracking-tight">Su Su Aung</p>
-            <p className="text-[9px] text-white/55 mt-0.5">Brand Manager · Yangon</p>
-            <div className="mt-2 flex gap-1">
-              <div className="h-[3px] w-10 rounded-full bg-white/15" />
-              <div className="h-[3px] w-7 rounded-full bg-white/15" />
+            <p className="text-[18px] font-bold text-white tracking-tight">Su Su Aung</p>
+            <p className="text-[11.5px] text-white/55 mt-1">Brand Manager · Yangon</p>
+            <div className="mt-2.5 flex gap-1">
+              <div className="h-[3px] w-12 rounded-full bg-white/15" />
+              <div className="h-[3px] w-8 rounded-full bg-white/15" />
             </div>
           </div>
         </div>
@@ -914,9 +923,8 @@ function CaptureVisual() {
 function ExchangeVisual() {
   return (
     <div className="relative">
-      <div className="absolute inset-0 -m-10 rounded-full border border-brand/20" />
-      <div className="absolute inset-0 -m-20 rounded-full border border-brand/12" />
-      <div className="absolute inset-0 -m-32 rounded-full border border-brand/6" />
+      <div className="absolute inset-0 -m-12 rounded-full border border-brand/15" />
+      <div className="absolute inset-0 -m-24 rounded-full border border-brand/8" />
 
       <div className="relative h-[180px] w-[180px] rounded-3xl bg-white p-4 grid place-items-center shadow-soft">
         <SmallFauxQR />
@@ -934,24 +942,24 @@ function PersonalizeVisual() {
     <div className="relative">
       <div className="absolute -inset-8 rounded-[40px] bg-gradient-to-br from-brand/30 via-brand-violet/25 to-transparent blur-3xl" />
 
-      <div className="relative h-[170px] w-[270px] rounded-[20px] bg-hero-card border border-line/70 shadow-soft overflow-hidden">
-        <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-brand/30 blur-3xl" />
-        <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-brand-violet/25 blur-3xl" />
+      <div className="relative h-[200px] w-[320px] rounded-[22px] bg-hero-card border border-line/70 shadow-soft overflow-hidden">
+        <div className="absolute -top-10 -right-10 h-36 w-36 rounded-full bg-brand/30 blur-3xl" />
+        <div className="absolute -bottom-12 -left-12 h-36 w-36 rounded-full bg-brand-violet/25 blur-3xl" />
 
         <div className="absolute inset-0 p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between">
-            <p className="text-[9px] tracking-[0.22em] font-bold text-brand">CARDO·</p>
-            <div className="h-7 w-7 rounded-lg bg-white/95 grid place-items-center text-canvas font-black text-[10px]">C</div>
+            <p className="text-[10px] tracking-[0.22em] font-bold text-brand">CARDO·</p>
+            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-canvas font-black text-[11px]">C</div>
           </div>
           <div>
-            <p className="text-[16px] font-bold text-white tracking-tight">Your name here</p>
-            <p className="text-[10px] text-white/55 mt-0.5">Your role · Your city</p>
+            <p className="text-[18px] font-bold text-white tracking-tight">Your name here</p>
+            <p className="text-[11.5px] text-white/55 mt-1">Your role · Your city</p>
           </div>
         </div>
       </div>
 
-      <div className="absolute -top-3 -right-3 h-10 w-10 rounded-full bg-canvas border border-brand/40 grid place-items-center shadow-glow">
-        <Sparkles size={15} className="text-brand" strokeWidth={1.8} />
+      <div className="absolute -top-3 -right-3 h-10 w-10 rounded-full bg-surface-elevated border border-line/60 grid place-items-center shadow-[0_4px_10px_rgba(0,0,0,0.35),0_12px_28px_rgba(0,0,0,0.45)]">
+        <Wand2 size={15} className="text-brand" strokeWidth={2} />
       </div>
     </div>
   )
