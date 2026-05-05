@@ -10,6 +10,7 @@ import { SubScreenHeader } from '../components/SubScreenHeader'
 import { LocationPicker } from '../components/LocationPicker'
 import { useToast } from '../components/Toast'
 import { contacts, me, account, type Contact } from '../data'
+import { useT } from '../i18n'
 import type { View } from '../nav'
 
 /* shared */
@@ -32,6 +33,7 @@ function Page({ title, onBack, right, children }: { title: string; onBack: () =>
 
 export function EditCardScreen({ onBack }: { onBack: () => void }) {
   const toast = useToast()
+  const t = useT()
   const [name, setName] = useState(me.name)
   const [role, setRole] = useState(me.role)
   const [company, setCompany] = useState(me.company)
@@ -50,9 +52,9 @@ export function EditCardScreen({ onBack }: { onBack: () => void }) {
   return (
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
       <SubScreenHeader
-        title="Edit Card"
+        title={t('editCard.title')}
         onBack={onBack}
-        right={<button onClick={save} className="px-3.5 h-9 pt-px rounded-full bg-ink text-canvas text-[12.5px] font-semibold inline-flex items-center justify-center">Save</button>}
+        right={<button onClick={save} className="px-3.5 h-9 pt-px rounded-full bg-ink text-canvas text-[12.5px] font-semibold inline-flex items-center justify-center">{t('common.save')}</button>}
       />
 
       <div className="px-5 pb-8">
@@ -152,12 +154,13 @@ function FieldButton({ label, value, onTap }: { label: string; value: string; on
 
 export function AccountScreen({ onBack, go }: { onBack: () => void; go: (v: View) => void }) {
   const toast = useToast()
+  const t = useT()
   const [avatarSheet, setAvatarSheet] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const planLabel = account.plan === 'pro' ? 'Swapo Pro' : 'Free plan'
+  const planLabel = account.plan === 'pro' ? t('sub.pro') : t('sub.free') + ' ' + t('account.plan').toLowerCase()
 
   return (
-    <Page title="Account" onBack={onBack}>
+    <Page title={t('account.title')} onBack={onBack}>
       <div className="rounded-[20px] border border-line/60 bg-surface/60 p-4 mb-5 flex items-center gap-3.5">
         <button onClick={() => setAvatarSheet(true)} className="relative h-12 w-12 rounded-full bg-gradient-to-br from-brand to-brand-violet p-[2px]" aria-label="Change avatar">
           <div className="h-full w-full rounded-full bg-canvas grid place-items-center">
@@ -173,19 +176,19 @@ export function AccountScreen({ onBack, go }: { onBack: () => void; go: (v: View
         </div>
       </div>
 
-      <SectionLabel>Profile</SectionLabel>
+      <SectionLabel>{t('account.profile')}</SectionLabel>
       <Group>
-        <AccountRow icon={<User size={15} />} label="Display name" value={account.displayName} onClick={() => go({ kind: 'account-display-name' })} />
+        <AccountRow icon={<User size={15} />} label={t('account.row.displayName')} value={account.displayName} onClick={() => go({ kind: 'account-display-name' })} />
       </Group>
 
-      <SectionLabel>Sign-in</SectionLabel>
+      <SectionLabel>{t('account.signin')}</SectionLabel>
       <Group>
-        <AccountRow icon={<Smartphone size={15} />} label="Phone" value={account.loginPhoneMasked} onClick={() => go({ kind: 'security' })} />
+        <AccountRow icon={<Smartphone size={15} />} label={t('account.row.phone')} value={account.loginPhoneMasked} onClick={() => go({ kind: 'security' })} />
       </Group>
 
-      <SectionLabel>Plan</SectionLabel>
+      <SectionLabel>{t('account.plan')}</SectionLabel>
       <Group>
-        <AccountRow icon={<Star size={15} />} label="Subscription" value={planLabel} onClick={() => go({ kind: 'subscription' })} />
+        <AccountRow icon={<Star size={15} />} label={t('account.row.subscription')} value={planLabel} onClick={() => go({ kind: 'subscription' })} />
       </Group>
 
       <button
@@ -193,7 +196,7 @@ export function AccountScreen({ onBack, go }: { onBack: () => void; go: (v: View
         className="w-full p-3.5 rounded-2xl border border-rose-500/30 bg-rose-500/8 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400"
       >
         <Trash2 size={15} strokeWidth={1.8} />
-        <span>Delete account</span>
+        <span>{t('account.delete')}</span>
       </button>
 
       {avatarSheet && (
@@ -296,16 +299,17 @@ function DeleteAccountConfirm({ onClose, onConfirm }: { onClose: () => void; onC
 
 export function EditDisplayNameScreen({ onBack }: { onBack: () => void }) {
   const toast = useToast()
+  const t = useT()
   const [name, setName] = useState(account.displayName)
   const dirty = name.trim().length > 0 && name !== account.displayName
   const save = () => {
     if (!dirty) return
-    toast.show('Display name saved')
+    toast.show(t('editName.title') + ' ' + t('common.save'))
     setTimeout(onBack, 400)
   }
   return (
     <Page
-      title="Display name"
+      title={t('editName.title')}
       onBack={onBack}
       right={
         <button onClick={save} disabled={!dirty} className="px-3.5 h-9 pt-px rounded-full bg-ink text-canvas text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
@@ -429,6 +433,7 @@ export function LinkedAccountsScreen({ onBack }: { onBack: () => void }) {
 /* ---------- Card Analytics ---------- */
 
 export function AnalyticsScreen({ onBack }: { onBack: () => void }) {
+  const t = useT()
   const [range, setRange] = useState<'7d' | '30d' | '90d'>('7d')
   const data = range === '7d'
     ? [3, 5, 2, 8, 12, 6, 10]
@@ -440,7 +445,7 @@ export function AnalyticsScreen({ onBack }: { onBack: () => void }) {
   const labels = range === '7d' ? ['M', 'T', 'W', 'T', 'F', 'S', 'S'] : []
 
   return (
-    <Page title="Analytics" onBack={onBack}>
+    <Page title={t('analytics.title')} onBack={onBack}>
       {/* Range */}
       <div className="flex items-center gap-2 mb-5">
         {(['7d', '30d', '90d'] as const).map((r) => (
@@ -538,6 +543,7 @@ function SourceRow({ icon, label, pct }: { icon: React.ReactNode; label: string;
 
 export function InviteScreen({ onBack }: { onBack: () => void }) {
   const toast = useToast()
+  const t = useT()
   const link = 'swapo.mm/i/heinhtet'
   const [showTerms, setShowTerms] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -550,7 +556,7 @@ export function InviteScreen({ onBack }: { onBack: () => void }) {
   }
 
   return (
-    <Page title="Invite a friend" onBack={onBack}>
+    <Page title={t('invite.title')} onBack={onBack}>
       <div className="relative overflow-hidden p-5 rounded-[20px] border border-brand/25 bg-brand/8 mb-5">
         <div className="h-12 w-12 rounded-2xl border border-brand/30 bg-brand/15 grid place-items-center mb-3">
           <Gift size={20} className="text-brand" strokeWidth={1.8} />
@@ -736,6 +742,7 @@ function TermsModal({ onClose }: { onClose: () => void }) {
 /* ---------- Search ---------- */
 
 export function SearchScreen({ onBack, go, initial = '' }: { onBack: () => void; go: (v: View) => void; initial?: string }) {
+  const t = useT()
   const [q, setQ] = useState(initial)
   const recent = ['logistics', 'designer', 'mandalay']
   const matches = q.trim().length === 0
@@ -756,7 +763,7 @@ export function SearchScreen({ onBack, go, initial = '' }: { onBack: () => void;
             autoFocus
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search name, company, tag…"
+            placeholder={t('search.placeholder')}
             className="flex-1 bg-transparent outline-none text-[13.5px] placeholder:text-ink-dim"
           />
           {q && (
@@ -770,7 +777,7 @@ export function SearchScreen({ onBack, go, initial = '' }: { onBack: () => void;
       <div className="px-5 pb-8">
         {q.trim().length === 0 ? (
           <>
-            <SectionLabel>Recent searches</SectionLabel>
+            <SectionLabel>{t('search.recent')}</SectionLabel>
             <Group>
               {recent.map((r) => (
                 <button key={r} onClick={() => setQ(r)} className="w-full flex items-center gap-3.5 px-4 py-3 border-b border-line/40 last:border-0">
@@ -829,6 +836,7 @@ export function SearchScreen({ onBack, go, initial = '' }: { onBack: () => void;
 
 export function FilterScreen({ onBack }: { onBack: () => void }) {
   const toast = useToast()
+  const t = useT()
   const [city, setCity] = useState<string[]>([])
   const [tag, setTag] = useState<string[]>([])
   const [recency, setRecency] = useState<'any' | '7' | '30' | '90'>('any')
@@ -844,9 +852,9 @@ export function FilterScreen({ onBack }: { onBack: () => void }) {
   return (
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
       <SubScreenHeader
-        title="Filter"
+        title={t('filter.title')}
         onBack={onBack}
-        right={<button onClick={reset} className="text-[12.5px] font-semibold text-ink-dim">Reset</button>}
+        right={<button onClick={reset} className="text-[12.5px] font-semibold text-ink-dim">{t('filter.clear')}</button>}
       />
 
       <div className="px-5 pb-32">
@@ -921,6 +929,7 @@ export function ExchangeScreen({
   onViewCard: (c: Contact) => void
 }) {
   const toast = useToast()
+  const t = useT()
   const [phase, setPhase] = useState<'request' | 'sent' | 'done'>('request')
   const initials = name.split(' ').map((p) => p[0]).slice(0, 2).join('')
 
@@ -949,7 +958,7 @@ export function ExchangeScreen({
 
   return (
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
-      <SubScreenHeader title="Exchange cards" onBack={onBack} />
+      <SubScreenHeader title={t('exchange.title')} onBack={onBack} />
 
       <div className="px-5 pb-8">
         {/* Avatars — exchange stage */}

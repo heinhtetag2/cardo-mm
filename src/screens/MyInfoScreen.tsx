@@ -2,10 +2,13 @@ import { useState } from 'react'
 import { ChevronRight, IdCard, Settings, MapPin, Bell, HelpCircle, FileText, LogOut, Pencil } from 'lucide-react'
 import { LogoutConfirm } from '../components/LogoutConfirm'
 import { account } from '../data'
+import { useT } from '../i18n'
 import type { View } from '../nav'
 
 export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout: () => void }) {
   const [confirmLogout, setConfirmLogout] = useState(false)
+  const t = useT()
+  const planLabel = account.plan === 'pro' ? t('me.plan.pro') : t('me.plan.free')
   return (
     <div className="px-5 pt-2 animate-fade-in">
       {/* Profile header */}
@@ -23,8 +26,8 @@ export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout
             <p className="text-[18px] font-bold leading-tight">{account.displayName}</p>
             <p className="text-[12px] text-ink-dim mt-1 truncate">{account.loginPhoneMasked}</p>
             <div className="flex items-center gap-1.5 mt-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-brand/15 border border-brand/30 text-brand text-[10.5px] font-semibold uppercase">{account.plan}</span>
-              <span className="text-[11px] text-ink-dim">{account.credits} AI credits left</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-brand/15 border border-brand/30 text-brand text-[10.5px] font-semibold uppercase">{planLabel}</span>
+              <span className="text-[11px] text-ink-dim">{t('me.creditsLeft', { n: account.credits })}</span>
             </div>
           </div>
           <span className="h-9 w-9 grid place-items-center rounded-full border border-line/70 bg-surface/60">
@@ -34,18 +37,18 @@ export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout
         <div className="absolute -top-12 -right-12 h-40 w-40 rounded-full bg-brand/8 blur-3xl pointer-events-none" />
       </button>
 
-      <SectionLabel>My Activity</SectionLabel>
+      <SectionLabel>{t('me.section.activity')}</SectionLabel>
       <Group>
-        <Row icon={<IdCard size={16} />} label="My Card" sub="Edit & share your digital card" onClick={() => go({ kind: 'my-card' })} />
-        <Row icon={<Settings size={16} />} label="Settings" sub="Account, language, privacy" onClick={() => go({ kind: 'settings' })} />
-        <Row icon={<MapPin size={16} />} label="Nearby Cards" sub="Discover people near you" badge="New" onClick={() => go({ kind: 'nearby' })} />
+        <Row icon={<IdCard size={16} />}   label={t('me.row.myCard')}   sub={t('me.row.myCard.sub')}   onClick={() => go({ kind: 'my-card' })} />
+        <Row icon={<Settings size={16} />} label={t('me.row.settings')} sub={t('me.row.settings.sub')} onClick={() => go({ kind: 'settings' })} />
+        <Row icon={<MapPin size={16} />}   label={t('me.row.nearby')}   sub={t('me.row.nearby.sub')}   badge={t('me.row.nearby.badge')} onClick={() => go({ kind: 'nearby' })} />
       </Group>
 
-      <SectionLabel>Customer Center</SectionLabel>
+      <SectionLabel>{t('me.section.customer')}</SectionLabel>
       <Group>
-        <Row icon={<Bell size={16} />} label="Notice" sub="Announcements & updates" onClick={() => go({ kind: 'notice' })} />
-        <Row icon={<HelpCircle size={16} />} label="FAQ" sub="Common questions answered" onClick={() => go({ kind: 'faq' })} />
-        <Row icon={<FileText size={16} />} label="Terms & Policies" sub="Privacy, ToS, data handling" onClick={() => go({ kind: 'terms' })} />
+        <Row icon={<Bell size={16} />}       label={t('me.row.notice')} sub={t('me.row.notice.sub')} onClick={() => go({ kind: 'notice' })} />
+        <Row icon={<HelpCircle size={16} />} label={t('me.row.faq')}    sub={t('me.row.faq.sub')}    onClick={() => go({ kind: 'faq' })} />
+        <Row icon={<FileText size={16} />}   label={t('me.row.terms')}  sub={t('me.row.terms.sub')}  onClick={() => go({ kind: 'terms' })} />
       </Group>
 
       <button
@@ -53,10 +56,10 @@ export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout
         className="w-full mt-5 p-3.5 rounded-2xl border border-rose-500/30 bg-rose-500/8 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400 transition"
       >
         <LogOut size={15} strokeWidth={1.8} />
-        <span>Log out</span>
+        <span>{t('me.logout')}</span>
       </button>
 
-      <p className="text-center text-[11px] text-ink-dim mt-5">Swapo Myanmar · v1.0.0</p>
+      <p className="text-center text-[11px] text-ink-dim mt-5">{t('me.version')}</p>
 
       {confirmLogout && (
         <LogoutConfirm

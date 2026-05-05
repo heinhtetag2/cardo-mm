@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Search, Share2, MapPin, Plus, Star } from 'lucide-react'
 import type { View } from '../nav'
 import { contacts, type Contact } from '../data'
+import { useT } from '../i18n'
 
 export function CardoScreen({
   go,
@@ -10,48 +11,59 @@ export function CardoScreen({
   go: (v: View) => void
   favorites: Set<string>
 }) {
-  const [activeChip, setActiveChip] = useState('All')
+  const t = useT()
+  const [activeChip, setActiveChip] = useState('all')
+
+  const chips: { id: string; label: string }[] = [
+    { id: 'all',      label: t('cards.tag.all') },
+    { id: 'fav',      label: t('cards.tag.favorites') },
+    { id: 'recent',   label: t('cards.tag.recentAdded') },
+    { id: 'Yangon',   label: 'Yangon' },
+    { id: 'Mandalay', label: 'Mandalay' },
+    { id: 'Tech',     label: 'Tech' },
+    { id: 'Sales',    label: 'Sales' },
+  ]
 
   const favoriteContacts = contacts.filter((c) => favorites.has(c.id))
-  const visibleContacts = activeChip === 'Favorites' ? favoriteContacts : contacts
+  const visibleContacts = activeChip === 'fav' ? favoriteContacts : contacts
 
   return (
     <div className="px-5 pt-2 animate-fade-in">
       <div className="flex items-end justify-between mb-1">
         <div>
-          <h1 className="text-[26px] font-bold tracking-tight">My Cards</h1>
-          <p className="text-[13px] text-ink-dim mt-0.5">{contacts.length} cards saved</p>
+          <h1 className="text-[26px] font-bold tracking-tight">{t('cards.titleMy')}</h1>
+          <p className="text-[13px] text-ink-dim mt-0.5">{t('cards.subtitle', { n: contacts.length })}</p>
         </div>
         <button
           onClick={() => go({ kind: 'register' })}
-          aria-label="Add a card"
+          aria-label={t('cards.add')}
           className="inline-flex items-center gap-1.5 h-10 px-3.5 rounded-full bg-brand/12 border border-brand/30 text-brand text-[13px] font-semibold hover:bg-brand/20 transition"
         >
           <Plus size={15} strokeWidth={2.4} />
-          <span>Add card</span>
+          <span>{t('cards.add')}</span>
         </button>
       </div>
 
       <div className="mt-5 mb-4">
         <button onClick={() => go({ kind: 'search' })} className="w-full flex items-center gap-2 px-3.5 h-11 rounded-2xl border border-line/70 bg-surface text-left">
           <Search size={16} className="text-ink-dim" strokeWidth={1.8} />
-          <span className="flex-1 text-[13.5px] text-ink-dim">Search by name, company…</span>
+          <span className="flex-1 text-[13.5px] text-ink-dim">{t('cards.searchPlaceholder')}</span>
         </button>
       </div>
 
       <div className="flex items-center gap-1.5 mb-5 overflow-x-auto scrollbar-hide -mx-5 px-5">
-        {['All', 'Favorites', 'Recently added', 'Yangon', 'Mandalay', 'Tech', 'Sales'].map((c) => (
+        {chips.map((c) => (
           <button
-            key={c}
-            onClick={() => setActiveChip(c)}
+            key={c.id}
+            onClick={() => setActiveChip(c.id)}
             className={`flex-shrink-0 inline-flex items-center gap-1 px-3 h-8 rounded-full text-[12px] font-medium border transition ${
-              activeChip === c ? 'bg-ink text-canvas border-ink' : 'bg-surface text-ink-muted border-line/70'
+              activeChip === c.id ? 'bg-ink text-canvas border-ink' : 'bg-surface text-ink-muted border-line/70'
             }`}
           >
-            {c === 'Favorites' && (
-              <Star size={11} strokeWidth={2} className={activeChip === c ? 'fill-canvas' : 'fill-brand text-brand'} />
+            {c.id === 'fav' && (
+              <Star size={11} strokeWidth={2} className={activeChip === c.id ? 'fill-canvas' : 'fill-brand text-brand'} />
             )}
-            {c}
+            {c.label}
           </button>
         ))}
       </div>
@@ -61,8 +73,8 @@ export function CardoScreen({
           <div className="mx-auto h-14 w-14 rounded-2xl bg-surface-elevated border border-line/60 grid place-items-center mb-3">
             <Star size={20} className="text-ink-dim" strokeWidth={1.6} />
           </div>
-          <p className="text-[14.5px] font-semibold">No favorites yet</p>
-          <p className="text-[12.5px] text-ink-dim mt-1">Tap a card's menu and choose<br/>"Add to favorites" to pin it here.</p>
+          <p className="text-[14.5px] font-semibold">{t('cards.empty.fav.title')}</p>
+          <p className="text-[12.5px] text-ink-dim mt-1">{t('cards.empty.fav.sub')}</p>
         </div>
       ) : (
         <div className="space-y-4">

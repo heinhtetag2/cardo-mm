@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { ChevronLeft, Zap, ZapOff, Image as ImageIcon, RotateCcw, Info } from 'lucide-react'
 import { useToast } from '../components/Toast'
 import { ContactForm } from '../components/ContactForm'
+import { useT } from '../i18n'
 
 type Mode = 'card' | 'qr'
 type Side = 'front' | 'back'
 
 export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => void; onDone?: () => void; mode?: Mode }) {
   const toast = useToast()
+  const t = useT()
   const isQR = mode === 'qr'
   const [phase, setPhase] = useState<'scan' | 'flip' | 'processing' | 'review'>('scan')
   const [side, setSide] = useState<Side>('front')
@@ -18,7 +20,7 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
     if (isQR) {
       setPhase('processing')
       setTimeout(() => {
-        toast.show('Card received from Mya Thandar')
+        toast.show(t('scan.toast.received', { name: 'Mya Thandar' }))
         setTimeout(finish, 600)
       }, 1500)
       return
@@ -47,7 +49,7 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
     setPhase('scan')
   }
 
-  const headerTitle = isQR ? 'Scan QR code' : side === 'front' ? 'Scan front' : 'Scan back'
+  const headerTitle = isQR ? t('scan.title.qr') : side === 'front' ? t('scan.header.front') : t('scan.header.back')
 
   return (
     <div className="absolute inset-0 bg-black overflow-hidden animate-fade-in">
@@ -128,17 +130,17 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
             <div className="px-3 py-1.5 rounded-full bg-black/60 backdrop-blur border border-white/10">
               <p className="text-[12px] text-white/90">
                 {isQR
-                  ? 'Align the QR code inside the frame'
+                  ? t('scan.hint.qr')
                   : side === 'front'
-                  ? 'Position the front of the card'
-                  : 'Now show the back of the card'}
+                  ? t('scan.hint.front')
+                  : t('scan.hint.back')}
               </p>
             </div>
             {!isQR && (
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur border border-white/10">
-                <SideDot active={side === 'front'} done={side === 'back'} label="Front" />
+                <SideDot active={side === 'front'} done={side === 'back'} label={t('scan.flip.front')} />
                 <span className="h-px w-3 bg-white/20" />
-                <SideDot active={side === 'back'} done={false} label="Back" />
+                <SideDot active={side === 'back'} done={false} label={t('scan.flip.back')} />
               </div>
             )}
           </div>
@@ -146,7 +148,7 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
       )}
 
       {phase === 'processing' && (
-        <ProcessingOverlay isQR={isQR} captionOverride={!isQR && side === 'front' ? 'Capturing front…' : undefined} />
+        <ProcessingOverlay isQR={isQR} captionOverride={!isQR && side === 'front' ? t('scan.proc.front') : undefined} />
       )}
 
       {phase === 'flip' && (
@@ -157,10 +159,10 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
         <ContactForm
           header={
             <header className="flex items-center justify-between px-4 pt-12 pb-3">
-              <button onClick={retake} aria-label="Retake" className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80">
+              <button onClick={retake} aria-label={t('scan.retake.aria')} className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80">
                 <RotateCcw size={16} strokeWidth={1.8} />
               </button>
-              <h1 className="text-[15px] font-semibold">Review details</h1>
+              <h1 className="text-[15px] font-semibold">{t('scan.review.title')}</h1>
               <span className="w-10" />
             </header>
           }
@@ -168,7 +170,7 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
             <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-2xl bg-brand/8 border border-brand/25">
               <Info size={15} className="text-brand mt-0.5 flex-shrink-0" strokeWidth={2} />
               <p className="text-[12.5px] text-ink-muted leading-relaxed">
-                Check that everything looks right. Tap any field to edit before saving.
+                {t('scan.review.banner')}
               </p>
             </div>
           }
@@ -181,9 +183,9 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
             website: 'baganheritage.mm',
             city: 'No. 142, Pyay Road, Sanchaung, Yangon',
           }}
-          saveLabel="Save to Swapo"
+          saveLabel={t('scan.save')}
           onSave={() => {
-            toast.show('Card saved to Swapo')
+            toast.show(t('scan.toast.saved'))
             setTimeout(finish, 500)
           }}
         />
@@ -192,7 +194,7 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
       {phase === 'scan' && (
         <div className="absolute bottom-0 inset-x-0 px-6 pb-9 pt-4 z-30">
           <div className="flex items-center justify-between max-w-md mx-auto">
-            <button onClick={() => toast.show('Open photo library (mock)', 'info')} className="h-12 w-12 rounded-2xl bg-white/10 backdrop-blur border border-white/15 grid place-items-center">
+            <button onClick={() => toast.show(t('scan.toast.openLib'), 'info')} className="h-12 w-12 rounded-2xl bg-white/10 backdrop-blur border border-white/15 grid place-items-center">
               <ImageIcon size={18} className="text-white" strokeWidth={1.8} />
             </button>
             <button onClick={capture} className="h-[72px] w-[72px] rounded-full bg-white grid place-items-center">
@@ -215,12 +217,13 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
 }
 
 function ProcessingOverlay({ isQR, captionOverride }: { isQR: boolean; captionOverride?: string }) {
-  const title = captionOverride ?? (isQR ? 'Reading QR…' : 'Reading card…')
+  const t = useT()
+  const title = captionOverride ?? (isQR ? t('scan.proc.qr.title') : t('scan.proc.card.title'))
   const sub = captionOverride
-    ? 'Hold steady'
+    ? t('scan.proc.holdSteady')
     : isQR
-    ? 'Decoding the contact details'
-    : 'Detecting name, role, and contact'
+    ? t('scan.proc.qr.sub')
+    : t('scan.proc.card.sub')
   return (
     <div className="absolute inset-0 grid place-items-center bg-black/80 backdrop-blur-md animate-fade-in">
       <div className="text-center px-8">
@@ -241,6 +244,7 @@ function ProcessingOverlay({ isQR, captionOverride }: { isQR: boolean; captionOv
 }
 
 function FlipOverlay({ onContinue, onSkip }: { onContinue: () => void; onSkip: () => void }) {
+  const t = useT()
   return (
     <div className="absolute inset-0 z-40 grid place-items-center bg-black/85 backdrop-blur-md animate-fade-in px-7">
       <div className="text-center max-w-[320px]">
@@ -266,17 +270,17 @@ function FlipOverlay({ onContinue, onSkip }: { onContinue: () => void; onSkip: (
           </div>
         </div>
 
-        <h2 className="text-[20px] font-bold text-white tracking-tight">Now flip the card</h2>
+        <h2 className="text-[20px] font-bold text-white tracking-tight">{t('scan.flip.title')}</h2>
         <p className="text-[12.5px] text-white/60 mt-2 leading-relaxed">
-          Got the front. Scan the back. Most cards have logos, an address, or a QR code there.
+          {t('scan.flip.body')}
         </p>
 
         <div className="flex flex-col gap-2.5 mt-6">
           <button onClick={onContinue} className="w-full h-12 rounded-2xl bg-white text-black font-semibold text-[14px] active:scale-[0.99] transition">
-            Scan back
+            {t('scan.flip.continue')}
           </button>
           <button onClick={onSkip} className="w-full h-11 text-[13.5px] font-medium text-white/70 active:text-white/90 transition">
-            Save front only
+            {t('scan.flip.skip')}
           </button>
         </div>
       </div>

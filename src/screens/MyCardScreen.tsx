@@ -3,16 +3,18 @@ import { useState } from 'react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { useToast } from '../components/Toast'
 import { me } from '../data'
+import { useT } from '../i18n'
 import type { View } from '../nav'
 
 export function MyCardScreen({ onBack, go }: { onBack: () => void; go: (v: View) => void }) {
   const [copied, setCopied] = useState(false)
   const toast = useToast()
+  const t = useT()
 
   return (
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
       <div className="absolute inset-x-0 top-0 h-[420px] bg-glow-radial pointer-events-none" />
-      <SubScreenHeader title="My Card" onBack={onBack} right={
+      <SubScreenHeader title={t('myCard.title')} onBack={onBack} right={
         <button onClick={() => go({ kind: 'edit-card' })} className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80">
           <Pencil size={16} strokeWidth={1.8} />
         </button>
@@ -26,7 +28,7 @@ export function MyCardScreen({ onBack, go }: { onBack: () => void; go: (v: View)
           <div className="relative flex items-start justify-between mb-8">
             <div>
               <p className="text-[10.5px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
-              <p className="text-[10.5px] font-medium text-ink-dim mt-1">Cards in a tap</p>
+              <p className="text-[10.5px] font-medium text-ink-dim mt-1">{t('myCard.kicker')}</p>
             </div>
             <div className="h-10 w-10 rounded-xl bg-white/95 grid place-items-center text-canvas font-black text-[14px]">S</div>
           </div>
@@ -38,7 +40,7 @@ export function MyCardScreen({ onBack, go }: { onBack: () => void; go: (v: View)
 
         {/* QR */}
         <div className="rounded-[24px] border border-line/70 bg-surface p-5 mb-5">
-          <p className="text-center text-[12px] text-ink-dim mb-4">Scan to save my contact</p>
+          <p className="text-center text-[12px] text-ink-dim mb-4">{t('myCard.scanSave')}</p>
           <div className="mx-auto w-[200px] aspect-square bg-white rounded-2xl p-3 grid place-items-center">
             <FauxQR />
           </div>
@@ -47,13 +49,13 @@ export function MyCardScreen({ onBack, go }: { onBack: () => void; go: (v: View)
             onClick={() => {
               navigator.clipboard?.writeText(me.website)
               setCopied(true)
-              toast.show('Link copied')
+              toast.show(t('myCard.toast.copied'))
               setTimeout(() => setCopied(false), 1500)
             }}
             className="mx-auto mt-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-elevated border border-line/70 text-[12px] text-ink-muted"
           >
             {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
-            {copied ? 'Copied' : 'Copy link'}
+            {copied ? t('myCard.copied') : t('myCard.copy')}
           </button>
         </div>
 

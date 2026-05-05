@@ -7,6 +7,7 @@ import {
 import type { View } from '../nav'
 import type { Creation } from '../data'
 import { useToast } from '../components/Toast'
+import { useT } from '../i18n'
 
 type SubAction = null | 'preview' | 'share' | 'download' | 'edit' | 'delete'
 
@@ -19,6 +20,7 @@ export function AICardScreen({
   onUpdate: (id: string, patch: Partial<Creation>) => void
 }) {
   const toast = useToast()
+  const t = useT()
   const [actionFor, setActionFor] = useState<Creation | null>(null)
   const [subAction, setSubAction] = useState<SubAction>(null)
   const [showPicker, setShowPicker] = useState(false)
@@ -37,17 +39,17 @@ export function AICardScreen({
     <div className="px-5 pt-2 animate-fade-in">
       <div className="mb-6">
         <h1 className="text-[30px] font-bold tracking-tight leading-[1.05]">
-          AI Studio
+          {t('ai.title')}
         </h1>
         <p className="text-[13px] text-ink-dim mt-2.5 leading-relaxed max-w-[280px]">
-          Generate cards and logos that match your brand.
+          {t('ai.subtitle')}
         </p>
       </div>
 
       <div className="grid grid-cols-3 gap-2.5 mb-6">
-        <Stat label="Cards" value={String(cards.length)} />
-        <Stat label="Logos" value={String(logos.length)} />
-        <Stat label="Credits" value="3" highlight />
+        <Stat label={t('ai.stat.cards')}   value={String(cards.length)} />
+        <Stat label={t('ai.stat.logos')}   value={String(logos.length)} />
+        <Stat label={t('ai.stat.credits')} value="3" highlight />
       </div>
 
       <button onClick={() => go({ kind: 'invite' })} className="relative w-full p-4 rounded-[20px] border border-brand/25 bg-brand/8 flex items-center gap-3.5 mb-6 overflow-hidden">
@@ -55,8 +57,8 @@ export function AICardScreen({
           <Gift size={17} className="text-brand" strokeWidth={1.8} />
         </div>
         <div className="flex-1 text-left">
-          <p className="text-[14.5px] font-semibold">Earn unlimited credits</p>
-          <p className="text-[12px] text-ink-dim mt-0.5">You and your friend each get +1 credit.</p>
+          <p className="text-[14.5px] font-semibold">{t('home.referral.title')}</p>
+          <p className="text-[12px] text-ink-dim mt-0.5">{t('home.referral.sub')}</p>
         </div>
         <ChevronRight size={18} className="text-ink-dim" strokeWidth={1.8} />
       </button>
@@ -69,15 +71,15 @@ export function AICardScreen({
           <div className="h-14 w-14 mx-auto rounded-2xl bg-surface-higher border border-line/60 grid place-items-center mb-4 transition group-hover:border-brand/40">
             <Plus size={22} className="text-ink-muted transition group-hover:text-brand" strokeWidth={2.2} />
           </div>
-          <p className="text-[14.5px] font-semibold mb-1">Make your first design</p>
+          <p className="text-[14.5px] font-semibold mb-1">{t('ai.empty.title')}</p>
           <p className="text-[12.5px] text-ink-dim leading-relaxed max-w-[260px] mx-auto">
-            Swapo's AI shapes a card or logo around your brand. Ready in 30s.
+            {t('ai.empty.body')}
           </p>
         </button>
       ) : (
         <div>
           <div className="flex items-center justify-between mb-3">
-            <p className="text-[12px] font-medium text-ink-dim">Your creations</p>
+            <p className="text-[12px] font-medium text-ink-dim">{t('ai.your')}</p>
             <p className="text-[11.5px] text-ink-dim tabular-nums">{creations.length}</p>
           </div>
           <div className="space-y-2.5">
@@ -94,7 +96,7 @@ export function AICardScreen({
               className="w-full mt-1 p-3.5 rounded-[18px] border border-dashed border-line-strong bg-surface/40 flex items-center justify-center gap-1.5 text-[13px] font-medium text-ink-muted hover:border-brand/40 hover:text-brand transition"
             >
               <Plus size={14} strokeWidth={2.2} />
-              <span>Create another</span>
+              <span>{t('ai.createAnother')}</span>
             </button>
           </div>
         </div>
@@ -102,23 +104,23 @@ export function AICardScreen({
 
       {/* Create picker */}
       {showPicker && (
-        <ActionSheet onClose={() => setShowPicker(false)} title="What do you want to create?">
+        <ActionSheet onClose={() => setShowPicker(false)} title={t('ai.picker.title')}>
           <div className="grid grid-cols-2 gap-3 px-2 pt-1 pb-2">
             <PickerCard
               icon={<CreditCard size={20} strokeWidth={1.8} />}
-              title="Card"
-              subtitle="Three styles, one tap"
+              title={t('ai.picker.card')}
+              subtitle={t('ai.picker.card.sub')}
               onClick={() => startCreate('card')}
             />
             <PickerCard
               icon={<Palette size={20} strokeWidth={1.8} />}
-              title="Logo"
-              subtitle="Brand mark in 30s"
+              title={t('ai.picker.logo')}
+              subtitle={t('ai.picker.logo.sub')}
               onClick={() => startCreate('logo')}
             />
           </div>
           <p className="text-[11.5px] text-ink-dim text-center mt-2 mb-1">
-            Each generation uses 1 credit
+            {t('ai.picker.credit')}
           </p>
         </ActionSheet>
       )}
@@ -126,11 +128,11 @@ export function AICardScreen({
       {/* Action sheet */}
       {actionFor && subAction === null && (
         <ActionSheet onClose={closeAll}>
-          <ActionRow icon={<Share2 size={17} strokeWidth={1.8} />}      label="Share"        onClick={() => setSubAction('share')} />
-          <ActionRow icon={<Download size={17} strokeWidth={1.8} />}    label="Download"     onClick={() => setSubAction('download')} />
-          <ActionRow icon={<PencilLine size={17} strokeWidth={1.8} />}  label="Edit details" onClick={() => setSubAction('edit')} />
+          <ActionRow icon={<Share2 size={17} strokeWidth={1.8} />}      label={t('ai.action.share')}       onClick={() => setSubAction('share')} />
+          <ActionRow icon={<Download size={17} strokeWidth={1.8} />}    label={t('ai.action.download')}    onClick={() => setSubAction('download')} />
+          <ActionRow icon={<PencilLine size={17} strokeWidth={1.8} />}  label={t('ai.action.editDetails')} onClick={() => setSubAction('edit')} />
           <div className="border-t border-line/40 my-1" />
-          <ActionRow icon={<Trash2 size={17} strokeWidth={1.8} />}      label="Delete"       destructive onClick={() => setSubAction('delete')} />
+          <ActionRow icon={<Trash2 size={17} strokeWidth={1.8} />}      label={t('ai.action.delete')}      destructive onClick={() => setSubAction('delete')} />
         </ActionSheet>
       )}
 
@@ -138,8 +140,8 @@ export function AICardScreen({
       {actionFor && subAction === 'preview'  && <PreviewSheet  creation={actionFor} onClose={closeAll} onShare={() => setSubAction('share')} onDownload={() => setSubAction('download')} onEdit={() => setSubAction('edit')} />}
       {actionFor && subAction === 'share'    && <ShareSheet    creation={actionFor} onClose={closeAll} />}
       {actionFor && subAction === 'download' && <DownloadSheet creation={actionFor} onClose={closeAll} />}
-      {actionFor && subAction === 'edit'     && <EditSheet     creation={actionFor} onSave={(patch) => { onUpdate(actionFor.id, patch); toast.show('Changes saved'); closeAll() }} onClose={closeAll} />}
-      {actionFor && subAction === 'delete'   && <DeleteAlert   creation={actionFor} onConfirm={() => { onDelete(actionFor.id); toast.show('Deleted'); closeAll() }} onClose={closeAll} />}
+      {actionFor && subAction === 'edit'     && <EditSheet     creation={actionFor} onSave={(patch) => { onUpdate(actionFor.id, patch); toast.show(t('ai.toast.saved')); closeAll() }} onClose={closeAll} />}
+      {actionFor && subAction === 'delete'   && <DeleteAlert   creation={actionFor} onConfirm={() => { onDelete(actionFor.id); toast.show(t('ai.toast.deleted')); closeAll() }} onClose={closeAll} />}
     </div>
   )
 }
@@ -169,6 +171,7 @@ function Stat({ label, value, highlight }: { label: string; value: string; highl
 }
 
 function CreationRow({ c, onPreview, onMore }: { c: Creation; onPreview: () => void; onMore: () => void }) {
+  const t = useT()
   const isCard = c.kind === 'card'
   return (
     <div className="flex items-center gap-3.5 p-3 rounded-[18px] border border-line/60 bg-surface/60">
@@ -194,7 +197,7 @@ function CreationRow({ c, onPreview, onMore }: { c: Creation; onPreview: () => v
           <div className="flex items-center gap-2">
             <p className="text-[14px] font-semibold truncate">{c.name}</p>
             <span className="px-2 py-0.5 rounded-full bg-surface-elevated border border-line/60 text-[10px] font-semibold text-ink-muted flex-shrink-0">
-              {isCard ? 'Card' : 'Logo'}
+              {isCard ? t('ai.label.card') : t('ai.label.logo')}
             </span>
           </div>
           <p className="text-[11.5px] text-ink-dim mt-0.5 truncate">
@@ -272,6 +275,7 @@ function PreviewSheet({
   onDownload: () => void
   onEdit: () => void
 }) {
+  const t = useT()
   const isCard = creation.kind === 'card'
   const initials = creation.name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase()
 
@@ -286,7 +290,7 @@ function PreviewSheet({
         <div className="px-5 pt-1 pb-3 flex items-center justify-between">
           <div className="min-w-0">
             <p className="text-[16px] font-semibold tracking-tight truncate">{creation.name}</p>
-            <p className="text-[11.5px] text-ink-dim mt-0.5">{isCard ? 'Card' : 'Logo'}</p>
+            <p className="text-[11.5px] text-ink-dim mt-0.5">{isCard ? t('ai.label.card') : t('ai.label.logo')}</p>
           </div>
           <button
             onClick={onClose}
@@ -346,16 +350,16 @@ function PreviewSheet({
             {isCard ? (
               <>
                 {creation.role && (
-                  <MetaRow label="Role" value={creation.role} />
+                  <MetaRow label={t('ai.preview.role')} value={creation.role} />
                 )}
                 {creation.industry && (
-                  <MetaRow label="Industry" value={creation.industry} />
+                  <MetaRow label={t('ai.preview.industry')} value={creation.industry} />
                 )}
               </>
             ) : (
               <>
-                <MetaRow label="Type" value={creation.styleId} capitalize />
-                {creation.tone && <MetaRow label="Tone" value={creation.tone} />}
+                <MetaRow label={t('ai.preview.type')} value={creation.styleId} capitalize />
+                {creation.tone && <MetaRow label={t('ai.preview.tone')} value={creation.tone} />}
               </>
             )}
           </div>
@@ -363,9 +367,9 @@ function PreviewSheet({
 
         {/* Quick actions */}
         <div className="px-5 pb-6 grid grid-cols-3 gap-2">
-          <PreviewAction icon={<Share2 size={16} strokeWidth={1.8} />}     label="Share"    onClick={onShare} />
-          <PreviewAction icon={<Download size={16} strokeWidth={1.8} />}   label="Download" onClick={onDownload} />
-          <PreviewAction icon={<PencilLine size={16} strokeWidth={1.8} />} label="Edit"     onClick={onEdit} />
+          <PreviewAction icon={<Share2 size={16} strokeWidth={1.8} />}     label={t('ai.preview.share')}    onClick={onShare} />
+          <PreviewAction icon={<Download size={16} strokeWidth={1.8} />}   label={t('ai.preview.download')} onClick={onDownload} />
+          <PreviewAction icon={<PencilLine size={16} strokeWidth={1.8} />} label={t('ai.preview.edit')}     onClick={onEdit} />
         </div>
       </div>
     </div>
@@ -397,25 +401,26 @@ function MetaRow({ label, value, capitalize }: { label: string; value: string; c
 
 function ShareSheet({ creation, onClose }: { creation: Creation; onClose: () => void }) {
   const toast = useToast()
+  const t = useT()
   const link = `swapo.mm/${creation.kind}/${creation.id.slice(-6)}`
   const [copied, setCopied] = useState(false)
 
   const copy = () => {
     navigator.clipboard?.writeText(link)
     setCopied(true)
-    toast.show('Link copied')
+    toast.show(t('ai.toast.copied'))
     setTimeout(() => setCopied(false), 1500)
   }
 
   return (
-    <ActionSheet onClose={onClose} title="Share">
+    <ActionSheet onClose={onClose} title={t('ai.share.title')}>
       <div className="rounded-2xl border border-line/60 bg-surface/60 p-2.5 flex items-center gap-2 mb-3">
         <div className="flex-1 px-3 py-2 rounded-xl bg-surface-higher border border-line/60 text-[12.5px] font-mono truncate">
           {link}
         </div>
         <button
           onClick={copy}
-          aria-label={copied ? 'Copied' : 'Copy link'}
+          aria-label={copied ? t('myCard.copied') : t('myCard.copy')}
           className="h-9 w-9 grid place-items-center rounded-xl bg-ink text-canvas transition-transform active:scale-95"
         >
           {copied ? <Check size={14} strokeWidth={2.4} /> : <LinkIcon size={14} strokeWidth={2.2} />}
@@ -423,10 +428,10 @@ function ShareSheet({ creation, onClose }: { creation: Creation; onClose: () => 
       </div>
 
       <div className="grid grid-cols-4 gap-2">
-        <ShareTile icon={<MessageCircle size={17} strokeWidth={1.8} />} label="Messages" onClick={() => toast.show('Open Messages')} />
-        <ShareTile icon={<Mail size={17} strokeWidth={1.8} />}          label="Email"    onClick={() => toast.show('Open Mail')} />
-        <ShareTile icon={<Share2 size={17} strokeWidth={1.8} />}        label="Share…"   onClick={() => toast.show('Share sheet')} />
-        <ShareTile icon={<Copy size={17} strokeWidth={1.8} />}          label="Copy"     onClick={copy} />
+        <ShareTile icon={<MessageCircle size={17} strokeWidth={1.8} />} label={t('ai.share.tile.messages')} onClick={() => toast.show(t('ai.toast.openMessages'))} />
+        <ShareTile icon={<Mail size={17} strokeWidth={1.8} />}          label={t('ai.share.tile.email')}    onClick={() => toast.show(t('ai.toast.openMail'))} />
+        <ShareTile icon={<Share2 size={17} strokeWidth={1.8} />}        label={t('ai.share.tile.share')}    onClick={() => toast.show(t('ai.toast.shareSheet'))} />
+        <ShareTile icon={<Copy size={17} strokeWidth={1.8} />}          label={t('ai.share.tile.copy')}     onClick={copy} />
       </div>
     </ActionSheet>
   )
@@ -445,29 +450,30 @@ function ShareTile({ icon, label, onClick }: { icon: React.ReactNode; label: str
 
 function DownloadSheet({ creation, onClose }: { creation: Creation; onClose: () => void }) {
   const toast = useToast()
+  const t = useT()
   const isCard = creation.kind === 'card'
 
   const formats = isCard
     ? [
-        { id: 'png',   icon: <FileImage size={17} strokeWidth={1.8} />, label: 'PNG image',   sub: '1080 × 640 · transparent' },
-        { id: 'pdf',   icon: <FileText size={17} strokeWidth={1.8} />,  label: 'PDF',         sub: 'Print-ready · CMYK' },
-        { id: 'vcard', icon: <FileCode size={17} strokeWidth={1.8} />,  label: 'vCard (.vcf)', sub: 'Add to phone contacts' },
+        { id: 'png',   icon: <FileImage size={17} strokeWidth={1.8} />, label: t('ai.dl.png.label'),   sub: t('ai.dl.png.subCard') },
+        { id: 'pdf',   icon: <FileText size={17} strokeWidth={1.8} />,  label: t('ai.dl.pdf.label'),   sub: t('ai.dl.pdf.subCard') },
+        { id: 'vcard', icon: <FileCode size={17} strokeWidth={1.8} />,  label: t('ai.dl.vcard.label'), sub: t('ai.dl.vcard.sub') },
       ]
     : [
-        { id: 'svg', icon: <FileCode size={17} strokeWidth={1.8} />,  label: 'SVG',     sub: 'Vector · scales to any size' },
-        { id: 'png', icon: <FileImage size={17} strokeWidth={1.8} />, label: 'PNG',     sub: '2048 × 2048 · transparent' },
-        { id: 'pdf', icon: <FileText size={17} strokeWidth={1.8} />,  label: 'PDF',     sub: 'Print-ready' },
+        { id: 'svg', icon: <FileCode size={17} strokeWidth={1.8} />,  label: t('ai.dl.svg.label'), sub: t('ai.dl.svg.sub') },
+        { id: 'png', icon: <FileImage size={17} strokeWidth={1.8} />, label: t('ai.dl.png.label'), sub: t('ai.dl.png.subLogo') },
+        { id: 'pdf', icon: <FileText size={17} strokeWidth={1.8} />,  label: t('ai.dl.pdf.label'), sub: t('ai.dl.pdf.subLogo') },
       ]
 
   return (
-    <ActionSheet onClose={onClose} title="Download">
+    <ActionSheet onClose={onClose} title={t('ai.dl.title')}>
       {formats.map((f) => (
         <ActionRow
           key={f.id}
           icon={f.icon}
           label={f.label}
           sub={f.sub}
-          onClick={() => { toast.show(`Downloading ${f.label}`); onClose() }}
+          onClick={() => { toast.show(t('ai.toast.downloading', { name: f.label })); onClose() }}
         />
       ))}
     </ActionSheet>
@@ -477,6 +483,7 @@ function DownloadSheet({ creation, onClose }: { creation: Creation; onClose: () 
 /* ---------- Edit sheet ---------- */
 
 function EditSheet({ creation, onSave, onClose }: { creation: Creation; onSave: (patch: Partial<Creation>) => void; onClose: () => void }) {
+  const t = useT()
   const isCard = creation.kind === 'card'
   const [name, setName] = useState(creation.name)
   const [role, setRole] = useState(creation.role || '')
@@ -488,21 +495,21 @@ function EditSheet({ creation, onSave, onClose }: { creation: Creation; onSave: 
   }
 
   return (
-    <ActionSheet onClose={onClose} title="Edit details">
+    <ActionSheet onClose={onClose} title={t('ai.edit.title')}>
       <div className="px-2 pt-1">
         <div className="flex items-start gap-2.5 px-3 py-3 mb-3 rounded-2xl bg-surface-elevated border border-line/60">
           <Info size={14} className="text-ink-muted mt-0.5 flex-shrink-0" strokeWidth={1.8} />
           <p className="text-[12px] text-ink-dim leading-relaxed">
-            You can update the text shown on your {isCard ? 'card' : 'logo'}. The visual style is fixed. To change it, regenerate with new options.
+            {isCard ? t('ai.edit.info.card') : t('ai.edit.info.logo')}
           </p>
         </div>
 
-        <Field label={isCard ? 'Full name' : 'Brand name'} value={name} onChange={setName} />
-        {isCard && <Field label="Role / Title" value={role} onChange={setRole} />}
+        <Field label={isCard ? t('ai.edit.fullName') : t('ai.edit.brandName')} value={name} onChange={setName} />
+        {isCard && <Field label={t('ai.edit.role')} value={role} onChange={setRole} />}
         {isCard ? (
-          <Chips label="Industry" value={industry} onChange={setIndustry} options={['Tech', 'Finance', 'Logistics', 'Creative', 'Healthcare', 'F&B', 'Other']} />
+          <Chips label={t('ai.edit.industry')} value={industry} onChange={setIndustry} options={['Tech', 'Finance', 'Logistics', 'Creative', 'Healthcare', 'F&B', 'Other']} />
         ) : (
-          <Chips label="Brand tone" value={tone} onChange={setTone} options={['Professional', 'Playful', 'Bold', 'Elegant', 'Modern', 'Minimal']} />
+          <Chips label={t('ai.edit.tone')} value={tone} onChange={setTone} options={['Professional', 'Playful', 'Bold', 'Elegant', 'Modern', 'Minimal']} />
         )}
 
         <div className="flex gap-2 mt-5 mb-1">
@@ -510,14 +517,14 @@ function EditSheet({ creation, onSave, onClose }: { creation: Creation; onSave: 
             onClick={onClose}
             className="flex-1 h-12 pt-px rounded-2xl border border-line/70 bg-surface text-[14px] font-semibold text-ink-muted inline-flex items-center justify-center"
           >
-            Cancel
+            {t('ai.edit.cancel')}
           </button>
           <button
             onClick={save}
             disabled={!name.trim()}
             className="flex-1 h-12 pt-px rounded-2xl bg-ink text-canvas text-[14px] font-semibold disabled:opacity-40 inline-flex items-center justify-center"
           >
-            Save changes
+            {t('ai.edit.save')}
           </button>
         </div>
       </div>
@@ -559,6 +566,7 @@ function Chips({ label, value, onChange, options }: { label: string; value: stri
 /* ---------- Delete confirmation ---------- */
 
 function DeleteAlert({ creation, onConfirm, onClose }: { creation: Creation; onConfirm: () => void; onClose: () => void }) {
+  const t = useT()
   const isCard = creation.kind === 'card'
   return (
     <div className="absolute inset-0 z-50 flex items-center justify-center px-6 animate-fade-in">
@@ -567,22 +575,22 @@ function DeleteAlert({ creation, onConfirm, onClose }: { creation: Creation; onC
         <div className="h-12 w-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 grid place-items-center mb-4 mx-auto">
           <Trash2 size={20} className="text-rose-400" strokeWidth={1.8} />
         </div>
-        <h2 className="text-[16px] font-semibold text-center">Delete this {isCard ? 'card' : 'logo'}?</h2>
+        <h2 className="text-[16px] font-semibold text-center">{isCard ? t('ai.delete.title.card') : t('ai.delete.title.logo')}</h2>
         <p className="text-[12.5px] text-ink-dim text-center mt-1.5 leading-relaxed">
-          "{creation.name}" will be removed from your creations. This can't be undone.
+          {t('ai.delete.body', { name: creation.name })}
         </p>
         <div className="flex gap-2 mt-5">
           <button
             onClick={onClose}
             className="flex-1 h-11 rounded-xl border border-line/70 bg-surface-elevated text-[13.5px] font-semibold"
           >
-            Cancel
+            {t('ai.delete.cancel')}
           </button>
           <button
             onClick={onConfirm}
             className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[13.5px] font-semibold"
           >
-            Delete
+            {t('ai.delete.confirm')}
           </button>
         </div>
       </div>

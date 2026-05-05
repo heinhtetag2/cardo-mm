@@ -8,6 +8,7 @@ import {
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { useToast } from '../components/Toast'
 import { useTheme, useAccent, ACCENTS, type AccentId } from '../theme'
+import { useLang, useT, LANGS } from '../i18n'
 import type { View } from '../nav'
 
 /* ---------- shared primitives ---------- */
@@ -77,8 +78,9 @@ function ActionRow({ icon, label, sub, danger, onClick }: { icon: React.ReactNod
 
 export function SubscriptionScreen({ onBack }: { onBack: () => void }) {
   const [plan, setPlan] = useState<'free' | 'pro' | 'team'>('free')
+  const t = useT()
   return (
-    <Page title="Subscription" onBack={onBack}>
+    <Page title={t('sub.title')} onBack={onBack}>
       <div className="relative overflow-hidden p-5 rounded-[20px] border border-brand/30 bg-gradient-to-br from-brand/15 via-surface to-surface mb-6">
         <div className="flex items-center gap-3">
           <div className="h-12 w-12 rounded-2xl bg-brand-gradient grid place-items-center shadow-glow">
@@ -119,8 +121,9 @@ export function PrivacyScreen({ onBack }: { onBack: () => void }) {
   const [showEmail, setShowEmail] = useState(false)
   const [searchByPhone, setSearchByPhone] = useState(true)
   const [nearbyShare, setNearbyShare] = useState(true)
+  const t = useT()
   return (
-    <Page title="Privacy" onBack={onBack}>
+    <Page title={t('privacy.title')} onBack={onBack}>
       <SectionLabel>Who can find me</SectionLabel>
       <Group>
         <ToggleRow icon={<Eye size={15} />} label="Discoverable" sub="Allow others to find your card" value={discoverable} onChange={setDiscoverable} />
@@ -147,8 +150,9 @@ export function SecurityScreen({ onBack, go }: { onBack: () => void; go: (v: Vie
   const [twoFactor, setTwoFactor] = useState(false)
   const [confirmAll, setConfirmAll] = useState(false)
   const toast = useToast()
+  const t = useT()
   return (
-    <Page title="Security" onBack={onBack}>
+    <Page title={t('security.title')} onBack={onBack}>
       <SectionLabel>Sign-in</SectionLabel>
       <Group>
         <ActionRow icon={<Smartphone size={15} />} label="Phone number" sub="+95 9 •••• 3421" onClick={() => go({ kind: 'security-phone' })} />
@@ -209,6 +213,7 @@ function ConfirmDialog({
 
 export function SecurityPhoneScreen({ onBack }: { onBack: () => void }) {
   const toast = useToast()
+  const tt = useT()
   const [step, setStep] = useState<'enter' | 'verify'>('enter')
   const [number, setNumber] = useState('')
   const [otp, setOtp] = useState('')
@@ -248,7 +253,7 @@ export function SecurityPhoneScreen({ onBack }: { onBack: () => void }) {
   }
 
   return (
-    <Page title="Change phone" onBack={onBack}>
+    <Page title={tt('security.changePhone')} onBack={onBack}>
       {step === 'enter' ? (
         <>
           <SectionLabel>Current</SectionLabel>
@@ -359,6 +364,7 @@ export function SecurityPhoneScreen({ onBack }: { onBack: () => void }) {
 
 export function SecuritySessionScreen({ onBack, device }: { onBack: () => void; device: 'iphone' | 'mac' }) {
   const toast = useToast()
+  const t = useT()
   const [confirm, setConfirm] = useState(false)
 
   const data = device === 'iphone'
@@ -469,8 +475,9 @@ export function SecuritySessionScreen({ onBack, device }: { onBack: () => void; 
 export function DataStorageScreen({ onBack }: { onBack: () => void }) {
   const [autoBackup, setAutoBackup] = useState(true)
   const [hdImages, setHdImages] = useState(false)
+  const t = useT()
   return (
-    <Page title="Data & Storage" onBack={onBack}>
+    <Page title={t('data.title')} onBack={onBack}>
       <div className="p-4 rounded-[20px] border border-line/60 bg-surface/60 mb-5">
         <div className="flex items-center justify-between mb-3">
           <p className="text-[13px] text-ink-dim">App storage</p>
@@ -509,24 +516,17 @@ export function DataStorageScreen({ onBack }: { onBack: () => void }) {
 /* ---------- Language ---------- */
 
 export function LanguageScreen({ onBack }: { onBack: () => void }) {
-  const [lang, setLang] = useState('en')
-  const langs = [
-    { id: 'en', label: 'English', sub: 'English' },
-    { id: 'my', label: 'Burmese', sub: 'မြန်မာ' },
-    { id: 'zh', label: 'Chinese', sub: '中文 (简体)' },
-    { id: 'th', label: 'Thai', sub: 'ไทย' },
-    { id: 'ja', label: 'Japanese', sub: '日本語' },
-    { id: 'ko', label: 'Korean', sub: '한국어' },
-  ]
+  const { lang, setLang } = useLang()
+  const t = useT()
   return (
-    <Page title="Language" onBack={onBack}>
-      <SectionLabel>App language</SectionLabel>
+    <Page title={t('language.title')} onBack={onBack}>
+      <SectionLabel>{t('language.app')}</SectionLabel>
       <Group>
-        {langs.map((l) => (
+        {LANGS.map((l) => (
           <ChoiceRow key={l.id} label={l.label} sub={l.sub} selected={lang === l.id} onSelect={() => setLang(l.id)} />
         ))}
       </Group>
-      <p className="text-[11.5px] text-ink-dim ml-1">Changing the language will restart the app.</p>
+      <p className="text-[11.5px] text-ink-dim ml-1">{t('language.note')}</p>
     </Page>
   )
 }
@@ -536,17 +536,18 @@ export function LanguageScreen({ onBack }: { onBack: () => void }) {
 export function AppearanceScreen({ onBack }: { onBack: () => void }) {
   const { theme, setTheme } = useTheme()
   const { accent, setAccent } = useAccent()
+  const t = useT()
   const accentIds: AccentId[] = ['blue', 'violet', 'emerald', 'rose', 'amber']
   return (
-    <Page title="Appearance" onBack={onBack}>
-      <SectionLabel>Theme</SectionLabel>
+    <Page title={t('appearance.title')} onBack={onBack}>
+      <SectionLabel>{t('appearance.theme')}</SectionLabel>
       <Group>
-        <ChoiceRow icon={<Monitor size={15} />} label="System" sub="Match device setting" selected={theme === 'system'} onSelect={() => setTheme('system')} />
-        <ChoiceRow icon={<Moon size={15} />} label="Dark" sub="Always dark" selected={theme === 'dark'} onSelect={() => setTheme('dark')} />
-        <ChoiceRow icon={<Sun size={15} />} label="Light" sub="Always light" selected={theme === 'light'} onSelect={() => setTheme('light')} />
+        <ChoiceRow icon={<Monitor size={15} />} label={t('appearance.system')} sub={t('appearance.system.sub')} selected={theme === 'system'} onSelect={() => setTheme('system')} />
+        <ChoiceRow icon={<Moon size={15} />}    label={t('appearance.dark')}   sub={t('appearance.dark.sub')}   selected={theme === 'dark'}   onSelect={() => setTheme('dark')} />
+        <ChoiceRow icon={<Sun size={15} />}     label={t('appearance.light')}  sub={t('appearance.light.sub')}  selected={theme === 'light'}  onSelect={() => setTheme('light')} />
       </Group>
 
-      <SectionLabel>Accent color</SectionLabel>
+      <SectionLabel>{t('appearance.accent')}</SectionLabel>
       <div className="rounded-[20px] border border-line/60 bg-surface/60 p-4 mb-5 flex items-center gap-3">
         {accentIds.map((id) => (
           <button
@@ -571,8 +572,9 @@ export function NoticeScreen({ onBack }: { onBack: () => void }) {
     { tag: 'Event', title: 'Yangon Tech Mixer · Apr 30', date: 'Apr 20, 2026', body: 'Tap into Nearby at the venue to swap cards.' },
     { tag: 'Notice', title: 'Scheduled maintenance', date: 'Apr 15, 2026', body: 'Brief downtime on Apr 28 from 02:00–03:00 MMT.' },
   ]
+  const t = useT()
   return (
-    <Page title="Notice" onBack={onBack}>
+    <Page title={t('notice.title')} onBack={onBack}>
       {items.map((n, i) => (
         <div key={i} className="p-4 rounded-[20px] border border-line/60 bg-surface/60 mb-3">
           <div className="flex items-center gap-2 mb-1.5">
@@ -591,15 +593,16 @@ export function NoticeScreen({ onBack }: { onBack: () => void }) {
 
 export function FAQScreen({ onBack }: { onBack: () => void }) {
   const [open, setOpen] = useState<number | null>(0)
+  const t = useT()
   const qa = [
-    { q: 'How do I share my card?', a: 'Tap "My Card" then share via QR, link, or Nearby.' },
-    { q: 'Is Swapo free?', a: 'Yes. The Free plan includes 3 AI credits per month, and Pro unlocks unlimited use.' },
-    { q: 'Can I have multiple cards?', a: 'Multi-card is available on Pro. Switch between work and personal in one tap.' },
-    { q: 'How does Nearby work?', a: 'Nearby uses Bluetooth to find other Swapo users at the same venue. You can turn it off anytime.' },
-    { q: 'How do I delete my account?', a: 'Settings → Privacy → Delete account. This is permanent.' },
+    { q: t('faq.q1'), a: t('faq.a1') },
+    { q: t('faq.q2'), a: t('faq.a2') },
+    { q: t('faq.q3'), a: t('faq.a3') },
+    { q: t('faq.q4'), a: t('faq.a4') },
+    { q: t('faq.q5'), a: t('faq.a5') },
   ]
   return (
-    <Page title="FAQ" onBack={onBack}>
+    <Page title={t('faq.title')} onBack={onBack}>
       {qa.map((item, i) => (
         <button
           key={i}
@@ -620,8 +623,9 @@ export function FAQScreen({ onBack }: { onBack: () => void }) {
 /* ---------- Terms & Policies ---------- */
 
 export function TermsScreen({ onBack }: { onBack: () => void }) {
+  const t = useT()
   return (
-    <Page title="Terms & Policies" onBack={onBack}>
+    <Page title={t('terms.title')} onBack={onBack}>
       <Group>
         <ActionRow icon={<FileText size={15} />} label="Terms of Service" sub="Updated Mar 2026" />
         <ActionRow icon={<ShieldCheck size={15} />} label="Privacy Policy" sub="How we handle your data" />
@@ -636,8 +640,9 @@ export function TermsScreen({ onBack }: { onBack: () => void }) {
 /* ---------- Help & Support ---------- */
 
 export function HelpScreen({ onBack }: { onBack: () => void }) {
+  const t = useT()
   return (
-    <Page title="Help & Support" onBack={onBack}>
+    <Page title={t('help.title')} onBack={onBack}>
       <SectionLabel>Get answers</SectionLabel>
       <Group>
         <ActionRow icon={<Search size={15} />} label="Search help articles" />
@@ -663,8 +668,9 @@ export function HelpScreen({ onBack }: { onBack: () => void }) {
 /* ---------- About ---------- */
 
 export function AboutScreen({ onBack }: { onBack: () => void }) {
+  const t = useT()
   return (
-    <Page title="About" onBack={onBack}>
+    <Page title={t('about.title')} onBack={onBack}>
       <div className="flex flex-col items-center text-center pt-2 pb-6">
         <div className="h-16 w-16 rounded-2xl bg-brand-gradient grid place-items-center shadow-glow mb-3">
           <Sparkles size={26} className="text-white" strokeWidth={1.8} />

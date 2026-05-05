@@ -6,6 +6,7 @@ import {
 import { InputRow } from '../components/InputRow'
 import { LocationPicker, LocationPickerRow } from '../components/LocationPicker'
 import { WebsiteRow } from '../components/WebsiteRow'
+import { useT } from '../i18n'
 
 type Country = { code: string; name: string; flag: string; dial: string }
 
@@ -57,29 +58,19 @@ export type OnboardingData = {
   nearby?: boolean
 }
 
-const slides = [
-  {
-    eyebrow: 'Capture',
-    title: 'Snap any card.\nKeep every detail.',
-    body: 'Swapo extracts names, roles, and contact info from a single photo. Instantly searchable, never lost.',
-  },
-  {
-    eyebrow: 'Exchange',
-    title: 'Trade in a tap.',
-    body: 'Share your card over QR, NFC, or Nearby. Two phones, no paper, no friction.',
-  },
-  {
-    eyebrow: 'Personalize',
-    title: 'Make it yours.',
-    body: 'Generate a polished card or a brand mark in seconds. Edit the words, keep the look.',
-  },
-] as const
+type Slide = { eyebrow: string; title: string; body: string }
 
 export function OnboardingScreen({
   onDone,
 }: {
   onDone: (info: OnboardingData) => void
 }) {
+  const t = useT()
+  const slides: Slide[] = [
+    { eyebrow: t('onb.feat.s1.eyebrow'), title: t('onb.feat.s1.title'), body: t('onb.feat.s1.body') },
+    { eyebrow: t('onb.feat.s2.eyebrow'), title: t('onb.feat.s2.title'), body: t('onb.feat.s2.body') },
+    { eyebrow: t('onb.feat.s3.eyebrow'), title: t('onb.feat.s3.title'), body: t('onb.feat.s3.body') },
+  ]
   const [step, setStep] = useState<Step>('welcome')
   const [slide, setSlide] = useState(0)
   const [isSignIn, setIsSignIn] = useState(false)
@@ -153,6 +144,7 @@ export function OnboardingScreen({
 
       {step === 'feat' && (
         <Features
+          slides={slides}
           slide={slide}
           total={totalSlides}
           onBack={back}
@@ -211,6 +203,7 @@ export function OnboardingScreen({
 /* ───────── Welcome ───────── */
 
 function Welcome({ onContinue, onSignIn }: { onContinue: () => void; onSignIn: () => void }) {
+  const t = useT()
   return (
     <div className="relative flex-1 flex flex-col px-7 pt-20 pb-10 animate-fade-in overflow-hidden">
       <WelcomeBackdrop />
@@ -226,12 +219,12 @@ function Welcome({ onContinue, onSignIn }: { onContinue: () => void; onSignIn: (
       </div>
 
       <div className="relative mt-auto mb-12 animate-slide-up">
-        <p className="text-[12px] font-semibold text-brand mb-3">Connect smarter</p>
+        <p className="text-[12px] font-semibold text-brand mb-3">{t('onb.welcome.kicker')}</p>
         <h1 className="text-[36px] font-bold tracking-[-0.02em] leading-[1.04] text-balance">
-          The paper card,<br />reimagined.
+          {t('onb.welcome.h1.1')}<br />{t('onb.welcome.h1.2')}
         </h1>
         <p className="text-[14px] text-ink-muted mt-5 leading-relaxed max-w-[300px]">
-          A modern way to keep, share, and design business cards.
+          {t('onb.welcome.tagline')}
         </p>
       </div>
 
@@ -240,13 +233,13 @@ function Welcome({ onContinue, onSignIn }: { onContinue: () => void; onSignIn: (
           onClick={onContinue}
           className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
         >
-          Get started
+          {t('onb.welcome.cta')}
         </button>
         <button
           onClick={onSignIn}
           className="w-full pt-[15px] pb-3.5 rounded-2xl border border-line/70 bg-surface/60 text-[14.5px] font-medium text-ink-muted hover:border-line-strong transition"
         >
-          I already have an account
+          {t('onb.welcome.signin')}
         </button>
       </div>
     </div>
@@ -308,11 +301,13 @@ function WelcomeBackdrop() {
 /* ───────── Feature carousel ───────── */
 
 function Features({
-  slide, total, onBack, onSkip, onNext,
+  slides, slide, total, onBack, onSkip, onNext,
 }: {
+  slides: Slide[]
   slide: number; total: number
   onBack: () => void; onSkip: () => void; onNext: () => void
 }) {
+  const t = useT()
   const s = slides[slide]
   return (
     <div className="relative flex-1 flex flex-col">
@@ -345,7 +340,7 @@ function Features({
             onClick={onNext}
             className="h-12 px-5 pt-px rounded-2xl bg-ink text-canvas text-[14.5px] font-semibold flex items-center justify-center active:scale-[0.99] transition"
           >
-            {slide < total - 1 ? 'Continue' : 'Sign up'}
+            {slide < total - 1 ? t('onb.feat.continue') : t('onb.welcome.cta')}
           </button>
         </div>
       </div>
@@ -363,6 +358,7 @@ function PhonePane({
   onBack: () => void; onNext: () => void
   isSignIn: boolean
 }) {
+  const t = useT()
   const [pickerOpen, setPickerOpen] = useState(false)
   const digits = phone.replace(/\D/g, '')
   const valid = digits.length >= 7
@@ -389,17 +385,15 @@ function PhonePane({
 
       <div className="flex-1 flex flex-col px-5 pt-4 pb-10">
         <div className="px-2">
-          <StepEyebrow>{isSignIn ? 'Sign in · Step 1 of 2' : 'Step 1 of 4'}</StepEyebrow>
-          <Headline>{isSignIn ? <>Welcome<br />back.</> : <>What's your<br />number?</>}</Headline>
+          <StepEyebrow>{isSignIn ? t('onb.phone.signin.eyebrow') : t('onb.phone.eyebrow')}</StepEyebrow>
+          <Headline>{isSignIn ? t('onb.otp.signin.title') : t('onb.phone.title')}</Headline>
           <SubBody>
-            {isSignIn
-              ? 'Enter the phone number on your Swapo account. We\'ll text a 6-digit code to confirm.'
-              : 'We\'ll text you a 6-digit code to verify it\'s really you. Standard rates may apply.'}
+            {isSignIn ? t('onb.otp.signin.body') : t('onb.phone.body')}
           </SubBody>
         </div>
 
         <div className="mt-6">
-          <SectionLabel>Phone number</SectionLabel>
+          <SectionLabel>{t('account.row.phone')}</SectionLabel>
           <div className="flex items-stretch gap-2">
             <button
               type="button"
@@ -421,7 +415,7 @@ function PhonePane({
             />
           </div>
           <p className="text-[11.5px] text-ink-dim mt-2 ml-1">
-            We'll never share your number.
+            {t('onb.privacy.note')}
           </p>
         </div>
 
@@ -430,7 +424,7 @@ function PhonePane({
           disabled={!valid}
           className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
         >
-          Send code
+          {t('onb.phone.cta')}
         </button>
       </div>
 
@@ -454,6 +448,7 @@ function OtpPane({
   phone: string; otp: string; setOtp: (v: string) => void
   onBack: () => void; onNext: () => void
 }) {
+  const tt = useT()
   const refs = useRef<(HTMLInputElement | null)[]>([])
   const [seconds, setSeconds] = useState(60)
   const valid = otp.length === 6
@@ -496,16 +491,15 @@ function OtpPane({
 
       <div className="flex-1 flex flex-col px-5 pt-4 pb-10">
         <div className="px-2">
-          <StepEyebrow>Step 2 of 4</StepEyebrow>
-          <Headline>Enter the code.</Headline>
+          <StepEyebrow>{tt('onb.otp.eyebrow')}</StepEyebrow>
+          <Headline>{tt('onb.otp.title')}</Headline>
           <SubBody>
-            We sent a 6-digit code to <span className="text-ink-muted font-medium">+{country.dial} {phone || '—'}</span>.
-            For this prototype, type any 6 digits.
+            {tt('onb.otp.body', { phone: `+${country.dial} ${phone || '—'}` })}
           </SubBody>
         </div>
 
         <div className="mt-6">
-          <SectionLabel>Verification code</SectionLabel>
+          <SectionLabel>{tt('onb.otp.title')}</SectionLabel>
           <div className="flex justify-between gap-2">
             {Array.from({ length: 6 }).map((_, i) => (
               <input
@@ -531,7 +525,7 @@ function OtpPane({
             disabled={seconds > 0}
             className="text-ink-muted disabled:text-ink-dim font-medium"
           >
-            Resend code
+            {tt('onb.otp.resend')}
           </button>
           <span className="text-ink-dim tabular-nums">
             {seconds > 0 ? `in ${String(Math.floor(seconds / 60)).padStart(1, '0')}:${String(seconds % 60).padStart(2, '0')}` : 'available'}
@@ -543,7 +537,7 @@ function OtpPane({
           disabled={!valid}
           className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
         >
-          Verify
+          {tt('common.confirm')}
         </button>
       </div>
     </div>
@@ -570,6 +564,7 @@ function ProfilePane({
   bio: string; setBio: (v: string) => void
   onBack: () => void; onNext: () => void
 }) {
+  const t = useT()
   const [pickerOpen, setPickerOpen] = useState(false)
   const valid = name.trim().length >= 2 && role.trim().length >= 2
   const BIO_MAX = 160
@@ -580,9 +575,9 @@ function ProfilePane({
 
       <div className="flex-1 min-h-0 overflow-y-auto scrollbar-hide px-5 pt-4 pb-6">
         <div className="px-2">
-          <StepEyebrow>Step 3 of 4</StepEyebrow>
-          <Headline>Set up your<br />card.</Headline>
-          <SubBody>This is what people see when you share. You can edit anything later.</SubBody>
+          <StepEyebrow>{t('onb.profile.eyebrow')}</StepEyebrow>
+          <Headline>{t('onb.profile.title')}</Headline>
+          <SubBody>{t('onb.profile.subtitle')}</SubBody>
         </div>
 
         {/* Avatar */}
@@ -591,38 +586,38 @@ function ProfilePane({
             type="button"
             onClick={(e) => { e.preventDefault() }}
             className="relative h-24 w-24 rounded-full border-2 border-dashed border-line-strong bg-surface grid place-items-center"
-            aria-label="Add photo"
+            aria-label={t('form.addPhoto')}
           >
             <Camera size={20} className="text-ink-dim" strokeWidth={1.8} />
             <span className="absolute -bottom-1 px-2 py-0.5 rounded-full bg-surface-elevated border border-line/70 text-[10px] font-semibold text-ink-muted">
-              Add photo
+              {t('form.addPhoto')}
             </span>
           </button>
         </div>
 
-        <SectionLabel>Identity</SectionLabel>
+        <SectionLabel>{t('onb.profile.section.identity')}</SectionLabel>
         <div className="space-y-3 mb-6">
-          <InputRow icon={<User size={15} />} placeholder="Full name" value={name} onChange={setName} autoFocus />
-          <InputRow icon={<Briefcase size={15} />} placeholder="Role / Title" value={role} onChange={setRole} />
-          <InputRow icon={<Building2 size={15} />} placeholder="Company" value={company} onChange={setCompany} />
+          <InputRow icon={<User size={15} />}      placeholder={t('onb.profile.placeholder.name')}    value={name}    onChange={setName} autoFocus />
+          <InputRow icon={<Briefcase size={15} />} placeholder={t('onb.profile.placeholder.role')}    value={role}    onChange={setRole} />
+          <InputRow icon={<Building2 size={15} />} placeholder={t('onb.profile.placeholder.company')} value={company} onChange={setCompany} />
         </div>
 
-        <SectionLabel>Contact</SectionLabel>
+        <SectionLabel>{t('onb.profile.section.contact')}</SectionLabel>
         <div className="space-y-3 mb-6">
           <InputRow icon={<Phone size={15} />} placeholder={`+${country.dial} 9 …`} value={phone} onChange={setPhone} type="tel" inputMode="tel" />
-          <InputRow icon={<Mail size={15} />} placeholder="email@company.mm" value={email} onChange={setEmail} type="email" inputMode="email" />
+          <InputRow icon={<Mail size={15} />}  placeholder={t('onb.profile.placeholder.email')} value={email} onChange={setEmail} type="email" inputMode="email" />
           <WebsiteRow value={website} onChange={setWebsite} />
           <LocationPickerRow value={city} onTap={() => setPickerOpen(true)} />
         </div>
 
-        <SectionLabel>About</SectionLabel>
+        <SectionLabel>{t('onb.profile.help')}</SectionLabel>
         <div className="rounded-[20px] border border-line/60 bg-surface/60 p-4 mb-2">
           <textarea
             value={bio}
             onChange={(e) => setBio(e.target.value.slice(0, BIO_MAX))}
             rows={3}
             className="w-full bg-transparent outline-none text-[13.5px] leading-relaxed resize-none placeholder:text-ink-dim"
-            placeholder="A short bio. What you do, what you're up to."
+            placeholder=""
           />
           <p className="text-[11px] text-ink-dim mt-1.5 text-right tabular-nums">{bio.length} / {BIO_MAX}</p>
         </div>
@@ -634,7 +629,7 @@ function ProfilePane({
           disabled={!valid}
           className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
         >
-          Continue
+          {t('onb.profile.continue')}
         </button>
       </div>
 
@@ -658,27 +653,28 @@ function PermissionsPane({
   nearbyOn: boolean; setNearbyOn: (v: boolean) => void
   onBack: () => void; onNext: () => void
 }) {
+  const t = useT()
   return (
     <div className="relative flex-1 flex flex-col animate-fade-in">
       <TopBar onBack={onBack} onSkip={onNext} />
 
       <div className="flex-1 flex flex-col px-7 pt-4 pb-10">
-        <StepEyebrow>Step 4 of 4</StepEyebrow>
-        <Headline>Two quick<br />toggles.</Headline>
-        <SubBody>Both are off-by-default in real life. We're asking up front so Swapo works on day one. Change anytime in Settings.</SubBody>
+        <StepEyebrow>{t('onb.permissions.eyebrow')}</StepEyebrow>
+        <Headline>{t('onb.permissions.title')}</Headline>
+        <SubBody>{t('onb.permissions.body')}</SubBody>
 
         <div className="mt-6 space-y-3">
           <PermissionRow
             icon={<Bell size={18} strokeWidth={1.8} />}
-            title="Notifications"
-            sub="New scans, follow-up nudges, and product news. We don't send daily fluff."
+            title={t('onb.permissions.notif')}
+            sub={t('onb.permissions.notif.sub')}
             value={notifOn}
             onChange={setNotifOn}
           />
           <PermissionRow
             icon={<Radar size={18} strokeWidth={1.8} />}
-            title="Nearby visibility"
-            sub="Let other Swapo users at the same event see you. Off when you leave the venue."
+            title={t('onb.permissions.nearby')}
+            sub={t('onb.permissions.nearby.sub')}
             value={nearbyOn}
             onChange={setNearbyOn}
           />
@@ -688,7 +684,7 @@ function PermissionsPane({
           onClick={onNext}
           className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
         >
-          Continue
+          {t('onb.permissions.continue')}
         </button>
       </div>
     </div>
@@ -731,6 +727,7 @@ function DonePane({
 }: {
   data: OnboardingData; onBack: () => void; onEnter: () => void
 }) {
+  const t = useT()
   const initials = (data.name || 'You').split(/\s+/).map((p) => p[0]).slice(0, 2).join('').toUpperCase()
   return (
     <div className="relative flex-1 flex flex-col animate-fade-in">
@@ -742,13 +739,13 @@ function DonePane({
             <Check size={20} className="text-brand" strokeWidth={2.4} />
           </div>
           <p className="text-[12px] font-semibold text-brand mb-2">
-            You're all set
+            {t('common.done')}
           </p>
           <Headline>
-            Welcome to Swapo,<br />
+            {t('onb.done.title')}<br />
             <span className="text-ink">{(data.name || 'friend').split(' ')[0]}.</span>
           </Headline>
-          <SubBody>Here's how your card looks. Tap "Enter Swapo" to start using it.</SubBody>
+          <SubBody>{t('onb.done.body')}</SubBody>
         </div>
 
         {/* Card preview */}
@@ -778,13 +775,13 @@ function DonePane({
           </div>
         </div>
 
-        <p className="text-center text-[11.5px] text-ink-dim mt-4">Tap to edit later from My Card.</p>
+        <p className="text-center text-[11.5px] text-ink-dim mt-4">{t('onb.profile.help')}</p>
 
         <button
           onClick={onEnter}
           className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
         >
-          Enter Swapo
+          {t('onb.done.cta')}
         </button>
       </div>
     </div>
@@ -794,18 +791,19 @@ function DonePane({
 /* ───────── Shared bits ───────── */
 
 function TopBar({ onBack, onSkip }: { onBack: () => void; onSkip?: () => void }) {
+  const t = useT()
   return (
     <header className="relative z-30 flex items-center justify-between px-4 pt-12 pb-2">
       <button
         onClick={onBack}
-        aria-label="Back"
+        aria-label={t('common.back')}
         className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80 backdrop-blur"
       >
         <ChevronLeft size={20} strokeWidth={2} />
       </button>
       {onSkip ? (
         <button onClick={onSkip} className="text-[13px] font-medium text-ink-muted px-3 h-10 rounded-full">
-          Skip
+          {t('common.skip')}
         </button>
       ) : <div className="w-10" />}
     </header>

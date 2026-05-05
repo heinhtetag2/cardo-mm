@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { LogoutConfirm } from '../components/LogoutConfirm'
+import { useT, useLang, LANGS } from '../i18n'
 import type { View } from '../nav'
 
 export function SettingsScreen({
@@ -18,10 +19,13 @@ export function SettingsScreen({
   const [nearby, setNearby] = useState(true)
   const [reduceMotion, setReduceMotion] = useState(false)
   const [confirmLogout, setConfirmLogout] = useState(false)
+  const t = useT()
+  const { lang } = useLang()
+  const langSub = LANGS.find((l) => l.id === lang)?.label ?? 'English'
 
   return (
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
-      <SubScreenHeader title="Settings" onBack={onBack} />
+      <SubScreenHeader title={t('settings.title')} onBack={onBack} />
 
       <div className="px-5 pb-8">
         {/* Upgrade banner */}
@@ -33,38 +37,38 @@ export function SettingsScreen({
             <Star size={17} className="text-white" strokeWidth={1.8} />
           </div>
           <div className="flex-1 text-left">
-            <p className="text-[14px] font-semibold">Upgrade to Swapo Pro</p>
-            <p className="text-[11.5px] text-ink-dim mt-0.5">Unlimited AI, multi-card, analytics</p>
+            <p className="text-[14px] font-semibold">{t('settings.upgrade')}</p>
+            <p className="text-[11.5px] text-ink-dim mt-0.5">{t('settings.upgrade.sub')}</p>
           </div>
           <ChevronRight size={16} className="text-ink-dim" strokeWidth={1.8} />
         </button>
 
-        <SectionLabel>Notifications</SectionLabel>
+        <SectionLabel>{t('settings.section.notifications')}</SectionLabel>
         <Group>
-          <ToggleRow icon={<Bell size={15} />} label="Push notifications" sub="New scans, follow-ups, app news" value={push} onChange={setPush} />
-          <ToggleRow icon={<Globe size={15} />} label="Nearby visibility" sub="Let others see you at events" value={nearby} onChange={setNearby} />
+          <ToggleRow icon={<Bell size={15} />}  label={t('settings.push')}   sub={t('settings.push.sub')}   value={push}   onChange={setPush} />
+          <ToggleRow icon={<Globe size={15} />} label={t('settings.nearby')} sub={t('settings.nearby.sub')} value={nearby} onChange={setNearby} />
         </Group>
 
-        <SectionLabel>Preferences</SectionLabel>
+        <SectionLabel>{t('settings.section.preferences')}</SectionLabel>
         <Group>
-          <NavRow icon={<Globe size={15} />} label="Language" sub="English" onClick={() => go({ kind: 'language' })} />
-          <NavRow icon={<Moon size={15} />} label="Appearance" sub="Always dark" onClick={() => go({ kind: 'appearance' })} />
-          <ToggleRow icon={<Accessibility size={15} />} label="Reduce motion" sub="Less animation" value={reduceMotion} onChange={setReduceMotion} />
+          <NavRow    icon={<Globe size={15} />}         label={t('settings.language')}      sub={langSub}                       onClick={() => go({ kind: 'language' })} />
+          <NavRow    icon={<Moon size={15} />}          label={t('settings.appearance')}    sub={t('settings.appearance.sub')}  onClick={() => go({ kind: 'appearance' })} />
+          <ToggleRow icon={<Accessibility size={15} />} label={t('settings.reduceMotion')}  sub={t('settings.reduceMotion.sub')} value={reduceMotion} onChange={setReduceMotion} />
         </Group>
 
-        <SectionLabel>Account</SectionLabel>
+        <SectionLabel>{t('settings.section.account')}</SectionLabel>
         <Group>
-          <NavRow icon={<CreditCard size={15} />} label="Subscription" sub="Free plan" onClick={() => go({ kind: 'subscription' })} />
-          <NavRow icon={<Lock size={15} />} label="Privacy" sub="Who can find me" onClick={() => go({ kind: 'privacy' })} />
-          <NavRow icon={<Shield size={15} />} label="Security" sub="Phone, biometrics" onClick={() => go({ kind: 'security' })} />
-          <NavRow icon={<Database size={15} />} label="Data & storage" sub="Export, clear cache" onClick={() => go({ kind: 'data-storage' })} />
+          <NavRow icon={<CreditCard size={15} />} label={t('settings.subscription')} sub={t('settings.subscription.sub')} onClick={() => go({ kind: 'subscription' })} />
+          <NavRow icon={<Lock size={15} />}       label={t('settings.privacy')}      sub={t('settings.privacy.sub')}      onClick={() => go({ kind: 'privacy' })} />
+          <NavRow icon={<Shield size={15} />}     label={t('settings.security')}     sub={t('settings.security.sub')}     onClick={() => go({ kind: 'security' })} />
+          <NavRow icon={<Database size={15} />}   label={t('settings.dataStorage')}  sub={t('settings.dataStorage.sub')}  onClick={() => go({ kind: 'data-storage' })} />
         </Group>
 
-        <SectionLabel>Help & About</SectionLabel>
+        <SectionLabel>{t('settings.section.helpAbout')}</SectionLabel>
         <Group>
-          <NavRow icon={<HelpCircle size={15} />} label="Help & support" sub="Contact us, report a problem" onClick={() => go({ kind: 'help' })} />
-          <NavRow icon={<Share2 size={15} />} label="Invite a friend" sub="Get 1 month of Pro free" onClick={() => go({ kind: 'invite' })} />
-          <NavRow icon={<Info size={15} />} label="About Swapo" sub="Version 1.0.0" onClick={() => go({ kind: 'about' })} />
+          <NavRow icon={<HelpCircle size={15} />} label={t('settings.help')}   sub={t('settings.help.sub')}   onClick={() => go({ kind: 'help' })} />
+          <NavRow icon={<Share2 size={15} />}     label={t('settings.invite')} sub={t('settings.invite.sub')} onClick={() => go({ kind: 'invite' })} />
+          <NavRow icon={<Info size={15} />}       label={t('settings.about')}  sub={t('settings.about.sub')}  onClick={() => go({ kind: 'about' })} />
         </Group>
 
         <button
@@ -72,7 +76,7 @@ export function SettingsScreen({
           className="w-full mt-1 p-3.5 rounded-2xl border border-line/70 bg-surface/60 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400 hover:border-rose-500/40 transition"
         >
           <LogOut size={15} strokeWidth={1.8} />
-          <span>Log out</span>
+          <span>{t('settings.logout')}</span>
         </button>
       </div>
 

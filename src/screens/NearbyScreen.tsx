@@ -1,6 +1,7 @@
 import { Radio, MapPin } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { useToast } from '../components/Toast'
+import { useT } from '../i18n'
 import type { View } from '../nav'
 
 const nearby = [
@@ -12,11 +13,12 @@ const nearby = [
 
 export function NearbyScreen({ onBack, go }: { onBack: () => void; go: (v: View) => void }) {
   const toast = useToast()
+  const t = useT()
   return (
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
-      <SubScreenHeader title="Nearby Cards" onBack={onBack} right={
-        <button onClick={() => toast.show('Live discovery is on', 'info')} className="px-2.5 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-[10.5px] font-semibold flex items-center gap-1.5">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live
+      <SubScreenHeader title={t('nearby.titleHeader')} onBack={onBack} right={
+        <button onClick={() => toast.show(t('nearby.live.toast'), 'info')} className="px-2.5 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-[10.5px] font-semibold flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> {t('nearby.live')}
         </button>
       } />
 
@@ -51,12 +53,12 @@ export function NearbyScreen({ onBack, go }: { onBack: () => void; go: (v: View)
 
       <div className="px-5 mb-3 flex items-end justify-between">
         <div className="flex items-center gap-2">
-          <p className="text-[16px] font-semibold leading-tight">Nearby users</p>
+          <p className="text-[16px] font-semibold leading-tight">{t('nearby.users')}</p>
           <span className="px-2 py-0.5 rounded-full bg-surface-elevated border border-line/60 text-[11px] font-semibold text-ink-muted tabular-nums">
             {nearby.length}
           </span>
         </div>
-        <p className="text-[11.5px] text-ink-dim pb-0.5">Within 100 m</p>
+        <p className="text-[11.5px] text-ink-dim pb-0.5">{t('nearby.within')}</p>
       </div>
 
       <div className="px-5 space-y-2.5 pb-8">
@@ -85,7 +87,7 @@ export function NearbyScreen({ onBack, go }: { onBack: () => void; go: (v: View)
                   </span>
                 </div>
               </div>
-              <span className="h-7 px-3 inline-flex items-center justify-center rounded-full bg-brand text-canvas text-[11px] font-semibold flex-shrink-0">Exchange</span>
+              <span className="h-7 px-3 inline-flex items-center justify-center rounded-full bg-brand text-canvas text-[11px] font-semibold flex-shrink-0">{t('nearby.cta.exchange')}</span>
             </button>
           )
         })}

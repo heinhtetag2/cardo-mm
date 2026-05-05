@@ -2,30 +2,32 @@ import { useEffect, useState } from 'react'
 import { Sparkles, Check, Type, Hash, Shapes, Layers, RefreshCw, Info } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import type { Creation } from '../data'
-
-const CARD_STATUS = ['Analyzing your brand…', 'Generating layouts…', 'Polishing details…']
-const LOGO_STATUS = ['Analyzing your brand…', 'Sketching marks…', 'Polishing details…']
+import { useT } from '../i18n'
 
 type Mode = 'card' | 'logo'
-
-const cardStyles = [
-  { id: 'minimal',   name: 'Minimal',   desc: 'Clean type, monochrome',   accent: 'from-zinc-700/60 to-zinc-900/60' },
-  { id: 'gradient',  name: 'Gradient',  desc: 'Bold color, modern',       accent: 'from-brand/40 to-brand-violet/40' },
-  { id: 'editorial', name: 'Editorial', desc: 'Serif elegance',            accent: 'from-amber-500/40 to-rose-500/40' },
-  { id: 'mono',      name: 'Mono',      desc: 'Black & white, typographic', accent: 'from-slate-700/50 to-slate-900/50' },
-]
-
-const logoTypes = [
-  { id: 'wordmark',    name: 'Wordmark',    desc: 'Brand name, set in type',  icon: <Type size={18} strokeWidth={1.8} /> },
-  { id: 'lettermark',  name: 'Lettermark',  desc: 'Initials in a mark',       icon: <Hash size={18} strokeWidth={1.8} /> },
-  { id: 'symbol',      name: 'Symbol',      desc: 'Abstract icon mark',        icon: <Shapes size={18} strokeWidth={1.8} /> },
-  { id: 'combination', name: 'Combination', desc: 'Symbol with brand name',    icon: <Layers size={18} strokeWidth={1.8} /> },
-]
 
 const logoTones = ['Professional', 'Playful', 'Bold', 'Elegant', 'Modern', 'Minimal']
 
 export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; mode: Mode; onSave: (c: Creation) => void }) {
+  const t = useT()
   const isLogo = mode === 'logo'
+
+  const cardStyles = [
+    { id: 'minimal',   name: t('aiCreate.style.minimal'),   desc: t('aiCreate.style.minimal.desc'),   accent: 'from-zinc-700/60 to-zinc-900/60' },
+    { id: 'gradient',  name: t('aiCreate.style.gradient'),  desc: t('aiCreate.style.gradient.desc'),  accent: 'from-brand/40 to-brand-violet/40' },
+    { id: 'editorial', name: t('aiCreate.style.editorial'), desc: t('aiCreate.style.editorial.desc'), accent: 'from-amber-500/40 to-rose-500/40' },
+    { id: 'mono',      name: t('aiCreate.style.mono'),      desc: t('aiCreate.style.mono.desc'),      accent: 'from-slate-700/50 to-slate-900/50' },
+  ]
+
+  const logoTypes = [
+    { id: 'wordmark',    name: t('aiCreate.logo.wordmark'),    desc: t('aiCreate.logo.wordmark.desc'),    icon: <Type size={18} strokeWidth={1.8} /> },
+    { id: 'lettermark',  name: t('aiCreate.logo.lettermark'),  desc: t('aiCreate.logo.lettermark.desc'),  icon: <Hash size={18} strokeWidth={1.8} /> },
+    { id: 'symbol',      name: t('aiCreate.logo.symbol'),      desc: t('aiCreate.logo.symbol.desc'),      icon: <Shapes size={18} strokeWidth={1.8} /> },
+    { id: 'combination', name: t('aiCreate.logo.combination'), desc: t('aiCreate.logo.combination.desc'), icon: <Layers size={18} strokeWidth={1.8} /> },
+  ]
+
+  const CARD_STATUS = [t('aiCreate.gen.cardA'), t('aiCreate.gen.cardB'), t('aiCreate.gen.cardC')]
+  const LOGO_STATUS = [t('aiCreate.gen.logoA'), t('aiCreate.gen.logoB'), t('aiCreate.gen.logoC')]
 
   const save = () => {
     onSave({
@@ -83,7 +85,7 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
       {/* Fixed top: header + stepper */}
       <div className="relative z-30 flex-shrink-0 bg-canvas/80 backdrop-blur">
         <SubScreenHeader
-          title={isLogo ? 'AI Logo Studio' : 'AI Card Studio'}
+          title={isLogo ? t('aiCreate.studio.logo') : t('aiCreate.studio.card')}
           onBack={step === 0 ? onBack : prev}
           variant="overlay"
           right={
@@ -109,28 +111,26 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
           <div className="animate-fade-in">
             {isLogo ? (
               <>
-                <h1 className="text-[24px] font-bold tracking-tight leading-tight">Tell us about your brand</h1>
-                <p className="text-[13px] text-ink-dim mt-1.5 mb-6">Swapo's AI will design 3 logos based on your brand details.</p>
-                <Field label="Brand name" value={name} onChange={setName} />
-                <SelectField label="Industry" value={industry} onChange={setIndustry} options={['Tech', 'Finance', 'Logistics', 'Creative', 'Healthcare', 'Government', 'F&B', 'Other']} />
-                <SelectField label="Brand tone" value={tone} onChange={setTone} options={logoTones} />
+                <h1 className="text-[24px] font-bold tracking-tight leading-tight">{t('aiCreate.step1.titleLogo')}</h1>
+                <p className="text-[13px] text-ink-dim mt-1.5 mb-6">{t('aiCreate.intro.logo')}</p>
+                <Field label={t('aiCreate.field.brand')} value={name} onChange={setName} />
+                <SelectField label={t('aiCreate.field.industryLbl')} value={industry} onChange={setIndustry} options={['Tech', 'Finance', 'Logistics', 'Creative', 'Healthcare', 'Government', 'F&B', 'Other']} />
+                <SelectField label={t('aiCreate.field.toneLbl')} value={tone} onChange={setTone} options={logoTones} />
               </>
             ) : (
               <>
-                <h1 className="text-[24px] font-bold tracking-tight leading-tight">Tell us about you</h1>
-                <p className="text-[13px] text-ink-dim mt-1.5 mb-6">Swapo's AI will design 3 cards based on your details.</p>
-                <Field label="Full name" value={name} onChange={setName} />
-                <Field label="Role / Title" value={role} onChange={setRole} />
-                <SelectField label="Industry" value={industry} onChange={setIndustry} options={['Tech', 'Finance', 'Logistics', 'Creative', 'Healthcare', 'Government', 'F&B', 'Other']} />
+                <h1 className="text-[24px] font-bold tracking-tight leading-tight">{t('aiCreate.step1.titleCard')}</h1>
+                <p className="text-[13px] text-ink-dim mt-1.5 mb-6">{t('aiCreate.intro.card')}</p>
+                <Field label={t('aiCreate.field.fullName')} value={name} onChange={setName} />
+                <Field label={t('aiCreate.field.roleTitle')} value={role} onChange={setRole} />
+                <SelectField label={t('aiCreate.field.industryLbl')} value={industry} onChange={setIndustry} options={['Tech', 'Finance', 'Logistics', 'Creative', 'Healthcare', 'Government', 'F&B', 'Other']} />
               </>
             )}
 
             <div className="flex items-start gap-2.5 px-3.5 py-3 mt-3 rounded-2xl border border-line/60 bg-surface-elevated">
               <Info size={14} className="text-ink-muted mt-0.5 flex-shrink-0" strokeWidth={1.8} />
               <p className="text-[12px] text-ink-dim leading-relaxed">
-                {isLogo
-                  ? "We'll suggest mark types, color, and typography that match your brand. You can edit anything after."
-                  : "We'll use these to suggest a tone, palette, and layout. You can always edit after."}
+                {isLogo ? t('aiCreate.info.logo') : t('aiCreate.info.card')}
               </p>
             </div>
           </div>
@@ -138,9 +138,9 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
 
         {step === 1 && !generating && (
           <div className="animate-fade-in">
-            <h1 className="text-[24px] font-bold tracking-tight leading-tight">{isLogo ? 'Pick a logo type' : 'Pick a style'}</h1>
+            <h1 className="text-[24px] font-bold tracking-tight leading-tight">{isLogo ? t('aiCreate.step2.titleLogo') : t('aiCreate.step2.titleCard')}</h1>
             <p className="text-[13px] text-ink-dim mt-1.5 mb-6">
-              {isLogo ? "Choose the kind of mark. You'll see 3 variations next." : "Choose a starting point. You'll see 3 variations next."}
+              {isLogo ? t('aiCreate.step2.bodyLogo') : t('aiCreate.step2.bodyCard')}
             </p>
             <div className="grid grid-cols-2 gap-3">
               {isLogo
@@ -234,7 +234,7 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
             </div>
 
             <h1 className="text-[20px] font-bold mt-7">
-              {isLogo ? 'Generating your logos…' : 'Generating your cards…'}
+              {isLogo ? t('aiCreate.gen.title.logo') : t('aiCreate.gen.title.card')}
             </h1>
             <p key={statusIdx} className="text-[13px] text-ink-dim mt-1.5 h-5 animate-fade-in">
               {(isLogo ? LOGO_STATUS : CARD_STATUS)[statusIdx]}
@@ -249,8 +249,8 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
 
         {step === 2 && (
           <div className="animate-fade-in">
-            <h1 className="text-[24px] font-bold tracking-tight leading-tight">Pick your favorite</h1>
-            <p className="text-[13px] text-ink-dim mt-1.5 mb-6">Tap to preview. Save the one you love.</p>
+            <h1 className="text-[24px] font-bold tracking-tight leading-tight">{t('aiCreate.step3.title')}</h1>
+            <p className="text-[13px] text-ink-dim mt-1.5 mb-6">{t('aiCreate.step3.body')}</p>
 
             <div className={`${isLogo ? 'grid grid-cols-1 gap-3' : 'space-y-3'}`}>
               {[0, 1, 2].map((i) =>
@@ -272,7 +272,7 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
             <div className="pointer-events-auto">
               {step < 2 ? (
                 <button onClick={next} className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center">
-                  {step === 1 ? 'Generate' : 'Next'}
+                  {step === 1 ? t('aiCreate.cta.generate') : t('aiCreate.cta.next')}
                 </button>
               ) : (
                 <>
@@ -280,15 +280,15 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
                     onClick={save}
                     className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center active:scale-[0.99] transition"
                   >
-                    {isLogo ? 'Save as my logo' : 'Save as my card'}
+                    {isLogo ? t('aiCreate.cta.saveLogo') : t('aiCreate.cta.saveCard')}
                   </button>
                   <button
                     onClick={regenerate}
                     className="w-full mt-1 py-3 text-[13px] text-ink-muted font-medium inline-flex items-center justify-center gap-1.5 hover:text-ink transition"
                   >
                     <RefreshCw size={13} strokeWidth={2} />
-                    Regenerate
-                    <span className="text-ink-dim">· 1 credit</span>
+                    {t('aiCreate.cta.regen')}
+                    <span className="text-ink-dim">{t('aiCreate.cta.regen.cost')}</span>
                   </button>
                 </>
               )}
@@ -332,6 +332,7 @@ function CardPreview({ index, name, role, industry, picked, onClick }: { index: 
 }
 
 function LogoPreview({ index, brand, tone, type, picked, onClick }: { index: number; brand: string; tone: string; type: string; picked: boolean; onClick: () => void }) {
+  const t = useT()
   const initials = brand.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase() || 'C'
   const palettes = [
     { from: '#1a2440', to: '#0c0d14', mark: 'text-white', accent: 'bg-brand' },
@@ -375,7 +376,7 @@ function LogoPreview({ index, brand, tone, type, picked, onClick }: { index: num
       <div className="px-4 py-3 flex items-center justify-between">
         <div>
           <p className="text-[13px] font-semibold capitalize">{type} · {tone.toLowerCase()}</p>
-          <p className="text-[11px] text-ink-dim mt-0.5">Variation {index + 1}</p>
+          <p className="text-[11px] text-ink-dim mt-0.5">{t('aiCreate.variation', { n: index + 1 })}</p>
         </div>
         {picked && (
           <div className="h-7 w-7 rounded-full bg-brand grid place-items-center shadow-glow">
