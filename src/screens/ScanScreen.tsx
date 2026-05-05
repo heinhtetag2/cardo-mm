@@ -181,9 +181,9 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
             website: 'baganheritage.mm',
             city: 'No. 142, Pyay Road, Sanchaung, Yangon',
           }}
-          saveLabel="Save to Cardo"
+          saveLabel="Save to Swapo"
           onSave={() => {
-            toast.show('Card saved to Cardo')
+            toast.show('Card saved to Swapo')
             setTimeout(finish, 500)
           }}
         />

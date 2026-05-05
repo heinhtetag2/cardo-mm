@@ -124,7 +124,7 @@ export const ads: Ad[] = [
     id: 'a1',
     title: 'Print premium NFC cards',
     subtitle: 'Tap-to-share, ships in 3 days · 20% off',
-    sponsor: 'Cardo Print',
+    sponsor: 'Swapo Print',
     accent: 'from-brand/25 to-brand-violet/25',
   },
   {
@@ -149,15 +149,15 @@ export const me = {
   company: 'Independent',
   city: 'Yangon',
   phone: '+95 9 123 456 789',
-  email: 'hein@cardo.mm',
-  website: 'cardo.mm/heinhtet',
+  email: 'hein@swapo.mm',
+  website: 'swapo.mm/heinhtet',
   bio: 'Designer building products for Myanmar professionals.',
 }
 
 export const account = {
   displayName: 'Hein Htet',
   loginPhoneMasked: '+95 9 •••• 3421',
-  recoveryEmail: 'hein@cardo.mm',
+  recoveryEmail: 'hein@swapo.mm',
   plan: 'free' as 'free' | 'pro',
   credits: 3,
   linked: ['Google'] as Array<'Google' | 'Apple' | 'Facebook'>,

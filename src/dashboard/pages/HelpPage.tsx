@@ -71,11 +71,11 @@ export function HelpPage() {
           </div>
           <h2 className="text-[18px] font-semibold mt-4">Talk to a human</h2>
           <p className="text-[12.5px] opacity-90 mt-2">
-            Cardo support is based in Yangon. We reply within one business day in English or မြန်မာဘာသာ.
+            Swapo support is based in Yangon. We reply within one business day in English or မြန်မာဘာသာ.
           </p>
           <div className="mt-5 space-y-2.5 text-[12.5px]">
-            <a className="flex items-center gap-2 opacity-90 hover:opacity-100 transition" href="mailto:hello@cardo.mm">
-              <Mail className="w-3.5 h-3.5" /> hello@cardo.mm
+            <a className="flex items-center gap-2 opacity-90 hover:opacity-100 transition" href="mailto:hello@swapo.mm">
+              <Mail className="w-3.5 h-3.5" /> hello@swapo.mm
             </a>
             <a className="flex items-center gap-2 opacity-90 hover:opacity-100 transition" href="#">
               <MessageCircle className="w-3.5 h-3.5" /> Chat with us (8a–8p MMT)

@@ -12,9 +12,9 @@ export function TopBar({
   return (
     <header className="relative z-30 flex items-center justify-between px-5 pt-12 pb-4">
       <div className="flex items-center gap-2.5">
-        <CardoMark />
+        <SwapoMark />
         <span className="text-[19px] font-bold tracking-tight">
-          CARDO<span className="text-brand">.</span>
+          SWAPO<span className="text-brand">.</span>
         </span>
       </div>
       <div className="flex items-center gap-2">
@@ -40,11 +40,12 @@ export function TopBar({
   )
 }
 
-function CardoMark() {
+function SwapoMark() {
   return (
     <div className="relative h-9 w-9 rounded-[10px] bg-gradient-to-br from-white to-white/85 grid place-items-center shadow-glow">
-      <span className="font-black text-[18px] -tracking-[0.04em] text-canvas leading-none">C</span>
+      <span className="font-black text-[18px] -tracking-[0.04em] text-canvas leading-none">S</span>
       <span className="absolute top-1.5 right-1.5 h-1 w-1 rounded-full bg-brand" />
+      <span className="absolute bottom-1.5 left-1.5 h-1 w-1 rounded-full bg-brand-violet" />
     </div>
   )
 }

@@ -14,7 +14,7 @@ export function LogoutConfirm({
         <div className="h-12 w-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 grid place-items-center mb-4 mx-auto">
           <LogOut size={20} className="text-rose-400" strokeWidth={1.8} />
         </div>
-        <h2 className="text-[16px] font-semibold text-center">Log out of Cardo?</h2>
+        <h2 className="text-[16px] font-semibold text-center">Log out of Swapo?</h2>
         <p className="text-[12.5px] text-ink-dim text-center mt-1.5 leading-relaxed">
           You'll need to sign back in with your phone number. Your saved cards stay on your account.
         </p>

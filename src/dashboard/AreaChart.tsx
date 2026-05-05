@@ -32,7 +32,7 @@ export function AreaChart({ points, height = 240 }: { points: Pt[]; height?: num
   return (
     <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" className="w-full" style={{ height }}>
       <defs>
-        <linearGradient id="cardoArea" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="swapoArea" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#5B8DEF" stopOpacity="0.28" />
           <stop offset="100%" stopColor="#5B8DEF" stopOpacity="0" />
         </linearGradient>
@@ -62,7 +62,7 @@ export function AreaChart({ points, height = 240 }: { points: Pt[]; height?: num
       )}
 
       {/* Area fill + line */}
-      <path d={areaPath} fill="url(#cardoArea)" />
+      <path d={areaPath} fill="url(#swapoArea)" />
       <path d={linePath} fill="none" stroke="#5B8DEF" strokeWidth="2" />
 
       {/* Dots */}

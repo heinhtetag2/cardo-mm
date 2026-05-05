@@ -43,7 +43,7 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
   }
 
   const [step, setStep] = useState(0)
-  const [name, setName] = useState(isLogo ? 'Cardo' : 'Hein Htet')
+  const [name, setName] = useState(isLogo ? 'Swapo' : 'Hein Htet')
   const [role, setRole] = useState('Product Designer')
   const [industry, setIndustry] = useState('Tech')
   const [tone, setTone] = useState('Modern')
@@ -110,7 +110,7 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
             {isLogo ? (
               <>
                 <h1 className="text-[24px] font-bold tracking-tight leading-tight">Tell us about your brand</h1>
-                <p className="text-[13px] text-ink-dim mt-1.5 mb-6">Cardo's AI will design 3 logos based on your brand details.</p>
+                <p className="text-[13px] text-ink-dim mt-1.5 mb-6">Swapo's AI will design 3 logos based on your brand details.</p>
                 <Field label="Brand name" value={name} onChange={setName} />
                 <SelectField label="Industry" value={industry} onChange={setIndustry} options={['Tech', 'Finance', 'Logistics', 'Creative', 'Healthcare', 'Government', 'F&B', 'Other']} />
                 <SelectField label="Brand tone" value={tone} onChange={setTone} options={logoTones} />
@@ -118,7 +118,7 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
             ) : (
               <>
                 <h1 className="text-[24px] font-bold tracking-tight leading-tight">Tell us about you</h1>
-                <p className="text-[13px] text-ink-dim mt-1.5 mb-6">Cardo's AI will design 3 cards based on your details.</p>
+                <p className="text-[13px] text-ink-dim mt-1.5 mb-6">Swapo's AI will design 3 cards based on your details.</p>
                 <Field label="Full name" value={name} onChange={setName} />
                 <Field label="Role / Title" value={role} onChange={setRole} />
                 <SelectField label="Industry" value={industry} onChange={setIndustry} options={['Tech', 'Finance', 'Logistics', 'Creative', 'Healthcare', 'Government', 'F&B', 'Other']} />
@@ -313,8 +313,8 @@ function CardPreview({ index, name, role, industry, picked, onClick }: { index: 
         <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-white/10 blur-3xl" />
         <div className="relative p-5 flex flex-col h-full justify-between">
           <div className="flex items-start justify-between">
-            <p className="text-[10.5px] tracking-[0.22em] font-bold text-white">CARDO·</p>
-            <div className="h-9 w-9 rounded-xl bg-white grid place-items-center text-canvas font-black text-[13px]">C</div>
+            <p className="text-[10.5px] tracking-[0.22em] font-bold text-white">SWAPO·</p>
+            <div className="h-9 w-9 rounded-xl bg-white grid place-items-center text-canvas font-black text-[13px]">S</div>
           </div>
           <div>
             <p className="text-[19px] font-bold">{name}</p>

@@ -34,8 +34,6 @@ import { useTheme, useAccent } from './theme'
 import type { Tab, View } from './nav'
 import type { Creation } from './data'
 
-const ONBOARD_KEY = 'cardo:onboarded'
-
 export default function App() {
   useTheme()
   useAccent()
@@ -44,10 +42,7 @@ export default function App() {
   const [view, setView] = useState<'phone' | 'dashboard'>('phone')
   const [creations, setCreations] = useState<Creation[]>([])
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
-  const [onboarded, setOnboarded] = useState(() => {
-    if (typeof window === 'undefined') return true
-    return localStorage.getItem(ONBOARD_KEY) === '1'
-  })
+  const [onboarded, setOnboarded] = useState(false)
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => {
@@ -72,7 +67,6 @@ export default function App() {
     setCreations((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)))
 
   const handleLogout = () => {
-    localStorage.removeItem(ONBOARD_KEY)
     setStack([])
     setTab('home')
     setCreations([])
@@ -88,12 +82,7 @@ export default function App() {
     return (
       <div className="relative h-full w-full flex items-center justify-center bg-canvas overflow-auto">
         <PhoneFrame>
-          <OnboardingScreen
-            onDone={() => {
-              localStorage.setItem(ONBOARD_KEY, '1')
-              setOnboarded(true)
-            }}
-          />
+          <OnboardingScreen onDone={() => setOnboarded(true)} />
         </PhoneFrame>
       </div>
     )
@@ -105,7 +94,7 @@ export default function App() {
       <button
         onClick={() => setView('dashboard')}
         className="hidden md:flex absolute left-6 lg:left-10 top-1/2 -translate-y-1/2 z-40 group items-center gap-2.5 h-12 pl-3 pr-4 rounded-full bg-surface-elevated/90 hover:bg-surface-higher border border-line/70 hover:border-brand/40 backdrop-blur transition shadow-soft"
-        aria-label="Open Cardo dashboard"
+        aria-label="Open Swapo dashboard"
       >
         <span className="h-8 w-8 rounded-full bg-brand-gradient grid place-items-center shadow-glow">
           <LayoutDashboard size={15} className="text-white" strokeWidth={2} />

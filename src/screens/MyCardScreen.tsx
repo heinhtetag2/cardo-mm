@@ -25,10 +25,10 @@ export function MyCardScreen({ onBack, go }: { onBack: () => void; go: (v: View)
           <div className="absolute -bottom-12 -left-12 h-40 w-40 rounded-full bg-brand-violet/15 blur-3xl" />
           <div className="relative flex items-start justify-between mb-8">
             <div>
-              <p className="text-[10.5px] tracking-[0.22em] font-bold text-brand">CARDO·</p>
-              <p className="text-[10.5px] font-medium text-ink-dim mt-1">Connect smarter</p>
+              <p className="text-[10.5px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
+              <p className="text-[10.5px] font-medium text-ink-dim mt-1">Cards in a tap</p>
             </div>
-            <div className="h-10 w-10 rounded-xl bg-white/95 grid place-items-center text-canvas font-black text-[14px]">C</div>
+            <div className="h-10 w-10 rounded-xl bg-white/95 grid place-items-center text-canvas font-black text-[14px]">S</div>
           </div>
           <div className="relative">
             <p className="text-[20px] font-bold tracking-tight leading-tight">{me.name}</p>

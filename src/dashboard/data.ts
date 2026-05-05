@@ -13,7 +13,7 @@ export type ActivityEvent = {
 export const DASH_USER = {
   firstName: 'Aung',
   lastName: 'Ko Ko',
-  email: 'aungkoko@cardo.mm',
+  email: 'aungkoko@swapo.mm',
   phone: '+95 9 7700 11 22',
   role: 'Marketing Lead',
   company: 'Bagan Heritage Co.',
@@ -130,7 +130,7 @@ export const RANGE_OPTIONS: { value: DashRange; label: string }[] = [
   { value: 'last_month', label: 'Last month' },
 ]
 
-// ---------- Saved contacts (mirrors mobile CardoScreen) ----------
+// ---------- Saved contacts (mirrors mobile SwapoScreen) ----------
 export type ContactSource = 'scan' | 'manual' | 'exchange' | 'ai' | 'nearby'
 export type ContactAccent = 'blue' | 'violet' | 'emerald' | 'amber' | 'rose' | 'slate' | 'teal'
 
@@ -326,7 +326,7 @@ export type Plan = {
 export const PLANS: Plan[] = [
   {
     id: 'free',
-    name: 'Cardo Free',
+    name: 'Swapo Free',
     pricePerMonth: 0,
     pricePerYear: 0,
     features: [
@@ -338,7 +338,7 @@ export const PLANS: Plan[] = [
   },
   {
     id: 'pro',
-    name: 'Cardo Pro',
+    name: 'Swapo Pro',
     pricePerMonth: 9900,
     pricePerYear: 99000,
     features: [
@@ -346,7 +346,7 @@ export const PLANS: Plan[] = [
       '120 AI credits / month',
       'Unlimited saved contacts',
       'NFC tap-to-share',
-      'Custom domain (you.cardo.mm)',
+      'Custom domain (you.swapo.mm)',
       'Card scan analytics',
     ],
     highlight: true,
@@ -354,7 +354,7 @@ export const PLANS: Plan[] = [
   },
   {
     id: 'business',
-    name: 'Cardo Business',
+    name: 'Swapo Business',
     pricePerMonth: 24900,
     pricePerYear: 249000,
     features: [
@@ -387,11 +387,11 @@ export type Invoice = {
 }
 
 export const INVOICES: Invoice[] = [
-  { id: 'INV-2026-04', date: '2026-04-01', description: 'Cardo Pro · Monthly', amount: 9900, method: 'KBZPay', status: 'paid' },
-  { id: 'INV-2026-03', date: '2026-03-01', description: 'Cardo Pro · Monthly', amount: 9900, method: 'KBZPay', status: 'paid' },
-  { id: 'INV-2026-02', date: '2026-02-01', description: 'Cardo Pro · Monthly', amount: 9900, method: 'Wave Pay', status: 'paid' },
-  { id: 'INV-2026-01', date: '2026-01-01', description: 'Cardo Pro · Monthly', amount: 9900, method: 'KBZPay', status: 'paid' },
-  { id: 'INV-2025-12', date: '2025-12-01', description: 'Cardo Pro · Monthly', amount: 9900, method: 'KBZPay', status: 'paid' },
+  { id: 'INV-2026-04', date: '2026-04-01', description: 'Swapo Pro · Monthly', amount: 9900, method: 'KBZPay', status: 'paid' },
+  { id: 'INV-2026-03', date: '2026-03-01', description: 'Swapo Pro · Monthly', amount: 9900, method: 'KBZPay', status: 'paid' },
+  { id: 'INV-2026-02', date: '2026-02-01', description: 'Swapo Pro · Monthly', amount: 9900, method: 'Wave Pay', status: 'paid' },
+  { id: 'INV-2026-01', date: '2026-01-01', description: 'Swapo Pro · Monthly', amount: 9900, method: 'KBZPay', status: 'paid' },
+  { id: 'INV-2025-12', date: '2025-12-01', description: 'Swapo Pro · Monthly', amount: 9900, method: 'KBZPay', status: 'paid' },
 ]
 
 export const CURRENT_PLAN: 'free' | 'pro' | 'business' = 'pro'
@@ -419,7 +419,7 @@ export const NOTIFICATION_PREFS: NotificationPref[] = [
   { id: 'np4', label: 'Trust level updates', description: 'Level-ups, milestones, achievements', enabled: true },
   { id: 'np5', label: 'Nearby exchange invites', description: 'When someone nearby wants to exchange', enabled: false },
   { id: 'np6', label: 'Weekly summary email', description: 'Sent every Monday morning', enabled: true },
-  { id: 'np7', label: 'Cardo product updates', description: 'New features, beta invites', enabled: false },
+  { id: 'np7', label: 'Swapo product updates', description: 'New features, beta invites', enabled: false },
 ]
 
 export type ConnectedApp = {
@@ -452,18 +452,18 @@ export const DASH_NOTIFICATIONS: DashNotification[] = [
   { id: 'n2', kind: 'scanned', primary: '4 people scanned your card', secondary: 'Yangon Tech Meetup', date: '2026-04-26T11:08:00', unread: true },
   { id: 'n3', kind: 'ai-gen', primary: 'AI Minimal v3 is ready', secondary: '2 credits used · view in AI Studio', date: '2026-04-25T19:14:00', unread: false },
   { id: 'n4', kind: 'level-up', primary: 'Trust Level 3 unlocked', secondary: 'Networker · verified profile + 100 saves', date: '2026-04-22T09:30:00', unread: false },
-  { id: 'n5', kind: 'system', primary: 'KBZPay payment received', secondary: 'Cardo Pro · April · 9,900 MMK', date: '2026-04-01T08:00:00', unread: false },
+  { id: 'n5', kind: 'system', primary: 'KBZPay payment received', secondary: 'Swapo Pro · April · 9,900 MMK', date: '2026-04-01T08:00:00', unread: false },
 ]
 
 // ---------- Help & FAQ ----------
 export type FAQEntry = { q: string; a: string }
 export const FAQ_ENTRIES: FAQEntry[] = [
-  { q: 'How does Cardo handle Myanmar phone numbers?', a: 'Cardo auto-formats +95 numbers and recognises both Myanmar and Latin digits when typing.' },
+  { q: 'How does Swapo handle Myanmar phone numbers?', a: 'Swapo auto-formats +95 numbers and recognises both Myanmar and Latin digits when typing.' },
   { q: 'Which payment methods are supported?', a: 'KBZPay, Wave Pay, AYA Pay, plus Visa/Mastercard/JCB and direct bank transfer to KBZ, AYA, or CB Bank.' },
   { q: 'Can I switch between English and မြန်မာ?', a: 'Yes, under Settings → Language. The full UI, including AI prompts, supports both.' },
   { q: 'What happens to my saved contacts if I cancel Pro?', a: 'They stay safe. You keep read-only access; the 200-contact cap only applies to new saves on the Free plan.' },
   { q: 'How do AI credits work?', a: 'Each preset costs 1–3 credits. Credits refresh on your billing date and unused credits do not roll over.' },
-  { q: 'Can my whole company use one Cardo account?', a: 'Use Cardo Business. Unlimited cards & seats, shared contacts, CSV sync, and priority Myanmar support.' },
+  { q: 'Can my whole company use one Swapo account?', a: 'Use Swapo Business. Unlimited cards & seats, shared contacts, CSV sync, and priority Myanmar support.' },
 ]
 
 export const HELP_LINKS = [

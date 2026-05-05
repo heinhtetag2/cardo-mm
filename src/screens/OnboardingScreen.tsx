@@ -61,7 +61,7 @@ const slides = [
   {
     eyebrow: 'Capture',
     title: 'Snap any card.\nKeep every detail.',
-    body: 'Cardo extracts names, roles, and contact info from a single photo. Instantly searchable, never lost.',
+    body: 'Swapo extracts names, roles, and contact info from a single photo. Instantly searchable, never lost.',
   },
   {
     eyebrow: 'Exchange',
@@ -216,11 +216,12 @@ function Welcome({ onContinue, onSignIn }: { onContinue: () => void; onSignIn: (
       <WelcomeBackdrop />
       <div className="relative flex items-center gap-3">
         <div className="relative h-11 w-11 rounded-[12px] bg-gradient-to-br from-white to-white/85 grid place-items-center shadow-glow">
-          <span className="font-black text-[22px] -tracking-[0.04em] text-canvas leading-none">C</span>
+          <span className="font-black text-[22px] -tracking-[0.04em] text-canvas leading-none">S</span>
           <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-brand" />
+          <span className="absolute bottom-1.5 left-1.5 h-1.5 w-1.5 rounded-full bg-brand-violet" />
         </div>
         <span className="text-[22px] font-bold tracking-tight">
-          CARDO<span className="text-brand">.</span>
+          SWAPO<span className="text-brand">.</span>
         </span>
       </div>
 
@@ -278,7 +279,7 @@ function WelcomeBackdrop() {
               <div className="h-1 w-14 rounded bg-white/40" />
             </div>
             <div className="h-7 w-7 rounded-lg bg-white/20 backdrop-blur-sm grid place-items-center">
-              <span className="text-[10px] font-black text-white leading-none">C</span>
+              <span className="text-[10px] font-black text-white leading-none">S</span>
             </div>
           </div>
         </div>
@@ -392,7 +393,7 @@ function PhonePane({
           <Headline>{isSignIn ? <>Welcome<br />back.</> : <>What's your<br />number?</>}</Headline>
           <SubBody>
             {isSignIn
-              ? 'Enter the phone number on your Cardo account. We\'ll text a 6-digit code to confirm.'
+              ? 'Enter the phone number on your Swapo account. We\'ll text a 6-digit code to confirm.'
               : 'We\'ll text you a 6-digit code to verify it\'s really you. Standard rates may apply.'}
           </SubBody>
         </div>
@@ -664,7 +665,7 @@ function PermissionsPane({
       <div className="flex-1 flex flex-col px-7 pt-4 pb-10">
         <StepEyebrow>Step 4 of 4</StepEyebrow>
         <Headline>Two quick<br />toggles.</Headline>
-        <SubBody>Both are off-by-default in real life. We're asking up front so Cardo works on day one. Change anytime in Settings.</SubBody>
+        <SubBody>Both are off-by-default in real life. We're asking up front so Swapo works on day one. Change anytime in Settings.</SubBody>
 
         <div className="mt-6 space-y-3">
           <PermissionRow
@@ -677,7 +678,7 @@ function PermissionsPane({
           <PermissionRow
             icon={<Radar size={18} strokeWidth={1.8} />}
             title="Nearby visibility"
-            sub="Let other Cardo users at the same event see you. Off when you leave the venue."
+            sub="Let other Swapo users at the same event see you. Off when you leave the venue."
             value={nearbyOn}
             onChange={setNearbyOn}
           />
@@ -744,10 +745,10 @@ function DonePane({
             You're all set
           </p>
           <Headline>
-            Welcome to Cardo,<br />
+            Welcome to Swapo,<br />
             <span className="text-ink">{(data.name || 'friend').split(' ')[0]}.</span>
           </Headline>
-          <SubBody>Here's how your card looks. Tap "Enter Cardo" to start using it.</SubBody>
+          <SubBody>Here's how your card looks. Tap "Enter Swapo" to start using it.</SubBody>
         </div>
 
         {/* Card preview */}
@@ -759,7 +760,7 @@ function DonePane({
 
             <div className="relative flex items-start justify-between mb-7">
               <div>
-                <p className="text-[10.5px] tracking-[0.22em] font-bold text-brand">CARDO·</p>
+                <p className="text-[10.5px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
                 <p className="text-[10px] font-medium text-ink-dim mt-1">{data.city || 'Yangon'}</p>
               </div>
               <div className="h-10 w-10 rounded-xl bg-white/95 grid place-items-center text-canvas font-black text-[14px]">
@@ -783,7 +784,7 @@ function DonePane({
           onClick={onEnter}
           className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
         >
-          Enter Cardo
+          Enter Swapo
         </button>
       </div>
     </div>
@@ -949,8 +950,8 @@ function CaptureVisual() {
         <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-brand/25 blur-3xl" />
         <div className="absolute inset-0 p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between">
-            <p className="text-[10px] tracking-[0.22em] font-bold text-brand">CARDO·</p>
-            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-canvas font-black text-[11px]">C</div>
+            <p className="text-[10px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
+            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-canvas font-black text-[11px]">S</div>
           </div>
           <div>
             <p className="text-[18px] font-bold text-white tracking-tight">Su Su Aung</p>
@@ -984,7 +985,7 @@ function ExchangeVisual() {
       </div>
 
       <div className="absolute -top-2 -right-2 h-9 w-9 rounded-full bg-canvas border border-line/70 grid place-items-center shadow-glow">
-        <span className="text-[10px] font-black tracking-[0.04em] text-brand">C·</span>
+        <span className="text-[10px] font-black tracking-[0.04em] text-brand">S·</span>
       </div>
     </div>
   )
@@ -1001,8 +1002,8 @@ function PersonalizeVisual() {
 
         <div className="absolute inset-0 p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between">
-            <p className="text-[10px] tracking-[0.22em] font-bold text-brand">CARDO·</p>
-            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-canvas font-black text-[11px]">C</div>
+            <p className="text-[10px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
+            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-canvas font-black text-[11px]">S</div>
           </div>
           <div>
             <p className="text-[18px] font-bold text-white tracking-tight">Your name here</p>

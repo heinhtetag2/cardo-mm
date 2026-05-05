@@ -24,7 +24,7 @@ export function RegisterScreen({ go, onBack }: { go: (v: View) => void; onBack: 
           onClick={() => go({ kind: 'qr-scan' })}
           icon={<QrCode size={22} strokeWidth={1.8} />}
           title="Scan QR code"
-          desc="Trade cards instantly with another Cardo user."
+          desc="Trade cards instantly with another Swapo user."
         />
         <ActionCard
           onClick={() => go({ kind: 'manual' })}
@@ -37,7 +37,7 @@ export function RegisterScreen({ go, onBack }: { go: (v: View) => void; onBack: 
       <div className="px-1">
         <p className="text-[12px] font-medium text-ink-dim mb-1.5">Tip</p>
         <p className="text-[12.5px] text-ink-muted leading-relaxed">
-          For best results, lay the card on a flat, dark surface and fill the frame. Cardo auto-detects edges and works in low light.
+          For best results, lay the card on a flat, dark surface and fill the frame. Swapo auto-detects edges and works in low light.
         </p>
       </div>
       </div>

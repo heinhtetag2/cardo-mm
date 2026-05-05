@@ -11,7 +11,7 @@ export function SubscriptionPage() {
         <div>
           <h1 className="text-[26px] sm:text-[30px] font-bold tracking-tight text-[#1A1A1A]">Subscription</h1>
           <p className="text-[13.5px] text-[#616161] mt-1">
-            Manage your plan, payment, and Cardo Pro benefits.
+            Manage your plan, payment, and Swapo Pro benefits.
           </p>
         </div>
       </div>
@@ -25,7 +25,7 @@ export function SubscriptionPage() {
             <div className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-wider opacity-80">
               <Star className="w-3.5 h-3.5" /> Current plan
             </div>
-            <div className="text-[34px] font-bold mt-1.5 leading-none">Cardo Pro</div>
+            <div className="text-[34px] font-bold mt-1.5 leading-none">Swapo Pro</div>
             <p className="text-[13px] opacity-90 mt-2.5">
               You're on the monthly plan · 9,900 MMK · billed via KBZPay
             </p>
@@ -49,7 +49,7 @@ export function SubscriptionPage() {
           <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Billing</h2>
           <p className="text-[11.5px] text-[#616161] mt-0.5 mb-5">Next charge · 1 May 2026</p>
           <div className="space-y-3.5">
-            <Row label="Plan" value="Cardo Pro · monthly" />
+            <Row label="Plan" value="Swapo Pro · monthly" />
             <Row label="Amount" value="9,900 MMK" />
             <Row label="Method" value="KBZPay · 0978" />
           </div>

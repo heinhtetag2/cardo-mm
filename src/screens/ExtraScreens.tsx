@@ -4,7 +4,7 @@ import {
   MapPin, ChevronRight,
   Share2, Copy, Mail, MessageCircle, Gift,
   ArrowUpRight, Users, ArrowRightLeft,
-  Smartphone, Link2, Star, User, Image as ImageIcon, Plug, AlertTriangle,
+  Smartphone, Star, User, Image as ImageIcon, Plug, AlertTriangle,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { LocationPicker } from '../components/LocationPicker'
@@ -154,7 +154,7 @@ export function AccountScreen({ onBack, go }: { onBack: () => void; go: (v: View
   const toast = useToast()
   const [avatarSheet, setAvatarSheet] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const planLabel = account.plan === 'pro' ? 'Cardo Pro' : 'Free plan'
+  const planLabel = account.plan === 'pro' ? 'Swapo Pro' : 'Free plan'
 
   return (
     <Page title="Account" onBack={onBack}>
@@ -181,8 +181,6 @@ export function AccountScreen({ onBack, go }: { onBack: () => void; go: (v: View
       <SectionLabel>Sign-in</SectionLabel>
       <Group>
         <AccountRow icon={<Smartphone size={15} />} label="Phone" value={account.loginPhoneMasked} onClick={() => go({ kind: 'security' })} />
-        <AccountRow icon={<Mail size={15} />} label="Recovery email" value={account.recoveryEmail} onClick={() => go({ kind: 'account-email' })} />
-        <AccountRow icon={<Link2 size={15} />} label="Linked accounts" value={account.linked.join(', ') || 'None'} onClick={() => go({ kind: 'account-linked' })} />
       </Group>
 
       <SectionLabel>Plan</SectionLabel>
@@ -315,7 +313,7 @@ export function EditDisplayNameScreen({ onBack }: { onBack: () => void }) {
         </button>
       }
     >
-      <SectionLabel>Your name in Cardo</SectionLabel>
+      <SectionLabel>Your name in Swapo</SectionLabel>
       <div className="rounded-[20px] border border-line/60 bg-surface/60 p-4 mb-3">
         <input
           autoFocus
@@ -328,7 +326,7 @@ export function EditDisplayNameScreen({ onBack }: { onBack: () => void }) {
         <p className="text-[11px] text-ink-dim mt-1.5 text-right">{name.length} / 40</p>
       </div>
       <p className="text-[11.5px] text-ink-dim leading-relaxed px-1">
-        This is how you appear inside the Cardo app. Your card name (shown to people who scan your card) is set separately under My Card.
+        This is how you appear inside the Swapo app. Your card name (shown to people who scan your card) is set separately under My Card.
       </p>
     </Page>
   )
@@ -422,7 +420,7 @@ export function LinkedAccountsScreen({ onBack }: { onBack: () => void }) {
         ))}
       </Group>
       <p className="text-[11.5px] text-ink-dim leading-relaxed px-1">
-        Connecting a provider lets you sign in to Cardo with that account in addition to your phone number. You can disconnect any provider at any time.
+        Connecting a provider lets you sign in to Swapo with that account in addition to your phone number. You can disconnect any provider at any time.
       </p>
     </Page>
   )
@@ -540,7 +538,7 @@ function SourceRow({ icon, label, pct }: { icon: React.ReactNode; label: string;
 
 export function InviteScreen({ onBack }: { onBack: () => void }) {
   const toast = useToast()
-  const link = 'cardo.mm/i/heinhtet'
+  const link = 'swapo.mm/i/heinhtet'
   const [showTerms, setShowTerms] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -650,11 +648,11 @@ function TermsModal({ onClose }: { onClose: () => void }) {
   const items = [
     {
       title: 'About the program',
-      body: 'The Cardo Referral Program lets active Cardo users earn AI credits by inviting new users to the app. Participation is free, and you can opt out at any time by no longer sharing your invite link.',
+      body: 'The Swapo Referral Program lets active Swapo users earn AI credits by inviting new users to the app. Participation is free, and you can opt out at any time by no longer sharing your invite link.',
     },
     {
       title: 'How you earn credits',
-      body: 'You earn 1 AI credit each time a new user signs up using your unique invite link and successfully creates their first card on Cardo. Your friend will also receive 1 credit on their account as a welcome bonus. Credits are added to your balance within 24 hours of the qualifying action.',
+      body: 'You earn 1 AI credit each time a new user signs up using your unique invite link and successfully creates their first card on Swapo. Your friend will also receive 1 credit on their account as a welcome bonus. Credits are added to your balance within 24 hours of the qualifying action.',
     },
     {
       title: 'Monthly earning cap',
@@ -662,27 +660,27 @@ function TermsModal({ onClose }: { onClose: () => void }) {
     },
     {
       title: 'Who can participate',
-      body: 'You must have an active Cardo account in good standing. Invited friends must be brand-new Cardo users (not previously registered). Self-referrals, duplicate accounts, and accounts created on behalf of other people do not qualify and may result in credits being reversed.',
+      body: 'You must have an active Swapo account in good standing. Invited friends must be brand-new Swapo users (not previously registered). Self-referrals, duplicate accounts, and accounts created on behalf of other people do not qualify and may result in credits being reversed.',
     },
     {
       title: 'Using your credits',
-      body: 'Credits can be spent on AI generations within Cardo, including business cards, logos, and other AI-assisted designs. Credits have no monetary value, are non-transferable, cannot be exchanged for cash, and do not expire while your Cardo account remains active.',
+      body: 'Credits can be spent on AI generations within Swapo, including business cards, logos, and other AI-assisted designs. Credits have no monetary value, are non-transferable, cannot be exchanged for cash, and do not expire while your Swapo account remains active.',
     },
     {
       title: 'Fair use and prohibited conduct',
-      body: 'You may not use bots, scripts, paid traffic, fake accounts, spam, misleading content, or any other deceptive method to obtain credits. Cardo reserves the right to pause your account, reverse credits, or remove you from the program if abuse is detected, with or without notice.',
+      body: 'You may not use bots, scripts, paid traffic, fake accounts, spam, misleading content, or any other deceptive method to obtain credits. Swapo reserves the right to pause your account, reverse credits, or remove you from the program if abuse is detected, with or without notice.',
     },
     {
       title: 'Privacy',
-      body: 'When a friend uses your invite link, Cardo records the referral connection so we can credit your account. We do not share your personal information with the people you invite beyond what is needed to attribute the referral. See our Privacy Policy for full details.',
+      body: 'When a friend uses your invite link, Swapo records the referral connection so we can credit your account. We do not share your personal information with the people you invite beyond what is needed to attribute the referral. See our Privacy Policy for full details.',
     },
     {
       title: 'Changes and termination',
-      body: 'Cardo may modify, pause, or end the Referral Program at any time, in whole or in part. Material changes (such as reward amounts or caps) will be announced in-app at least 7 days before they take effect. Credits already earned before a change will be honored.',
+      body: 'Swapo may modify, pause, or end the Referral Program at any time, in whole or in part. Material changes (such as reward amounts or caps) will be announced in-app at least 7 days before they take effect. Credits already earned before a change will be honored.',
     },
     {
       title: 'Questions',
-      body: 'If you have questions about your credits or believe a referral was missed, contact us at support@cardo.mm and include your account email and your friend\'s email so we can investigate.',
+      body: 'If you have questions about your credits or believe a referral was missed, contact us at support@swapo.mm and include your account email and your friend\'s email so we can investigate.',
     },
   ]
 
@@ -1028,7 +1026,7 @@ export function ExchangeScreen({
             </div>
             <p className="text-[17px] font-bold">Exchanged</p>
             <p className="text-[12.5px] text-ink-dim mt-1.5 leading-relaxed max-w-[240px] mx-auto">
-              {name} is now in your Cardo.
+              {name} is now in your Swapo.
             </p>
             <button
               onClick={viewTheirCard}

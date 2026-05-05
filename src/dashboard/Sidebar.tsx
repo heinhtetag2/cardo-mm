@@ -30,14 +30,14 @@ export function Sidebar({
         {!collapsed && (
           <div className="flex items-center gap-2 flex-1 mr-2">
             <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] grid place-items-center text-white text-[14px] font-bold">
-              C
+              S
             </div>
-            <span className="text-[15px] font-bold tracking-tight text-[#1A1A1A]">CARDO.</span>
+            <span className="text-[15px] font-bold tracking-tight text-[#1A1A1A]">SWAPO.</span>
           </div>
         )}
         {collapsed && (
           <div className="h-9 w-9 mx-auto rounded-xl bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] grid place-items-center text-white text-[14px] font-bold">
-            C
+            S
           </div>
         )}
         <button

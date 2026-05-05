@@ -56,7 +56,7 @@ export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout
         <span>Log out</span>
       </button>
 
-      <p className="text-center text-[11px] text-ink-dim mt-5">Cardo Myanmar · v1.0.0</p>
+      <p className="text-center text-[11px] text-ink-dim mt-5">Swapo Myanmar · v1.0.0</p>
 
       {confirmLogout && (
         <LogoutConfirm

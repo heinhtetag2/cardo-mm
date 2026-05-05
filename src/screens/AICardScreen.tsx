@@ -71,7 +71,7 @@ export function AICardScreen({
           </div>
           <p className="text-[14.5px] font-semibold mb-1">Make your first design</p>
           <p className="text-[12.5px] text-ink-dim leading-relaxed max-w-[260px] mx-auto">
-            Cardo's AI shapes a card or logo around your brand. Ready in 30s.
+            Swapo's AI shapes a card or logo around your brand. Ready in 30s.
           </p>
         </button>
       ) : (
@@ -304,8 +304,8 @@ function PreviewSheet({
               <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-white/10 blur-3xl" />
               <div className="relative p-6 flex flex-col h-full justify-between">
                 <div className="flex items-start justify-between">
-                  <p className="text-[10.5px] tracking-[0.22em] font-bold text-white">CARDO·</p>
-                  <div className="h-9 w-9 rounded-xl bg-white grid place-items-center text-canvas font-black text-[13px]">C</div>
+                  <p className="text-[10.5px] tracking-[0.22em] font-bold text-white">SWAPO·</p>
+                  <div className="h-9 w-9 rounded-xl bg-white grid place-items-center text-canvas font-black text-[13px]">S</div>
                 </div>
                 <div>
                   <p className="text-[22px] font-bold text-white">{creation.name}</p>
@@ -397,7 +397,7 @@ function MetaRow({ label, value, capitalize }: { label: string; value: string; c
 
 function ShareSheet({ creation, onClose }: { creation: Creation; onClose: () => void }) {
   const toast = useToast()
-  const link = `cardo.mm/${creation.kind}/${creation.id.slice(-6)}`
+  const link = `swapo.mm/${creation.kind}/${creation.id.slice(-6)}`
   const [copied, setCopied] = useState(false)
 
   const copy = () => {

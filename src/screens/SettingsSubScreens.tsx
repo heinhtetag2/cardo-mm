@@ -85,7 +85,7 @@ export function SubscriptionScreen({ onBack }: { onBack: () => void }) {
             <Crown size={20} className="text-white" strokeWidth={1.8} />
           </div>
           <div className="flex-1">
-            <p className="text-[15px] font-bold">Cardo Pro</p>
+            <p className="text-[15px] font-bold">Swapo Pro</p>
             <p className="text-[12px] text-ink-dim mt-0.5">Unlimited AI cards, analytics, multi-card</p>
           </div>
         </div>
@@ -371,7 +371,7 @@ export function SecuritySessionScreen({ onBack, device }: { onBack: () => void; 
         rows: [
           { label: 'Model', value: 'iPhone 15 Pro' },
           { label: 'Operating system', value: 'iOS 17.4.1' },
-          { label: 'App version', value: 'Cardo 1.0.0 (142)' },
+          { label: 'App version', value: 'Swapo 1.0.0 (142)' },
           { label: 'IP address', value: '203.81.222.18' },
           { label: 'Network', value: 'MPT mobile' },
           { label: 'Signed in', value: 'Jan 12, 2026' },
@@ -450,7 +450,7 @@ export function SecuritySessionScreen({ onBack, device }: { onBack: () => void; 
         <ConfirmDialog
           icon={<LogOut size={20} className="text-rose-400" strokeWidth={1.8} />}
           title={`Sign out of ${data.name}?`}
-          body="This device will need to sign back in to access your Cardo account."
+          body="This device will need to sign back in to access your Swapo account."
           confirmLabel="Sign out"
           onCancel={() => setConfirm(false)}
           onConfirm={() => {
@@ -567,7 +567,7 @@ export function AppearanceScreen({ onBack }: { onBack: () => void }) {
 
 export function NoticeScreen({ onBack }: { onBack: () => void }) {
   const items = [
-    { tag: 'Update', title: 'Cardo v1.0.0 is here', date: 'Apr 24, 2026', body: 'AI cards, multi-card, and a refreshed design system.' },
+    { tag: 'Update', title: 'Swapo v1.0.0 is here', date: 'Apr 24, 2026', body: 'AI cards, multi-card, and a refreshed design system.' },
     { tag: 'Event', title: 'Yangon Tech Mixer · Apr 30', date: 'Apr 20, 2026', body: 'Tap into Nearby at the venue to swap cards.' },
     { tag: 'Notice', title: 'Scheduled maintenance', date: 'Apr 15, 2026', body: 'Brief downtime on Apr 28 from 02:00–03:00 MMT.' },
   ]
@@ -593,9 +593,9 @@ export function FAQScreen({ onBack }: { onBack: () => void }) {
   const [open, setOpen] = useState<number | null>(0)
   const qa = [
     { q: 'How do I share my card?', a: 'Tap "My Card" then share via QR, link, or Nearby.' },
-    { q: 'Is Cardo free?', a: 'Yes. The Free plan includes 3 AI credits per month, and Pro unlocks unlimited use.' },
+    { q: 'Is Swapo free?', a: 'Yes. The Free plan includes 3 AI credits per month, and Pro unlocks unlimited use.' },
     { q: 'Can I have multiple cards?', a: 'Multi-card is available on Pro. Switch between work and personal in one tap.' },
-    { q: 'How does Nearby work?', a: 'Nearby uses Bluetooth to find other Cardo users at the same venue. You can turn it off anytime.' },
+    { q: 'How does Nearby work?', a: 'Nearby uses Bluetooth to find other Swapo users at the same venue. You can turn it off anytime.' },
     { q: 'How do I delete my account?', a: 'Settings → Privacy → Delete account. This is permanent.' },
   ]
   return (
@@ -646,15 +646,15 @@ export function HelpScreen({ onBack }: { onBack: () => void }) {
 
       <SectionLabel>Contact us</SectionLabel>
       <Group>
-        <ActionRow icon={<Mail size={15} />} label="Email support" sub="help@cardo.mm · replies in 24h" />
+        <ActionRow icon={<Mail size={15} />} label="Email support" sub="help@swapo.mm · replies in 24h" />
         <ActionRow icon={<MessageSquareWarning size={15} />} label="Report a problem" sub="Bugs, crashes, missing features" />
         <ActionRow icon={<Star size={15} />} label="Send feedback" sub="Tell us what to build next" />
       </Group>
 
       <SectionLabel>Community</SectionLabel>
       <Group>
-        <ActionRow icon={<ExternalLink size={15} />} label="Status page" sub="status.cardo.mm" />
-        <ActionRow icon={<ExternalLink size={15} />} label="Cardo on Telegram" />
+        <ActionRow icon={<ExternalLink size={15} />} label="Status page" sub="status.swapo.mm" />
+        <ActionRow icon={<ExternalLink size={15} />} label="Swapo on Telegram" />
       </Group>
     </Page>
   )
@@ -669,14 +669,14 @@ export function AboutScreen({ onBack }: { onBack: () => void }) {
         <div className="h-16 w-16 rounded-2xl bg-brand-gradient grid place-items-center shadow-glow mb-3">
           <Sparkles size={26} className="text-white" strokeWidth={1.8} />
         </div>
-        <p className="text-[18px] font-bold">Cardo Myanmar</p>
+        <p className="text-[18px] font-bold">Swapo Myanmar</p>
         <p className="text-[12px] text-ink-dim mt-1">Version 1.0.0 (build 142)</p>
       </div>
 
       <Group>
         <ActionRow icon={<Info size={15} />} label="What's new" />
-        <ActionRow icon={<Star size={15} />} label="Rate Cardo on the App Store" />
-        <ActionRow icon={<ExternalLink size={15} />} label="Visit cardo.mm" />
+        <ActionRow icon={<Star size={15} />} label="Rate Swapo on the App Store" />
+        <ActionRow icon={<ExternalLink size={15} />} label="Visit swapo.mm" />
       </Group>
 
       <Group>

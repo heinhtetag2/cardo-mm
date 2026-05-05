@@ -33,7 +33,7 @@ export function SettingsScreen({
             <Star size={17} className="text-white" strokeWidth={1.8} />
           </div>
           <div className="flex-1 text-left">
-            <p className="text-[14px] font-semibold">Upgrade to Cardo Pro</p>
+            <p className="text-[14px] font-semibold">Upgrade to Swapo Pro</p>
             <p className="text-[11.5px] text-ink-dim mt-0.5">Unlimited AI, multi-card, analytics</p>
           </div>
           <ChevronRight size={16} className="text-ink-dim" strokeWidth={1.8} />
@@ -64,7 +64,7 @@ export function SettingsScreen({
         <Group>
           <NavRow icon={<HelpCircle size={15} />} label="Help & support" sub="Contact us, report a problem" onClick={() => go({ kind: 'help' })} />
           <NavRow icon={<Share2 size={15} />} label="Invite a friend" sub="Get 1 month of Pro free" onClick={() => go({ kind: 'invite' })} />
-          <NavRow icon={<Info size={15} />} label="About Cardo" sub="Version 1.0.0" onClick={() => go({ kind: 'about' })} />
+          <NavRow icon={<Info size={15} />} label="About Swapo" sub="Version 1.0.0" onClick={() => go({ kind: 'about' })} />
         </Group>
 
         <button

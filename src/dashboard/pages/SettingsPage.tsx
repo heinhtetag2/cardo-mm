@@ -250,7 +250,7 @@ function NotificationsSection() {
 function PrivacySection() {
   return (
     <>
-      <Card title="Profile visibility" subtitle="Who can find you on Cardo">
+      <Card title="Profile visibility" subtitle="Who can find you on Swapo">
         <ToggleRow label="Discoverable by phone or email" hint="People with your number can find your card" defaultOn />
         <ToggleRow label="Show in Nearby" hint="Appear to others within ~50m" defaultOn />
         <ToggleRow label="Show city publicly" hint="Display Yangon on your card" defaultOn />
@@ -287,7 +287,7 @@ function SecuritySection() {
 
 function DataSection() {
   return (
-    <Card title="Data & storage" subtitle="Manage what Cardo keeps for you">
+    <Card title="Data & storage" subtitle="Manage what Swapo keeps for you">
       <ToggleRow label="Cache contact photos" hint="Faster loading on slow networks" defaultOn />
       <ToggleRow label="Auto-backup to KBZ Cloud" hint="Encrypted weekly snapshot" />
       <div className="border-t border-[#F3F3F3] -mx-6 mt-3 pt-5 px-6 grid sm:grid-cols-2 gap-2">
