@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   Phone, Mail, Globe, MapPin, Tag, Calendar, MessageCircle, Share2,
-  MoreHorizontal, X, Star, Bell, Pencil, Trash2, AlertTriangle, Plus,
+  MoreHorizontal, X, Star, Pencil, Trash2, AlertTriangle, Plus,
   Copy, ExternalLink,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
@@ -190,7 +190,6 @@ export function CardDetailScreen({
               toast.show(isFavorite ? 'Removed from favorites' : 'Added to favorites')
             }}
           />
-          <SheetItem icon={<Bell size={17} strokeWidth={1.8} />}   label="Set follow-up reminder"  onClick={() => { setShowMenu(false); toast.show('Reminder set for 1 week') }} />
           <SheetItem icon={<Share2 size={17} strokeWidth={1.8} />} label="Share card"              onClick={() => { setShowMenu(false); toast.show('Share sheet (mock)', 'info') }} />
           <div className="border-t border-line/40 my-1" />
           <SheetItem icon={<Trash2 size={17} strokeWidth={1.8} />} label="Delete"                  destructive onClick={() => { setShowMenu(false); setConfirmDelete(true) }} />

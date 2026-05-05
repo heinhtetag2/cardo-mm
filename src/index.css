@@ -16,6 +16,8 @@
   --hero-from: #1a2440;
   --hero-via: #10131d;
   --hero-to: #0c0d14;
+  --brand: 91 141 239;
+  --brand-2: 139 92 246;
 }
 
 [data-theme='light'] {

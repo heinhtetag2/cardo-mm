@@ -4,24 +4,50 @@ import { useToast } from '../components/Toast'
 import { ContactForm } from '../components/ContactForm'
 
 type Mode = 'card' | 'qr'
+type Side = 'front' | 'back'
 
-export function ScanScreen({ onBack, mode = 'card' }: { onBack: () => void; mode?: Mode }) {
+export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => void; onDone?: () => void; mode?: Mode }) {
   const toast = useToast()
   const isQR = mode === 'qr'
-  const [phase, setPhase] = useState<'scan' | 'processing' | 'review'>('scan')
+  const [phase, setPhase] = useState<'scan' | 'flip' | 'processing' | 'review'>('scan')
+  const [side, setSide] = useState<Side>('front')
   const [flash, setFlash] = useState(false)
+  const finish = onDone ?? onBack
 
   const capture = () => {
-    setPhase('processing')
-    setTimeout(() => {
-      if (isQR) {
+    if (isQR) {
+      setPhase('processing')
+      setTimeout(() => {
         toast.show('Card received from Mya Thandar')
-        setTimeout(onBack, 600)
-      } else {
-        setPhase('review')
-      }
-    }, 1500)
+        setTimeout(finish, 600)
+      }, 1500)
+      return
+    }
+    if (side === 'front') {
+      setPhase('processing')
+      setTimeout(() => setPhase('flip'), 900)
+    } else {
+      setPhase('processing')
+      setTimeout(() => setPhase('review'), 1500)
+    }
   }
+
+  const continueToBack = () => {
+    setSide('back')
+    setPhase('scan')
+  }
+
+  const skipBack = () => {
+    setPhase('processing')
+    setTimeout(() => setPhase('review'), 1100)
+  }
+
+  const retake = () => {
+    setSide('front')
+    setPhase('scan')
+  }
+
+  const headerTitle = isQR ? 'Scan QR code' : side === 'front' ? 'Scan front' : 'Scan back'
 
   return (
     <div className="absolute inset-0 bg-black overflow-hidden animate-fade-in">
@@ -38,7 +64,7 @@ export function ScanScreen({ onBack, mode = 'card' }: { onBack: () => void; mode
           <button onClick={onBack} className="h-10 w-10 grid place-items-center rounded-full bg-black/50 backdrop-blur border border-white/10">
             <ChevronLeft size={20} className="text-white" strokeWidth={2} />
           </button>
-          <p className="text-[13.5px] font-semibold text-white/90">{isQR ? 'Scan QR code' : 'Scan card'}</p>
+          <p className="text-[13.5px] font-semibold text-white/90">{headerTitle}</p>
           <button onClick={() => setFlash((f) => !f)} className="h-10 w-10 grid place-items-center rounded-full bg-black/50 backdrop-blur border border-white/10">
             {flash ? <Zap size={16} className="text-amber-300" fill="currentColor" /> : <ZapOff size={16} className="text-white/80" />}
           </button>
@@ -98,21 +124,40 @@ export function ScanScreen({ onBack, mode = 'card' }: { onBack: () => void; mode
           )}
 
           {/* Hint */}
-          <div className="absolute top-32 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur border border-white/10">
-            <p className="text-[12px] text-white/90">
-              {isQR ? 'Align the QR code inside the frame' : 'Position card within the frame'}
-            </p>
+          <div className="absolute top-32 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+            <div className="px-3 py-1.5 rounded-full bg-black/60 backdrop-blur border border-white/10">
+              <p className="text-[12px] text-white/90">
+                {isQR
+                  ? 'Align the QR code inside the frame'
+                  : side === 'front'
+                  ? 'Position the front of the card'
+                  : 'Now show the back of the card'}
+              </p>
+            </div>
+            {!isQR && (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur border border-white/10">
+                <SideDot active={side === 'front'} done={side === 'back'} label="Front" />
+                <span className="h-px w-3 bg-white/20" />
+                <SideDot active={side === 'back'} done={false} label="Back" />
+              </div>
+            )}
           </div>
         </>
       )}
 
-      {phase === 'processing' && <ProcessingOverlay isQR={isQR} />}
+      {phase === 'processing' && (
+        <ProcessingOverlay isQR={isQR} captionOverride={!isQR && side === 'front' ? 'Capturing front…' : undefined} />
+      )}
+
+      {phase === 'flip' && (
+        <FlipOverlay onContinue={continueToBack} onSkip={skipBack} />
+      )}
 
       {phase === 'review' && (
         <ContactForm
           header={
             <header className="flex items-center justify-between px-4 pt-12 pb-3">
-              <button onClick={() => setPhase('scan')} aria-label="Retake" className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80">
+              <button onClick={retake} aria-label="Retake" className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80">
                 <RotateCcw size={16} strokeWidth={1.8} />
               </button>
               <h1 className="text-[15px] font-semibold">Review details</h1>
@@ -139,7 +184,7 @@ export function ScanScreen({ onBack, mode = 'card' }: { onBack: () => void; mode
           saveLabel="Save to Cardo"
           onSave={() => {
             toast.show('Card saved to Cardo')
-            setTimeout(onBack, 500)
+            setTimeout(finish, 500)
           }}
         />
       )}
@@ -169,11 +214,16 @@ export function ScanScreen({ onBack, mode = 'card' }: { onBack: () => void; mode
   )
 }
 
-function ProcessingOverlay({ isQR }: { isQR: boolean }) {
+function ProcessingOverlay({ isQR, captionOverride }: { isQR: boolean; captionOverride?: string }) {
+  const title = captionOverride ?? (isQR ? 'Reading QR…' : 'Reading card…')
+  const sub = captionOverride
+    ? 'Hold steady'
+    : isQR
+    ? 'Decoding the contact details'
+    : 'Detecting name, role, and contact'
   return (
     <div className="absolute inset-0 grid place-items-center bg-black/80 backdrop-blur-md animate-fade-in">
       <div className="text-center px-8">
-        {/* Animated dots — calmer, less AI-template */}
         <div className="flex items-center justify-center gap-1.5 mb-5">
           {[0, 1, 2].map((i) => (
             <span
@@ -183,14 +233,77 @@ function ProcessingOverlay({ isQR }: { isQR: boolean }) {
             />
           ))}
         </div>
-        <p className="text-[15px] font-semibold text-white">
-          {isQR ? 'Reading QR…' : 'Reading card…'}
-        </p>
-        <p className="text-[12.5px] text-white/55 mt-1.5 leading-relaxed">
-          {isQR ? 'Decoding the contact details' : 'Detecting name, role, and contact'}
-        </p>
+        <p className="text-[15px] font-semibold text-white">{title}</p>
+        <p className="text-[12.5px] text-white/55 mt-1.5 leading-relaxed">{sub}</p>
       </div>
     </div>
+  )
+}
+
+function FlipOverlay({ onContinue, onSkip }: { onContinue: () => void; onSkip: () => void }) {
+  return (
+    <div className="absolute inset-0 z-40 grid place-items-center bg-black/85 backdrop-blur-md animate-fade-in px-7">
+      <div className="text-center max-w-[320px]">
+        <div className="relative mx-auto mb-6 w-44 aspect-[1.7/1]" style={{ perspective: '900px' }}>
+          <div
+            className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/95 to-white/85 shadow-2xl"
+            style={{
+              transformStyle: 'preserve-3d',
+              animation: 'flipCard 1.8s ease-in-out infinite',
+            }}
+          >
+            <div className="absolute top-3 left-4 right-4 flex items-start justify-between">
+              <div>
+                <div className="h-2 w-12 rounded bg-zinc-800 mb-1" />
+                <div className="h-1.5 w-16 rounded bg-zinc-400" />
+              </div>
+              <div className="h-5 w-5 rounded bg-zinc-800" />
+            </div>
+            <div className="absolute bottom-3 left-4 right-4 space-y-1">
+              <div className="h-1 w-20 rounded bg-zinc-500" />
+              <div className="h-1 w-16 rounded bg-zinc-500" />
+            </div>
+          </div>
+        </div>
+
+        <h2 className="text-[20px] font-bold text-white tracking-tight">Now flip the card</h2>
+        <p className="text-[12.5px] text-white/60 mt-2 leading-relaxed">
+          Got the front. Scan the back. Most cards have logos, an address, or a QR code there.
+        </p>
+
+        <div className="flex flex-col gap-2.5 mt-6">
+          <button onClick={onContinue} className="w-full h-12 rounded-2xl bg-white text-black font-semibold text-[14px] active:scale-[0.99] transition">
+            Scan back
+          </button>
+          <button onClick={onSkip} className="w-full h-11 text-[13.5px] font-medium text-white/70 active:text-white/90 transition">
+            Save front only
+          </button>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes flipCard {
+          0%   { transform: rotateY(0deg); }
+          50%  { transform: rotateY(180deg); }
+          100% { transform: rotateY(360deg); }
+        }
+      `}</style>
+    </div>
+  )
+}
+
+function SideDot({ active, done, label }: { active: boolean; done: boolean; label: string }) {
+  return (
+    <span className="flex items-center gap-1">
+      <span
+        className={`h-1.5 w-1.5 rounded-full transition ${
+          done ? 'bg-emerald-400' : active ? 'bg-white' : 'bg-white/25'
+        }`}
+      />
+      <span className={`text-[10.5px] font-semibold tracking-wider uppercase ${active ? 'text-white' : done ? 'text-emerald-400' : 'text-white/40'}`}>
+        {label}
+      </span>
+    </span>
   )
 }
 

@@ -140,7 +140,7 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
           <div className="animate-fade-in">
             <h1 className="text-[24px] font-bold tracking-tight leading-tight">{isLogo ? 'Pick a logo type' : 'Pick a style'}</h1>
             <p className="text-[13px] text-ink-dim mt-1.5 mb-6">
-              {isLogo ? 'Choose the kind of mark — you\'ll see 3 variations next.' : "Choose a starting point — you'll see 3 variations next."}
+              {isLogo ? "Choose the kind of mark. You'll see 3 variations next." : "Choose a starting point. You'll see 3 variations next."}
             </p>
             <div className="grid grid-cols-2 gap-3">
               {isLogo
@@ -359,7 +359,7 @@ function LogoPreview({ index, brand, tone, type, picked, onClick }: { index: num
         )}
         {type === 'symbol' && (
           <div className={`h-16 w-16 rounded-full border-[3px] grid place-items-center`}
-               style={{ borderColor: index === 1 ? '#0c0d14' : '#5B8DEF' }}>
+               style={{ borderColor: index === 1 ? '#0c0d14' : 'rgb(var(--brand))' }}>
             <div className={`h-7 w-7 rounded-full ${p.accent}`} />
           </div>
         )}

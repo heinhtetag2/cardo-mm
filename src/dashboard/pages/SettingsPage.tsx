@@ -257,7 +257,7 @@ function PrivacySection() {
       </Card>
       <Card title="Contact data" subtitle="What you share when someone saves you">
         <ToggleRow label="Share email automatically" hint="Default on for Lead-tagged scans" defaultOn />
-        <ToggleRow label="Share phone automatically" hint="Off — ask first" />
+        <ToggleRow label="Share phone automatically" hint="Off. Ask first" />
         <ToggleRow label="Share LinkedIn link" hint="Public profile only" defaultOn />
       </Card>
     </>
@@ -277,9 +277,9 @@ function SecuritySection() {
         <ToggleRow label="SMS to +95 number" hint="Backup code via SMS" />
       </Card>
       <Card title="Active sessions" subtitle="Where you're signed in">
-        <SessionRow device="iPhone 15 — Yangon" lastActive="now" current />
-        <SessionRow device="MacBook — Yangon" lastActive="2 hours ago" />
-        <SessionRow device="Chrome on Windows — Mandalay" lastActive="3 days ago" />
+        <SessionRow device="iPhone 15 · Yangon" lastActive="now" current />
+        <SessionRow device="MacBook · Yangon" lastActive="2 hours ago" />
+        <SessionRow device="Chrome on Windows · Mandalay" lastActive="3 days ago" />
       </Card>
     </>
   )

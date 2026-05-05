@@ -22,6 +22,7 @@ import {
   SubscriptionScreen, PrivacyScreen, SecurityScreen, DataStorageScreen,
   LanguageScreen, AppearanceScreen, NoticeScreen, FAQScreen, TermsScreen,
   HelpScreen, AboutScreen,
+  SecurityPhoneScreen, SecuritySessionScreen,
 } from './screens/SettingsSubScreens'
 import {
   EditCardScreen, AccountScreen, EditDisplayNameScreen, EditRecoveryEmailScreen, LinkedAccountsScreen,
@@ -29,7 +30,7 @@ import {
 } from './screens/ExtraScreens'
 import { ToastProvider } from './components/Toast'
 import { OnboardingScreen } from './screens/OnboardingScreen'
-import { useTheme } from './theme'
+import { useTheme, useAccent } from './theme'
 import type { Tab, View } from './nav'
 import type { Creation } from './data'
 
@@ -37,6 +38,7 @@ const ONBOARD_KEY = 'cardo:onboarded'
 
 export default function App() {
   useTheme()
+  useAccent()
   const [tab, setTab] = useState<Tab>('home')
   const [stack, setStack] = useState<View[]>([])
   const [view, setView] = useState<'phone' | 'dashboard'>('phone')
@@ -105,7 +107,7 @@ export default function App() {
         className="hidden md:flex absolute left-6 lg:left-10 top-1/2 -translate-y-1/2 z-40 group items-center gap-2.5 h-12 pl-3 pr-4 rounded-full bg-surface-elevated/90 hover:bg-surface-higher border border-line/70 hover:border-brand/40 backdrop-blur transition shadow-soft"
         aria-label="Open Cardo dashboard"
       >
-        <span className="h-8 w-8 rounded-full bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] grid place-items-center shadow-glow">
+        <span className="h-8 w-8 rounded-full bg-brand-gradient grid place-items-center shadow-glow">
           <LayoutDashboard size={15} className="text-white" strokeWidth={2} />
         </span>
         <span className="text-[13px] font-semibold text-ink leading-tight text-left">
@@ -158,14 +160,16 @@ export default function App() {
           {current?.kind === 'my-card' && <MyCardScreen onBack={back} go={go} />}
           {current?.kind === 'ai-create' && <AICreateScreen onBack={back} mode={current.mode} onSave={addCreation} />}
           {current?.kind === 'register' && <RegisterScreen go={go} onBack={back} />}
-          {current?.kind === 'scan' && <ScanScreen onBack={back} mode="card" />}
-          {current?.kind === 'manual' && <ManualEntryScreen onBack={back} />}
-          {current?.kind === 'qr-scan' && <ScanScreen onBack={back} mode="qr" />}
+          {current?.kind === 'scan' && <ScanScreen onBack={back} onDone={() => goTab('cardo')} mode="card" />}
+          {current?.kind === 'manual' && <ManualEntryScreen onBack={back} onDone={() => goTab('cardo')} />}
+          {current?.kind === 'qr-scan' && <ScanScreen onBack={back} onDone={() => goTab('cardo')} mode="qr" />}
           {current?.kind === 'settings' && <SettingsScreen onBack={back} go={go} onLogout={handleLogout} />}
+          {current?.kind === 'security-phone' && <SecurityPhoneScreen onBack={back} />}
+          {current?.kind === 'security-session' && <SecuritySessionScreen onBack={back} device={current.device} />}
           {current?.kind === 'nearby' && <NearbyScreen onBack={back} go={go} />}
           {current?.kind === 'subscription' && <SubscriptionScreen onBack={back} />}
           {current?.kind === 'privacy' && <PrivacyScreen onBack={back} />}
-          {current?.kind === 'security' && <SecurityScreen onBack={back} />}
+          {current?.kind === 'security' && <SecurityScreen onBack={back} go={go} />}
           {current?.kind === 'data-storage' && <DataStorageScreen onBack={back} />}
           {current?.kind === 'language' && <LanguageScreen onBack={back} />}
           {current?.kind === 'appearance' && <AppearanceScreen onBack={back} />}

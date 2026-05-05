@@ -37,10 +37,10 @@ export function AICardScreen({
     <div className="px-5 pt-2 animate-fade-in">
       <div className="mb-6">
         <h1 className="text-[30px] font-bold tracking-tight leading-[1.05]">
-          Make it yours.
+          AI Studio
         </h1>
         <p className="text-[13px] text-ink-dim mt-2.5 leading-relaxed max-w-[280px]">
-          Cards and logos, crafted around the way you work.
+          Generate cards and logos that match your brand.
         </p>
       </div>
 
@@ -71,7 +71,7 @@ export function AICardScreen({
           </div>
           <p className="text-[14.5px] font-semibold mb-1">Make your first design</p>
           <p className="text-[12.5px] text-ink-dim leading-relaxed max-w-[260px] mx-auto">
-            Cardo's AI shapes a card or logo around your brand — ready in 30s.
+            Cardo's AI shapes a card or logo around your brand. Ready in 30s.
           </p>
         </button>
       ) : (
@@ -493,7 +493,7 @@ function EditSheet({ creation, onSave, onClose }: { creation: Creation; onSave: 
         <div className="flex items-start gap-2.5 px-3 py-3 mb-3 rounded-2xl bg-surface-elevated border border-line/60">
           <Info size={14} className="text-ink-muted mt-0.5 flex-shrink-0" strokeWidth={1.8} />
           <p className="text-[12px] text-ink-dim leading-relaxed">
-            You can update the text shown on your {isCard ? 'card' : 'logo'}. The visual style is fixed — to change it, regenerate with new options.
+            You can update the text shown on your {isCard ? 'card' : 'logo'}. The visual style is fixed. To change it, regenerate with new options.
           </p>
         </div>
 

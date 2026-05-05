@@ -21,7 +21,7 @@ const seed: Notif[] = [
   { id: '3', kind: 'ai',                        title: 'Your AI card is ready',         body: 'Minimal Mono · view & share',                time: '1h',        unread: true,  group: 'today' },
   { id: '4', kind: 'nearby',                    title: '3 people nearby',               body: 'Open Nearby to swap cards',                  time: '3h',        unread: false, group: 'today' },
   { id: '5', kind: 'system',                    title: 'Welcome to Cardo Pro',          body: '7-day trial active',                         time: 'Yesterday', unread: false, group: 'earlier' },
-  { id: '6', kind: 'message', who: 'Hla Min',   title: 'Hla Min sent you a message',    body: '"Great meeting you yesterday — let\'s..."',  time: '2d',        unread: false, group: 'earlier' },
+  { id: '6', kind: 'message', who: 'Hla Min',   title: 'Hla Min sent you a message',    body: '"Great meeting you yesterday, let\'s..."',  time: '2d',        unread: false, group: 'earlier' },
   { id: '7', kind: 'scan',    who: 'Kyaw Soe',  title: 'Kyaw Soe saved your card',      body: 'Added to Designers',                         time: '3d',        unread: false, group: 'earlier' },
 ]
 

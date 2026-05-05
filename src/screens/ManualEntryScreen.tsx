@@ -2,8 +2,9 @@ import { ContactForm } from '../components/ContactForm'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { useToast } from '../components/Toast'
 
-export function ManualEntryScreen({ onBack }: { onBack: () => void }) {
+export function ManualEntryScreen({ onBack, onDone }: { onBack: () => void; onDone?: () => void }) {
   const toast = useToast()
+  const finish = onDone ?? onBack
   return (
     <ContactForm
       header={<SubScreenHeader title="New contact" onBack={onBack} />}
@@ -11,7 +12,7 @@ export function ManualEntryScreen({ onBack }: { onBack: () => void }) {
       saveLabel="Save contact"
       onSave={() => {
         toast.show('Contact saved')
-        setTimeout(onBack, 500)
+        setTimeout(finish, 500)
       }}
     />
   )

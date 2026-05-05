@@ -12,7 +12,7 @@ export function MyCardsPage() {
         <div>
           <h1 className="text-[26px] sm:text-[30px] font-bold tracking-tight text-[#1A1A1A]">My Cards</h1>
           <p className="text-[13.5px] text-[#616161] mt-1">
-            All your digital cards — paper, AI, conference, personal.
+            All your digital cards: paper, AI, conference, personal.
           </p>
         </div>
         <button className="h-11 px-5 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-white text-[13.5px] font-semibold rounded-xl hover:opacity-95 transition shadow-sm">

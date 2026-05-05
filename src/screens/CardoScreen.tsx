@@ -19,7 +19,7 @@ export function CardoScreen({
     <div className="px-5 pt-2 animate-fade-in">
       <div className="flex items-end justify-between mb-1">
         <div>
-          <h1 className="text-[26px] font-bold tracking-tight">My Cardo</h1>
+          <h1 className="text-[26px] font-bold tracking-tight">My Cards</h1>
           <p className="text-[13px] text-ink-dim mt-0.5">{contacts.length} cards saved</p>
         </div>
         <button

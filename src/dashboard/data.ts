@@ -74,7 +74,7 @@ export const RECENT_ACTIVITY: ActivityEvent[] = [
     kind: 'level-up',
     date: '2026-04-22T09:30:00',
     primary: 'Trust Level 3 unlocked',
-    secondary: 'Networker — verified profile + 100 saves',
+    secondary: 'Networker · verified profile + 100 saves',
   },
 ]
 
@@ -160,7 +160,7 @@ export const SAVED_CONTACTS: SavedContact[] = [
   { id: 'c7', name: 'Phyu Phyu', role: 'Brand Strategist', company: 'Mingala Media', city: 'Yangon', tag: 'Partner', source: 'scan', accent: 'rose', savedAt: '2026-04-13', lastSeen: '2 weeks ago', email: 'phyu@mingala.media', starred: true },
   { id: 'c8', name: 'Soe Moe', role: 'Backend Engineer', company: 'Atom Telco', city: 'Yangon', tag: 'Friend', source: 'manual', accent: 'slate', savedAt: '2026-04-10', lastSeen: '2 weeks ago', email: 'soemoe@atom.com.mm' },
   { id: 'c9', name: 'Aye Aye Maw', role: 'Hotel Manager', company: 'Bagan Sunset Resort', city: 'Bagan', tag: 'Vendor', source: 'scan', accent: 'amber', savedAt: '2026-04-08', lastSeen: '3 weeks ago', phone: '+95 9 6611 22 33' },
-  { id: 'c10', name: 'Thuza Win', role: 'Mentor — Growth', company: 'Phandeeyar', city: 'Yangon', tag: 'Mentor', source: 'exchange', accent: 'violet', savedAt: '2026-04-05', lastSeen: '3 weeks ago', email: 'thuza@phandeeyar.org', starred: true },
+  { id: 'c10', name: 'Thuza Win', role: 'Growth Mentor', company: 'Phandeeyar', city: 'Yangon', tag: 'Mentor', source: 'exchange', accent: 'violet', savedAt: '2026-04-05', lastSeen: '3 weeks ago', email: 'thuza@phandeeyar.org', starred: true },
   { id: 'c11', name: 'Ye Yint Aung', role: 'Rice Trader', company: 'Ayeyarwady Co-op', city: 'Pathein', tag: 'Vendor', source: 'manual', accent: 'emerald', savedAt: '2026-04-02', lastSeen: '1 month ago', phone: '+95 9 4400 55 66' },
   { id: 'c12', name: 'Khin Maung Win', role: 'Country Manager', company: 'MPT Telecom', city: 'Yangon', tag: 'Lead', source: 'nearby', accent: 'teal', savedAt: '2026-03-30', lastSeen: '1 month ago', email: 'khin.maung@mpt.com.mm' },
   { id: 'c13', name: 'Zin Mar Aye', role: 'Tour Operator', company: 'Inle Lake Tours', city: 'Taunggyi', tag: 'Partner', source: 'scan', accent: 'blue', savedAt: '2026-03-27', lastSeen: '1 month ago', phone: '+95 9 4901 23 45' },
@@ -451,7 +451,7 @@ export const DASH_NOTIFICATIONS: DashNotification[] = [
   { id: 'n1', kind: 'saved', primary: 'Mya Thandar saved your card', secondary: 'Bagan Heritage Co. · Yangon', date: '2026-04-26T15:32:00', unread: true },
   { id: 'n2', kind: 'scanned', primary: '4 people scanned your card', secondary: 'Yangon Tech Meetup', date: '2026-04-26T11:08:00', unread: true },
   { id: 'n3', kind: 'ai-gen', primary: 'AI Minimal v3 is ready', secondary: '2 credits used · view in AI Studio', date: '2026-04-25T19:14:00', unread: false },
-  { id: 'n4', kind: 'level-up', primary: 'Trust Level 3 unlocked', secondary: 'Networker — verified profile + 100 saves', date: '2026-04-22T09:30:00', unread: false },
+  { id: 'n4', kind: 'level-up', primary: 'Trust Level 3 unlocked', secondary: 'Networker · verified profile + 100 saves', date: '2026-04-22T09:30:00', unread: false },
   { id: 'n5', kind: 'system', primary: 'KBZPay payment received', secondary: 'Cardo Pro · April · 9,900 MMK', date: '2026-04-01T08:00:00', unread: false },
 ]
 
@@ -460,10 +460,10 @@ export type FAQEntry = { q: string; a: string }
 export const FAQ_ENTRIES: FAQEntry[] = [
   { q: 'How does Cardo handle Myanmar phone numbers?', a: 'Cardo auto-formats +95 numbers and recognises both Myanmar and Latin digits when typing.' },
   { q: 'Which payment methods are supported?', a: 'KBZPay, Wave Pay, AYA Pay, plus Visa/Mastercard/JCB and direct bank transfer to KBZ, AYA, or CB Bank.' },
-  { q: 'Can I switch between English and မြန်မာ?', a: 'Yes — under Settings → Language. The full UI, including AI prompts, supports both.' },
+  { q: 'Can I switch between English and မြန်မာ?', a: 'Yes, under Settings → Language. The full UI, including AI prompts, supports both.' },
   { q: 'What happens to my saved contacts if I cancel Pro?', a: 'They stay safe. You keep read-only access; the 200-contact cap only applies to new saves on the Free plan.' },
   { q: 'How do AI credits work?', a: 'Each preset costs 1–3 credits. Credits refresh on your billing date and unused credits do not roll over.' },
-  { q: 'Can my whole company use one Cardo account?', a: 'Use Cardo Business — unlimited cards & seats, shared contacts, CSV sync, and priority Myanmar support.' },
+  { q: 'Can my whole company use one Cardo account?', a: 'Use Cardo Business. Unlimited cards & seats, shared contacts, CSV sync, and priority Myanmar support.' },
 ]
 
 export const HELP_LINKS = [

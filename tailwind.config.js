@@ -21,9 +21,9 @@ export default {
         },
         active: 'rgb(var(--active-bg) / <alpha-value>)',
         brand: {
-          DEFAULT: '#5B8DEF',
-          violet: '#8B5CF6',
-          glow: '#3B82F6',
+          DEFAULT: 'rgb(var(--brand) / <alpha-value>)',
+          violet: 'rgb(var(--brand-2) / <alpha-value>)',
+          glow: 'rgb(var(--brand) / <alpha-value>)',
         },
       },
       fontFamily: {
@@ -31,14 +31,14 @@ export default {
         display: ['"Inter"', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
-        'brand-gradient': 'linear-gradient(135deg, #5B8DEF 0%, #8B5CF6 100%)',
-        'card-gradient': 'linear-gradient(180deg, rgba(91,141,239,0.08) 0%, rgba(91,141,239,0) 100%)',
-        'glow-radial': 'radial-gradient(60% 50% at 50% 0%, rgba(91,141,239,0.18) 0%, rgba(91,141,239,0) 100%)',
+        'brand-gradient': 'linear-gradient(135deg, rgb(var(--brand)) 0%, rgb(var(--brand-2)) 100%)',
+        'card-gradient': 'linear-gradient(180deg, rgb(var(--brand) / 0.08) 0%, rgb(var(--brand) / 0) 100%)',
+        'glow-radial': 'radial-gradient(60% 50% at 50% 0%, rgb(var(--brand) / 0.18) 0%, rgb(var(--brand) / 0) 100%)',
         'hero-card': 'linear-gradient(135deg, var(--hero-from) 0%, var(--hero-via) 50%, var(--hero-to) 100%)',
       },
       boxShadow: {
         'soft': '0 8px 32px rgba(0,0,0,0.3)',
-        'glow': '0 0 40px rgba(91,141,239,0.25)',
+        'glow': '0 0 40px rgb(var(--brand) / 0.25)',
       },
       animation: {
         'fade-in':       'fadeIn 260ms cubic-bezier(0.16, 1, 0.3, 1)',

@@ -61,7 +61,7 @@ const slides = [
   {
     eyebrow: 'Capture',
     title: 'Snap any card.\nKeep every detail.',
-    body: 'Cardo extracts names, roles, and contact info from a single photo — instantly searchable, never lost.',
+    body: 'Cardo extracts names, roles, and contact info from a single photo. Instantly searchable, never lost.',
   },
   {
     eyebrow: 'Exchange',
@@ -212,8 +212,9 @@ export function OnboardingScreen({
 
 function Welcome({ onContinue, onSignIn }: { onContinue: () => void; onSignIn: () => void }) {
   return (
-    <div className="relative flex-1 flex flex-col px-7 pt-20 pb-10 animate-fade-in">
-      <div className="flex items-center gap-3">
+    <div className="relative flex-1 flex flex-col px-7 pt-20 pb-10 animate-fade-in overflow-hidden">
+      <WelcomeBackdrop />
+      <div className="relative flex items-center gap-3">
         <div className="relative h-11 w-11 rounded-[12px] bg-gradient-to-br from-white to-white/85 grid place-items-center shadow-glow">
           <span className="font-black text-[22px] -tracking-[0.04em] text-canvas leading-none">C</span>
           <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-brand" />
@@ -223,17 +224,17 @@ function Welcome({ onContinue, onSignIn }: { onContinue: () => void; onSignIn: (
         </span>
       </div>
 
-      <div className="mt-auto mb-12 animate-slide-up">
+      <div className="relative mt-auto mb-12 animate-slide-up">
         <p className="text-[12px] font-semibold text-brand mb-3">Connect smarter</p>
         <h1 className="text-[36px] font-bold tracking-[-0.02em] leading-[1.04] text-balance">
           The paper card,<br />reimagined.
         </h1>
         <p className="text-[14px] text-ink-muted mt-5 leading-relaxed max-w-[300px]">
-          A modern way to keep, share, and design business cards — built for Myanmar's professional community.
+          A modern way to keep, share, and design business cards.
         </p>
       </div>
 
-      <div className="space-y-2.5">
+      <div className="relative space-y-2.5">
         <button
           onClick={onContinue}
           className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
@@ -246,6 +247,58 @@ function Welcome({ onContinue, onSignIn }: { onContinue: () => void; onSignIn: (
         >
           I already have an account
         </button>
+      </div>
+    </div>
+  )
+}
+
+function WelcomeBackdrop() {
+  return (
+    <div aria-hidden="true" className="absolute inset-x-0 top-[14%] h-[44%] grid place-items-center pointer-events-none">
+      <div className="absolute h-[380px] w-[380px] rounded-full bg-brand/20 blur-[100px]" />
+      <div className="absolute h-[260px] w-[260px] rounded-full bg-brand-violet/15 blur-[90px] translate-x-12 translate-y-6" />
+
+      <div className="relative w-[280px] aspect-[1.7/1]">
+        <div
+          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-surface-higher to-surface border border-line/60 shadow-soft"
+          style={{ transform: 'translate(-44px, 26px) rotate(-11deg)' }}
+        />
+
+        <div
+          className="absolute inset-0 rounded-2xl bg-brand-gradient shadow-soft overflow-hidden"
+          style={{ transform: 'translate(-16px, 10px) rotate(-4deg)' }}
+        >
+          <div className="absolute top-4 left-5">
+            <div className="h-2 w-16 rounded bg-white/90 mb-1" />
+            <div className="h-1.5 w-20 rounded bg-white/55" />
+          </div>
+          <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
+            <div className="space-y-1">
+              <div className="h-1 w-20 rounded bg-white/45" />
+              <div className="h-1 w-14 rounded bg-white/40" />
+            </div>
+            <div className="h-7 w-7 rounded-lg bg-white/20 backdrop-blur-sm grid place-items-center">
+              <span className="text-[10px] font-black text-white leading-none">C</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white to-zinc-100 shadow-soft overflow-hidden"
+          style={{ transform: 'translate(12px, -6px) rotate(5deg)' }}
+        >
+          <div className="absolute top-4 left-5 flex items-start gap-2.5">
+            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-brand to-brand-violet shrink-0" />
+            <div className="pt-0.5 space-y-1">
+              <div className="h-2 w-16 rounded bg-zinc-800" />
+              <div className="h-1.5 w-20 rounded bg-zinc-400" />
+            </div>
+          </div>
+          <div className="absolute bottom-4 left-5 right-5 space-y-1.5">
+            <div className="h-1.5 w-28 rounded bg-zinc-300" />
+            <div className="h-1.5 w-20 rounded bg-zinc-300" />
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -568,7 +621,7 @@ function ProfilePane({
             onChange={(e) => setBio(e.target.value.slice(0, BIO_MAX))}
             rows={3}
             className="w-full bg-transparent outline-none text-[13.5px] leading-relaxed resize-none placeholder:text-ink-dim"
-            placeholder="A short bio — what you do, what you're up to."
+            placeholder="A short bio. What you do, what you're up to."
           />
           <p className="text-[11px] text-ink-dim mt-1.5 text-right tabular-nums">{bio.length} / {BIO_MAX}</p>
         </div>

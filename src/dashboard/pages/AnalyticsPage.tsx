@@ -91,7 +91,7 @@ export function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2 bg-white border border-[#EBEBEB] rounded-2xl p-6">
           <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Best time to share</h2>
-          <p className="text-[11.5px] text-[#616161] mt-0.5 mb-5">When most scans happen — Yangon time</p>
+          <p className="text-[11.5px] text-[#616161] mt-0.5 mb-5">When most scans happen (Yangon time)</p>
           <div className="flex items-end gap-2 h-40">
             {HOURLY_PATTERN.map((h) => {
               const pct = (h.value / hourlyMax) * 100

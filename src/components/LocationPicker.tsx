@@ -109,7 +109,7 @@ export function LocationPicker({
 
           {hasQuery && results.length === 0 && (
             <p className="px-3 pt-3 pb-1 text-center text-[12px] text-ink-dim">
-              No matching cities — use what you typed above.
+              No matching cities. Use what you typed above.
             </p>
           )}
         </div>

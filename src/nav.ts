@@ -18,6 +18,8 @@ export type View =
   | { kind: 'subscription' }
   | { kind: 'privacy' }
   | { kind: 'security' }
+  | { kind: 'security-phone' }
+  | { kind: 'security-session'; device: 'iphone' | 'mac' }
   | { kind: 'data-storage' }
   | { kind: 'language' }
   | { kind: 'appearance' }
