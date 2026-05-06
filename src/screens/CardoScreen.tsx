@@ -1,8 +1,10 @@
-import { useState } from 'react'
-import { Search, Share2, MapPin, Plus, Star } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { Search, Share2, MapPin, Plus, Star, ChevronDown, X, Check } from 'lucide-react'
 import type { View } from '../nav'
 import { contacts, type Contact } from '../data'
 import { useT } from '../i18n'
+
+type CardView = 'all' | 'fav' | 'recent'
 
 export function CardoScreen({
   go,
@@ -12,20 +14,24 @@ export function CardoScreen({
   favorites: Set<string>
 }) {
   const t = useT()
-  const [activeChip, setActiveChip] = useState('all')
+  const [view, setView] = useState<CardView>('all')
+  const [city, setCity] = useState<string | null>(null)
+  const [showCityPicker, setShowCityPicker] = useState(false)
 
-  const chips: { id: string; label: string }[] = [
-    { id: 'all',      label: t('cards.tag.all') },
-    { id: 'fav',      label: t('cards.tag.favorites') },
-    { id: 'recent',   label: t('cards.tag.recentAdded') },
-    { id: 'Yangon',   label: 'Yangon' },
-    { id: 'Mandalay', label: 'Mandalay' },
-    { id: 'Tech',     label: 'Tech' },
-    { id: 'Sales',    label: 'Sales' },
+  const views: { id: CardView; label: string }[] = [
+    { id: 'all',    label: t('cards.tag.all') },
+    { id: 'fav',    label: t('cards.tag.favorites') },
+    { id: 'recent', label: t('cards.tag.recentAdded') },
   ]
 
-  const favoriteContacts = contacts.filter((c) => favorites.has(c.id))
-  const visibleContacts = activeChip === 'fav' ? favoriteContacts : contacts
+  const cities = useMemo(
+    () => Array.from(new Set(contacts.map((c) => c.city))).sort(),
+    []
+  )
+
+  let visibleContacts = contacts
+  if (view === 'fav') visibleContacts = visibleContacts.filter((c) => favorites.has(c.id))
+  if (city) visibleContacts = visibleContacts.filter((c) => c.city === city)
 
   return (
     <div className="px-5 pt-2 animate-fade-in">
@@ -52,20 +58,42 @@ export function CardoScreen({
       </div>
 
       <div className="flex items-center gap-1.5 mb-5 overflow-x-auto scrollbar-hide -mx-5 px-5">
-        {chips.map((c) => (
+        {views.map((c) => (
           <button
             key={c.id}
-            onClick={() => setActiveChip(c.id)}
+            onClick={() => setView(c.id)}
             className={`flex-shrink-0 inline-flex items-center gap-1 px-3 h-8 rounded-full text-[12px] font-medium border transition ${
-              activeChip === c.id ? 'bg-ink text-canvas border-ink' : 'bg-surface text-ink-muted border-line/70'
+              view === c.id ? 'bg-ink text-canvas border-ink' : 'bg-surface text-ink-muted border-line/70'
             }`}
           >
             {c.id === 'fav' && (
-              <Star size={11} strokeWidth={2} className={activeChip === c.id ? 'fill-canvas' : 'fill-brand text-brand'} />
+              <Star size={11} strokeWidth={2} className={view === c.id ? 'fill-canvas' : 'fill-brand text-brand'} />
             )}
             {c.label}
           </button>
         ))}
+
+        <span className="flex-shrink-0 h-5 w-px bg-line/70 mx-1" />
+
+        {city ? (
+          <button
+            onClick={() => setCity(null)}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 pl-3 pr-2 h-8 rounded-full text-[12px] font-medium border bg-brand/10 text-brand border-brand/30 transition"
+          >
+            <MapPin size={11} strokeWidth={2.2} />
+            {city}
+            <X size={12} strokeWidth={2.4} className="opacity-80" />
+          </button>
+        ) : (
+          <button
+            onClick={() => setShowCityPicker(true)}
+            className="flex-shrink-0 inline-flex items-center gap-1 pl-3 pr-2.5 h-8 rounded-full text-[12px] font-medium border bg-surface text-ink-muted border-line/70 transition"
+          >
+            <MapPin size={11} strokeWidth={2} />
+            {t('cards.tag.location')}
+            <ChevronDown size={12} strokeWidth={2} className="opacity-70" />
+          </button>
+        )}
       </div>
 
       {visibleContacts.length === 0 ? (
@@ -82,6 +110,15 @@ export function CardoScreen({
             <CardFeatureItem key={c.id} contact={c} onClick={() => go({ kind: 'card-detail', contact: c })} />
           ))}
         </div>
+      )}
+
+      {showCityPicker && (
+        <CityPicker
+          cities={cities}
+          selected={city}
+          onSelect={(c) => { setCity(c); setShowCityPicker(false) }}
+          onClose={() => setShowCityPicker(false)}
+        />
       )}
     </div>
   )
@@ -102,7 +139,7 @@ function CardFeatureItem({ contact, onClick }: { contact: Contact; onClick: () =
           {initials}
         </div>
         <div className="absolute top-4 left-4 h-11 w-11 rounded-full bg-canvas/90 backdrop-blur grid place-items-center border border-line/70 shadow-soft">
-          <span className="text-[13px] font-bold text-white">{initials}</span>
+          <span className="text-[13px] font-bold text-ink">{initials}</span>
         </div>
         {contact.tags?.[0] && (
           <span className="absolute top-5 right-4 px-2.5 py-1 rounded-full bg-canvas/70 backdrop-blur border border-line/60 text-[10.5px] font-semibold tracking-wide text-ink-muted">
@@ -132,6 +169,59 @@ function CardFeatureItem({ contact, onClick }: { contact: Contact; onClick: () =
           </span>
         </div>
       </div>
+    </button>
+  )
+}
+
+function CityPicker({
+  cities,
+  selected,
+  onSelect,
+  onClose,
+}: {
+  cities: string[]
+  selected: string | null
+  onSelect: (city: string | null) => void
+  onClose: () => void
+}) {
+  const t = useT()
+  return (
+    <div className="absolute inset-0 z-50 flex items-end justify-center animate-fade-in">
+      <button onClick={onClose} aria-label="Close" className="absolute inset-0 bg-canvas/75 backdrop-blur-sm" />
+      <div className="relative w-full rounded-t-[28px] border-t border-x border-line/70 bg-canvas animate-slide-up overflow-hidden">
+        <div className="pt-2.5 pb-2 flex justify-center">
+          <div className="h-[3px] w-9 rounded-full bg-line-strong" />
+        </div>
+        <div className="px-5 pt-1 pb-4 flex items-center justify-between border-b border-line/40">
+          <h2 className="text-[16px] font-semibold tracking-tight">{t('cards.location.title')}</h2>
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="h-8 w-8 grid place-items-center rounded-full border border-line/70 bg-surface/80"
+          >
+            <X size={14} strokeWidth={2} />
+          </button>
+        </div>
+        <div className="px-3 pt-2 pb-4 max-h-[60vh] overflow-y-auto">
+          <CityRow label={t('cards.location.all')} active={selected === null} onClick={() => onSelect(null)} />
+          {cities.map((c) => (
+            <CityRow key={c} label={c} active={selected === c} onClick={() => onSelect(c)} />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function CityRow({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-left transition ${active ? 'bg-brand/10 text-brand' : 'hover:bg-surface/80 text-ink'}`}
+    >
+      <MapPin size={15} strokeWidth={1.8} className={active ? 'text-brand' : 'text-ink-muted'} />
+      <span className="flex-1 text-[14.5px] font-medium">{label}</span>
+      {active && <Check size={15} strokeWidth={2.4} className="text-brand" />}
     </button>
   )
 }

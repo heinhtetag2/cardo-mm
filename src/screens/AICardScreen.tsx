@@ -309,7 +309,7 @@ function PreviewSheet({
               <div className="relative p-6 flex flex-col h-full justify-between">
                 <div className="flex items-start justify-between">
                   <p className="text-[10.5px] tracking-[0.22em] font-bold text-white">SWAPO·</p>
-                  <div className="h-9 w-9 rounded-xl bg-white grid place-items-center text-canvas font-black text-[13px]">S</div>
+                  <div className="h-9 w-9 rounded-xl bg-white grid place-items-center text-zinc-950 font-black text-[13px]">S</div>
                 </div>
                 <div>
                   <p className="text-[22px] font-bold text-white">{creation.name}</p>
@@ -497,9 +497,9 @@ function EditSheet({ creation, onSave, onClose }: { creation: Creation; onSave: 
   return (
     <ActionSheet onClose={onClose} title={t('ai.edit.title')}>
       <div className="px-2 pt-1">
-        <div className="flex items-start gap-2.5 px-3 py-3 mb-3 rounded-2xl bg-surface-elevated border border-line/60">
-          <Info size={14} className="text-ink-muted mt-0.5 flex-shrink-0" strokeWidth={1.8} />
-          <p className="text-[12px] text-ink-dim leading-relaxed">
+        <div className="flex items-start gap-2.5 px-3 py-3 mb-3 rounded-2xl bg-brand/8 border border-brand/20">
+          <Info size={14} className="text-brand mt-0.5 flex-shrink-0" strokeWidth={1.8} />
+          <p className="text-[12px] text-ink-muted leading-relaxed">
             {isCard ? t('ai.edit.info.card') : t('ai.edit.info.logo')}
           </p>
         </div>

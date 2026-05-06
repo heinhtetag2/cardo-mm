@@ -127,9 +127,9 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
               </>
             )}
 
-            <div className="flex items-start gap-2.5 px-3.5 py-3 mt-3 rounded-2xl border border-line/60 bg-surface-elevated">
-              <Info size={14} className="text-ink-muted mt-0.5 flex-shrink-0" strokeWidth={1.8} />
-              <p className="text-[12px] text-ink-dim leading-relaxed">
+            <div className="flex items-start gap-2.5 px-3.5 py-3 mt-3 rounded-2xl border border-brand/20 bg-brand/8">
+              <Info size={14} className="text-brand mt-0.5 flex-shrink-0" strokeWidth={1.8} />
+              <p className="text-[12px] text-ink-muted leading-relaxed">
                 {isLogo ? t('aiCreate.info.logo') : t('aiCreate.info.card')}
               </p>
             </div>
@@ -314,7 +314,7 @@ function CardPreview({ index, name, role, industry, picked, onClick }: { index: 
         <div className="relative p-5 flex flex-col h-full justify-between">
           <div className="flex items-start justify-between">
             <p className="text-[10.5px] tracking-[0.22em] font-bold text-white">SWAPO·</p>
-            <div className="h-9 w-9 rounded-xl bg-white grid place-items-center text-canvas font-black text-[13px]">S</div>
+            <div className="h-9 w-9 rounded-xl bg-white grid place-items-center text-zinc-950 font-black text-[13px]">S</div>
           </div>
           <div>
             <p className="text-[19px] font-bold">{name}</p>

@@ -760,7 +760,7 @@ function DonePane({
                 <p className="text-[10.5px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
                 <p className="text-[10px] font-medium text-ink-dim mt-1">{data.city || 'Yangon'}</p>
               </div>
-              <div className="h-10 w-10 rounded-xl bg-white/95 grid place-items-center text-canvas font-black text-[14px]">
+              <div className="h-10 w-10 rounded-xl bg-white/95 grid place-items-center text-zinc-950 font-black text-[14px]">
                 {initials}
               </div>
             </div>
@@ -949,7 +949,7 @@ function CaptureVisual() {
         <div className="absolute inset-0 p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between">
             <p className="text-[10px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
-            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-canvas font-black text-[11px]">S</div>
+            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-zinc-950 font-black text-[11px]">S</div>
           </div>
           <div>
             <p className="text-[18px] font-bold text-white tracking-tight">Su Su Aung</p>
@@ -1001,7 +1001,7 @@ function PersonalizeVisual() {
         <div className="absolute inset-0 p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between">
             <p className="text-[10px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
-            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-canvas font-black text-[11px]">S</div>
+            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-zinc-950 font-black text-[11px]">S</div>
           </div>
           <div>
             <p className="text-[18px] font-bold text-white tracking-tight">Your name here</p>
@@ -1037,7 +1037,7 @@ function SmallFauxQR() {
   return (
     <div className="grid grid-cols-[repeat(13,1fr)] gap-[2px] w-full h-full">
       {cells.flatMap((row, r) => row.map((on, c) => (
-        <div key={`${r}-${c}`} className={`aspect-square ${on ? 'bg-canvas' : 'bg-white'}`} />
+        <div key={`${r}-${c}`} className={`aspect-square ${on ? 'bg-zinc-950' : 'bg-white'}`} />
       )))}
     </div>
   )

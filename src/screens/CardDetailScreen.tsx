@@ -63,7 +63,7 @@ export function CardDetailScreen({
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-canvas/20 to-canvas/40" />
           <div className="relative flex flex-col h-full justify-between">
             <div className="flex items-start justify-between">
-              <div className="h-12 w-12 rounded-2xl bg-white/95 grid place-items-center text-canvas font-bold text-[15px]">{initials}</div>
+              <div className="h-12 w-12 rounded-2xl bg-white/95 grid place-items-center text-zinc-950 font-bold text-[15px]">{initials}</div>
               <span className="px-2.5 py-1 rounded-full bg-canvas/40 backdrop-blur text-[10.5px] font-semibold border border-white/15">{contact.city}</span>
             </div>
             <div>

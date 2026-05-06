@@ -74,7 +74,7 @@ export function HomeScreen({ go, setTab }: { go: (v: View) => void; setTab: (t: 
                 <button onClick={() => go({ kind: 'my-card' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-canvas text-[13px] font-semibold whitespace-nowrap">
                   <QrCode size={15} strokeWidth={2.4} /> {t('home.share')}
                 </button>
-                <button onClick={() => go({ kind: 'register' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-line bg-surface/60 text-[13px] font-medium whitespace-nowrap">
+                <button onClick={() => go({ kind: 'register' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/20 bg-white/10 text-white text-[13px] font-medium whitespace-nowrap">
                   <Plus size={15} strokeWidth={2.4} /> {t('home.add')}
                 </button>
               </div>

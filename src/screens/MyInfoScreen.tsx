@@ -14,7 +14,7 @@ export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout
       {/* Profile header */}
       <button
         onClick={() => go({ kind: 'account' })}
-        className="relative w-full text-left overflow-hidden rounded-[24px] border border-line/60 bg-gradient-to-br from-[#1a2440] via-surface to-surface p-5 mb-5"
+        className="relative w-full text-left overflow-hidden rounded-[24px] border border-line/60 bg-gradient-to-br from-brand/12 via-surface to-surface p-5 mb-5"
       >
         <div className="flex items-center gap-4">
           <div className="relative h-16 w-16 rounded-full bg-gradient-to-br from-brand to-brand-violet p-[2px]">

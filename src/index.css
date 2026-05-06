@@ -70,3 +70,19 @@
   background-clip: text;
   color: transparent;
 }
+
+/* Hero card gradient is always dark — keep its contents readable in light mode too */
+.bg-hero-card {
+  color: rgb(255 255 255);
+}
+.bg-hero-card .text-ink-muted {
+  color: rgb(255 255 255 / 0.72);
+}
+.bg-hero-card .text-ink-dim {
+  color: rgb(255 255 255 / 0.55);
+}
+
+/* Light-mode prefers a flat look — borders carry the visual weight, not shadows */
+[data-theme='light'] .shadow-soft {
+  box-shadow: none;
+}
