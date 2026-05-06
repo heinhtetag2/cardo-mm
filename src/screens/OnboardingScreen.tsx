@@ -231,7 +231,7 @@ function Welcome({ onContinue, onSignIn }: { onContinue: () => void; onSignIn: (
       <div className="relative space-y-2.5">
         <button
           onClick={onContinue}
-          className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
+          className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand-gradient text-white shadow-glow font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
         >
           {t('onb.welcome.cta')}
         </button>
@@ -338,7 +338,7 @@ function Features({
           <Dots total={total} active={slide} />
           <button
             onClick={onNext}
-            className="h-12 px-5 pt-px rounded-2xl bg-ink text-canvas text-[14.5px] font-semibold flex items-center justify-center active:scale-[0.99] transition"
+            className="h-12 px-5 pt-px rounded-2xl bg-brand text-white text-[14.5px] font-semibold flex items-center justify-center active:scale-[0.99] transition"
           >
             {slide < total - 1 ? t('onb.feat.continue') : t('onb.welcome.cta')}
           </button>
@@ -422,7 +422,7 @@ function PhonePane({
         <button
           onClick={onNext}
           disabled={!valid}
-          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
+          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
         >
           {t('onb.phone.cta')}
         </button>
@@ -535,7 +535,7 @@ function OtpPane({
         <button
           onClick={onNext}
           disabled={!valid}
-          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
+          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
         >
           {tt('common.confirm')}
         </button>
@@ -627,7 +627,7 @@ function ProfilePane({
         <button
           onClick={onNext}
           disabled={!valid}
-          className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
+          className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
         >
           {t('onb.profile.continue')}
         </button>
@@ -682,7 +682,7 @@ function PermissionsPane({
 
         <button
           onClick={onNext}
-          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
+          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
         >
           {t('onb.permissions.continue')}
         </button>
@@ -779,7 +779,7 @@ function DonePane({
 
         <button
           onClick={onEnter}
-          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
+          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
         >
           {t('onb.done.cta')}
         </button>

@@ -522,7 +522,7 @@ function EditSheet({ creation, onSave, onClose }: { creation: Creation; onSave: 
           <button
             onClick={save}
             disabled={!name.trim()}
-            className="flex-1 h-12 pt-px rounded-2xl bg-ink text-canvas text-[14px] font-semibold disabled:opacity-40 inline-flex items-center justify-center"
+            className="flex-1 h-12 pt-px rounded-2xl bg-brand text-white text-[14px] font-semibold disabled:opacity-40 inline-flex items-center justify-center"
           >
             {t('ai.edit.save')}
           </button>

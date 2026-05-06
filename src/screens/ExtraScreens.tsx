@@ -54,7 +54,7 @@ export function EditCardScreen({ onBack }: { onBack: () => void }) {
       <SubScreenHeader
         title={t('editCard.title')}
         onBack={onBack}
-        right={<button onClick={save} className="px-3.5 h-9 pt-px rounded-full bg-ink text-canvas text-[12.5px] font-semibold inline-flex items-center justify-center">{t('common.save')}</button>}
+        right={<button onClick={save} className="px-3.5 h-9 pt-px rounded-full bg-brand text-white text-[12.5px] font-semibold inline-flex items-center justify-center">{t('common.save')}</button>}
       />
 
       <div className="px-5 pb-8">
@@ -312,7 +312,7 @@ export function EditDisplayNameScreen({ onBack }: { onBack: () => void }) {
       title={t('editName.title')}
       onBack={onBack}
       right={
-        <button onClick={save} disabled={!dirty} className="px-3.5 h-9 pt-px rounded-full bg-ink text-canvas text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+        <button onClick={save} disabled={!dirty} className="px-3.5 h-9 pt-px rounded-full bg-brand text-white text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
           Save
         </button>
       }
@@ -353,7 +353,7 @@ export function EditRecoveryEmailScreen({ onBack }: { onBack: () => void }) {
       title="Recovery email"
       onBack={onBack}
       right={
-        <button onClick={save} disabled={!valid || !dirty} className="px-3.5 h-9 pt-px rounded-full bg-ink text-canvas text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+        <button onClick={save} disabled={!valid || !dirty} className="px-3.5 h-9 pt-px rounded-full bg-brand text-white text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
           Save
         </button>
       }
@@ -415,7 +415,7 @@ export function LinkedAccountsScreen({ onBack }: { onBack: () => void }) {
               className={`h-8 px-3.5 rounded-full text-[12px] font-semibold transition ${
                 linked[p]
                   ? 'border border-line/70 bg-surface-elevated text-ink-muted'
-                  : 'bg-ink text-canvas'
+                  : 'bg-brand text-white'
               }`}
             >
               {linked[p] ? 'Disconnect' : 'Connect'}
@@ -729,7 +729,7 @@ function TermsModal({ onClose }: { onClose: () => void }) {
         <div className="px-5 pt-3 pb-6 border-t border-line/40 bg-canvas flex-shrink-0">
           <button
             onClick={onClose}
-            className="w-full h-12 pt-px rounded-2xl bg-ink text-canvas font-semibold text-[14px] active:scale-[0.98] transition-transform inline-flex items-center justify-center"
+            className="w-full h-12 pt-px rounded-2xl bg-brand text-white font-semibold text-[14px] active:scale-[0.98] transition-transform inline-flex items-center justify-center"
           >
             Got it
           </button>
@@ -885,7 +885,7 @@ export function FilterScreen({ onBack }: { onBack: () => void }) {
       </div>
 
       <div className="absolute bottom-0 inset-x-0 px-5 pb-6 pt-3 bg-gradient-to-t from-canvas via-canvas to-canvas/0">
-        <button onClick={apply} className="w-full h-12 pt-px rounded-2xl bg-ink text-canvas font-semibold text-[14.5px] flex items-center justify-center">
+        <button onClick={apply} className="w-full h-12 pt-px rounded-2xl bg-brand text-white font-semibold text-[14.5px] flex items-center justify-center">
           Show results
         </button>
       </div>
@@ -1007,7 +1007,7 @@ export function ExchangeScreen({
 
             <button
               onClick={send}
-              className="w-full h-12 pt-px rounded-2xl bg-ink text-canvas font-semibold text-[14.5px] flex items-center justify-center"
+              className="w-full h-12 pt-px rounded-2xl bg-brand text-white font-semibold text-[14.5px] flex items-center justify-center"
             >
               Send exchange request
             </button>
@@ -1039,7 +1039,7 @@ export function ExchangeScreen({
             </p>
             <button
               onClick={viewTheirCard}
-              className="mt-6 w-full h-12 pt-px rounded-2xl bg-ink text-canvas text-[14.5px] font-semibold inline-flex items-center justify-center"
+              className="mt-6 w-full h-12 pt-px rounded-2xl bg-brand text-white text-[14.5px] font-semibold inline-flex items-center justify-center"
             >
               View their card
             </button>

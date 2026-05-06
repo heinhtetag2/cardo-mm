@@ -21,16 +21,16 @@
 }
 
 [data-theme='light'] {
-  --canvas: 255 255 255;
-  --surface: 250 250 250;
+  --canvas: 244 245 248;
+  --surface: 248 249 251;
   --surface-elevated: 255 255 255;
-  --surface-higher: 244 244 245;
-  --line: 234 234 234;
-  --line-strong: 212 212 212;
-  --ink: 10 10 10;
-  --ink-muted: 82 82 82;
-  --ink-dim: 163 163 163;
-  --active-bg: 234 234 234;
+  --surface-higher: 238 240 244;
+  --line: 224 226 232;
+  --line-strong: 200 203 212;
+  --ink: 26 28 36;
+  --ink-muted: 92 95 108;
+  --ink-dim: 148 152 164;
+  --active-bg: 232 234 240;
   --hero-from: #1a2440;
   --hero-via: #10131d;
   --hero-to: #0c0d14;

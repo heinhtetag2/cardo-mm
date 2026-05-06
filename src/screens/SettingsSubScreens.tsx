@@ -95,7 +95,7 @@ export function SubscriptionScreen({ onBack }: { onBack: () => void }) {
           <span className="text-[28px] font-bold">9,900 Ks</span>
           <span className="text-[12px] text-ink-dim">/month</span>
         </div>
-        <button className="mt-4 w-full py-3 rounded-2xl bg-ink text-canvas font-semibold text-[14px]">Upgrade now</button>
+        <button className="mt-4 w-full py-3 rounded-2xl bg-brand text-white font-semibold text-[14px]">Upgrade now</button>
       </div>
 
       <SectionLabel>Choose plan</SectionLabel>

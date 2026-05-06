@@ -271,14 +271,14 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
           <div className="absolute bottom-0 inset-x-0 z-20 px-5 pb-6 pt-8 bg-gradient-to-t from-canvas via-canvas to-canvas/0 pointer-events-none">
             <div className="pointer-events-auto">
               {step < 2 ? (
-                <button onClick={next} className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center">
+                <button onClick={next} className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center">
                   {step === 1 ? t('aiCreate.cta.generate') : t('aiCreate.cta.next')}
                 </button>
               ) : (
                 <>
                   <button
                     onClick={save}
-                    className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center active:scale-[0.99] transition"
+                    className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center active:scale-[0.99] transition"
                   >
                     {isLogo ? t('aiCreate.cta.saveLogo') : t('aiCreate.cta.saveCard')}
                   </button>

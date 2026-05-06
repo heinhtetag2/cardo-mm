@@ -112,7 +112,7 @@ export function ContactForm({
       <div className="absolute bottom-0 inset-x-0 px-5 pb-6 pt-3 bg-gradient-to-t from-canvas via-canvas to-canvas/0">
         <button
           onClick={() => onSave(data)}
-          className="w-full pt-[15px] pb-3.5 rounded-2xl bg-ink text-canvas font-semibold text-[15px] flex items-center justify-center"
+          className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center"
         >
           {saveLabel ?? t('form.saveDefault')}
         </button>
