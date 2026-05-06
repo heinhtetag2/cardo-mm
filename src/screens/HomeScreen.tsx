@@ -71,7 +71,7 @@ export function HomeScreen({ go, setTab }: { go: (v: View) => void; setTab: (t: 
                 </h1>
               </div>
               <div className="flex items-center gap-3">
-                <button onClick={() => go({ kind: 'my-card' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-brand text-white text-[13px] font-semibold whitespace-nowrap">
+                <button onClick={() => go({ kind: 'my-card' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-canvas text-[13px] font-semibold whitespace-nowrap">
                   <QrCode size={15} strokeWidth={2.4} /> {t('home.share')}
                 </button>
                 <button onClick={() => go({ kind: 'register' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/20 bg-white/10 text-white text-[13px] font-medium whitespace-nowrap">
@@ -186,7 +186,7 @@ function AdSlide({ ad }: { ad: Ad }) {
           </h2>
           <p className="text-[12.5px] text-ink-dim mt-2 max-w-[88%]">{ad.subtitle}</p>
         </div>
-        <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-brand text-white text-[13px] font-semibold">
+        <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-ink text-canvas text-[13px] font-semibold">
           {t('home.learnMore')} <ChevronRight size={15} strokeWidth={2.4} />
         </span>
       </div>
