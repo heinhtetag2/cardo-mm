@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Sparkles, Check, Type, Hash, Shapes, Layers, RefreshCw, Info } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import type { Creation } from '../data'
@@ -39,6 +39,7 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
       tone: isLogo ? tone : undefined,
       styleId,
       variation: picked,
+      prompt: prompt.trim() || undefined,
       createdAt: Date.now(),
     })
     onBack()
@@ -50,6 +51,7 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
   const [industry, setIndustry] = useState('Tech')
   const [tone, setTone] = useState('Modern')
   const [styleId, setStyleId] = useState(isLogo ? 'symbol' : 'gradient')
+  const [prompt, setPrompt] = useState('')
   const [generating, setGenerating] = useState(false)
   const [picked, setPicked] = useState(0)
   const [statusIdx, setStatusIdx] = useState(0)
@@ -126,6 +128,29 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
                 <SelectField label={t('aiCreate.field.industryLbl')} value={industry} onChange={setIndustry} options={['Tech', 'Finance', 'Logistics', 'Creative', 'Healthcare', 'Government', 'F&B', 'Other']} />
               </>
             )}
+
+            <PromptField
+              value={prompt}
+              onChange={setPrompt}
+              placeholder={isLogo ? t('aiCreate.prompt.placeholderLogo') : t('aiCreate.prompt.placeholderCard')}
+              suggestions={
+                isLogo
+                  ? [
+                      t('aiCreate.prompt.logoSuggest1'),
+                      t('aiCreate.prompt.logoSuggest2'),
+                      t('aiCreate.prompt.logoSuggest3'),
+                      t('aiCreate.prompt.logoSuggest4'),
+                    ]
+                  : [
+                      t('aiCreate.prompt.cardSuggest1'),
+                      t('aiCreate.prompt.cardSuggest2'),
+                      t('aiCreate.prompt.cardSuggest3'),
+                      t('aiCreate.prompt.cardSuggest4'),
+                    ]
+              }
+              labelText={t('aiCreate.prompt.label')}
+              optionalText={t('aiCreate.prompt.optional')}
+            />
 
             <div className="flex items-start gap-2.5 px-3.5 py-3 mt-3 rounded-2xl border border-brand/20 bg-brand/8">
               <Info size={14} className="text-brand mt-0.5 flex-shrink-0" strokeWidth={1.8} />
@@ -385,6 +410,74 @@ function LogoPreview({ index, brand, tone, type, picked, onClick }: { index: num
         )}
       </div>
     </button>
+  )
+}
+
+function PromptField({
+  value,
+  onChange,
+  placeholder,
+  suggestions,
+  labelText,
+  optionalText,
+}: {
+  value: string
+  onChange: (v: string) => void
+  placeholder: string
+  suggestions: string[]
+  labelText: string
+  optionalText: string
+}) {
+  const MAX = 240
+  const ref = useRef<HTMLTextAreaElement | null>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = `${Math.min(el.scrollHeight, 168)}px`
+  }, [value])
+
+  const apply = (s: string) => {
+    const next = value.trim() ? `${value.trim()}, ${s.toLowerCase()}` : s
+    onChange(next.slice(0, MAX))
+    requestAnimationFrame(() => ref.current?.focus())
+  }
+
+  return (
+    <div className="mb-3">
+      <div className="flex items-center justify-between mb-1.5 ml-1">
+        <label className="text-[11.5px] font-semibold text-ink-dim">
+          {labelText}
+          <span className="text-ink-dim/60 font-normal"> · {optionalText.toLowerCase()}</span>
+        </label>
+        <span className="text-[10.5px] tabular-nums text-ink-dim/70 mr-1">
+          {value.length}/{MAX}
+        </span>
+      </div>
+
+      <textarea
+        ref={ref}
+        value={value}
+        onChange={(e) => onChange(e.target.value.slice(0, MAX))}
+        placeholder={placeholder}
+        rows={4}
+        className="w-full resize-none px-4 py-3.5 rounded-2xl border border-line/70 bg-surface text-[14px] leading-relaxed outline-none focus:border-brand/60 transition placeholder:text-ink-dim/60 min-h-[112px]"
+      />
+
+      <div className="flex gap-1.5 mt-2.5 overflow-x-auto scrollbar-hide -mx-5 px-5 pb-1">
+        {suggestions.map((s) => (
+          <button
+            key={s}
+            type="button"
+            onClick={() => apply(s)}
+            className="flex-shrink-0 px-3.5 h-8 rounded-full text-[12px] font-normal text-ink-dim border border-dashed border-line hover:text-ink hover:border-line/100 inline-flex items-center justify-center active:scale-[0.97] transition"
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+    </div>
   )
 }
 

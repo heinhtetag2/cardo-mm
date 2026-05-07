@@ -245,6 +245,23 @@ const en: Dict = {
   'aiCreate.gen.logoB': 'Sketching marks…',
   'aiCreate.gen.logoC': 'Polishing details…',
 
+  // Prompt field
+  'aiCreate.prompt.label': 'Describe your vision',
+  'aiCreate.prompt.optional': 'Optional',
+  'aiCreate.prompt.placeholderCard': 'e.g. Sleek dark card with a soft violet gradient and a small monogram in the corner.',
+  'aiCreate.prompt.placeholderLogo': 'e.g. A bold geometric mark in deep blue, with a confident wordmark beside it.',
+  'aiCreate.prompt.helperCard': 'Tell the AI the mood, palette, or details you want.',
+  'aiCreate.prompt.helperLogo': 'Tell the AI the personality, palette, or imagery you want.',
+  'aiCreate.prompt.tryLabel': 'Try',
+  'aiCreate.prompt.cardSuggest1': 'Frosted glass with violet glow',
+  'aiCreate.prompt.cardSuggest2': 'Editorial serif on cream',
+  'aiCreate.prompt.cardSuggest3': 'Mono with bold accent dot',
+  'aiCreate.prompt.cardSuggest4': 'Midnight blue with foil emboss',
+  'aiCreate.prompt.logoSuggest1': 'Geometric monogram, two-tone',
+  'aiCreate.prompt.logoSuggest2': 'Soft circular emblem',
+  'aiCreate.prompt.logoSuggest3': 'Confident serif wordmark',
+  'aiCreate.prompt.logoSuggest4': 'Abstract spark, single weight',
+
   // My Card screen
   'myCard.title': 'My Card',
   'myCard.share': 'Share',
@@ -899,6 +916,23 @@ const my: Dict = {
   'aiCreate.gen.logoA': 'သင့်ဘရန်ဒ်ကို ဆန်းစစ်နေသည်…',
   'aiCreate.gen.logoB': 'mark များ ရေးဆွဲနေသည်…',
   'aiCreate.gen.logoC': 'အသေးစိတ်များ ပြုပြင်နေသည်…',
+
+  // Prompt field
+  'aiCreate.prompt.label': 'သင့်စိတ်ကူးကို ဖော်ပြပါ',
+  'aiCreate.prompt.optional': 'ရွေးချယ်စိတ်ကြိုက်',
+  'aiCreate.prompt.placeholderCard': 'ဥပမာ — အနက်ရောင် ပေါ့ပါးသော ကတ်နှင့် ခရမ်းရောင် gradient၊ ထောင့်တွင် monogram။',
+  'aiCreate.prompt.placeholderLogo': 'ဥပမာ — အနက်ပြာရောင် geometric mark နှင့် ဂုဏ်ရှိသော wordmark။',
+  'aiCreate.prompt.helperCard': 'AI ကို သင်လိုချင်သော အသံ၊ အရောင်၊ အသေးစိတ် ပြောပြပါ။',
+  'aiCreate.prompt.helperLogo': 'AI ကို သင်လိုချင်သော ပင်ကိုယ်၊ အရောင်၊ ပုံရိပ် ပြောပြပါ။',
+  'aiCreate.prompt.tryLabel': 'စမ်းကြည့်',
+  'aiCreate.prompt.cardSuggest1': 'Frosted glass နှင့် ခရမ်းရောင်အလင်း',
+  'aiCreate.prompt.cardSuggest2': 'cream ပေါ်တွင် Editorial serif',
+  'aiCreate.prompt.cardSuggest3': 'Mono နှင့် ထင်ရှားသော အစက်',
+  'aiCreate.prompt.cardSuggest4': 'အနက်ပြာ foil emboss',
+  'aiCreate.prompt.logoSuggest1': 'Geometric monogram၊ နှစ်ရောင်',
+  'aiCreate.prompt.logoSuggest2': 'ပျော့သော အဝိုင်း emblem',
+  'aiCreate.prompt.logoSuggest3': 'ဂုဏ်ရှိသော serif wordmark',
+  'aiCreate.prompt.logoSuggest4': 'Abstract spark၊ အလေးချိန်တစ်ခု',
 
   // My Card
   'myCard.title': 'ကျွန်ုပ်ကတ်',

@@ -7,6 +7,7 @@ export type Creation = {
   tone?: string
   styleId: string
   variation: number
+  prompt?: string
   createdAt: number
 }
 
