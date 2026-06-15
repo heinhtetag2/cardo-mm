@@ -23,20 +23,20 @@ export function Sidebar({
   return (
     <aside
       style={{ width: w }}
-      className="h-full bg-white border-r border-[#EBEBEB] flex flex-col flex-shrink-0 overflow-hidden transition-[width] duration-300 ease-out"
+      className="h-full bg-sand-0 border-r border-[#EBEBEB] flex flex-col flex-shrink-0 overflow-hidden transition-[width] duration-300 ease-out"
     >
       {/* Logo */}
       <div className="h-[68px] flex items-center px-5 shrink-0">
         {!collapsed && (
           <div className="flex items-center gap-2 flex-1 mr-2">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] grid place-items-center text-white text-[14px] font-bold">
+            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] grid place-items-center text-sand-0 text-[14px] font-bold">
               S
             </div>
             <span className="text-[15px] font-bold tracking-tight text-[#1A1A1A]">SWAPO.</span>
           </div>
         )}
         {collapsed && (
-          <div className="h-9 w-9 mx-auto rounded-xl bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] grid place-items-center text-white text-[14px] font-bold">
+          <div className="h-9 w-9 mx-auto rounded-xl bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] grid place-items-center text-sand-0 text-[14px] font-bold">
             S
           </div>
         )}
@@ -84,7 +84,7 @@ export function Sidebar({
 
         {/* User profile */}
         <div className={`mt-3 flex items-center rounded-xl ${collapsed ? 'justify-center px-0 py-2' : 'gap-3 px-3 py-2.5 bg-[#F8F8F8]'}`}>
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] text-white grid place-items-center text-xs font-semibold shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] text-sand-0 grid place-items-center text-xs font-semibold shrink-0">
             {DASH_USER.initials}
           </div>
           {!collapsed && (
@@ -146,7 +146,7 @@ function NavItem({
       )}
       <span className="relative inline-flex">
         <Icon className={`w-[17px] h-[17px] shrink-0 ${active ? 'text-[#5B8DEF]' : 'text-[#616161] group-hover:text-[#4A4A4A]'}`} strokeWidth={1.75} />
-        {badge && <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#FF3C21] border border-white" />}
+        {badge && <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#FF3C21] border border-sand-0" />}
       </span>
       {!collapsed && <span className="whitespace-nowrap">{label}</span>}
     </button>

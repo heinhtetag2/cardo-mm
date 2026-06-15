@@ -18,9 +18,9 @@ export function SubscriptionPage() {
 
       {/* Current plan + usage */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="lg:col-span-2 bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] rounded-2xl p-7 text-white relative overflow-hidden">
-          <div className="absolute -top-12 -right-12 w-52 h-52 rounded-full bg-white/10" />
-          <div className="absolute top-16 right-24 w-24 h-24 rounded-full bg-white/5" />
+        <div className="lg:col-span-2 bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] rounded-2xl p-7 text-sand-0 relative overflow-hidden">
+          <div className="absolute -top-12 -right-12 w-52 h-52 rounded-full bg-sand-0/10" />
+          <div className="absolute top-16 right-24 w-24 h-24 rounded-full bg-sand-0/5" />
           <div className="relative">
             <div className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-wider opacity-80">
               <Star className="w-3.5 h-3.5" /> Current plan
@@ -35,17 +35,17 @@ export function SubscriptionPage() {
               <UsageMeter label="Saved contacts" value={DASH_STATS.savedContacts} max={Infinity} unit="unlimited" />
             </div>
             <div className="mt-7 flex items-center gap-2 flex-wrap">
-              <button className="h-10 px-4 inline-flex items-center gap-1.5 bg-white text-[#5B8DEF] text-[12.5px] font-semibold rounded-xl hover:bg-white/95 transition">
+              <button className="h-10 px-4 inline-flex items-center gap-1.5 bg-sand-0 text-[#5B8DEF] text-[12.5px] font-semibold rounded-xl hover:bg-sand-0/95 transition">
                 <Zap className="w-3.5 h-3.5" /> Upgrade to Business
               </button>
-              <button className="h-10 px-4 inline-flex items-center gap-1.5 bg-white/15 text-white text-[12.5px] font-medium rounded-xl hover:bg-white/25 backdrop-blur transition">
+              <button className="h-10 px-4 inline-flex items-center gap-1.5 bg-sand-0/15 text-sand-0 text-[12.5px] font-medium rounded-xl hover:bg-sand-0/25 backdrop-blur transition">
                 Switch to yearly · save 17%
               </button>
             </div>
           </div>
         </div>
 
-        <div className="bg-white border border-[#EBEBEB] rounded-2xl p-6">
+        <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl p-6">
           <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Billing</h2>
           <p className="text-[11.5px] text-[#616161] mt-0.5 mb-5">Next charge · 1 May 2026</p>
           <div className="space-y-3.5">
@@ -69,11 +69,11 @@ export function SubscriptionPage() {
         <div className="inline-flex bg-[#F3F3F3] rounded-2xl p-1">
           <button
             onClick={() => setBilling('monthly')}
-            className={`h-9 px-4 text-[12px] font-medium rounded-xl transition ${billing === 'monthly' ? 'bg-white shadow text-[#1A1A1A]' : 'text-[#616161]'}`}
+            className={`h-9 px-4 text-[12px] font-medium rounded-xl transition ${billing === 'monthly' ? 'bg-sand-0 shadow text-[#1A1A1A]' : 'text-[#616161]'}`}
           >Monthly</button>
           <button
             onClick={() => setBilling('yearly')}
-            className={`h-9 px-4 text-[12px] font-medium rounded-xl transition ${billing === 'yearly' ? 'bg-white shadow text-[#1A1A1A]' : 'text-[#616161]'}`}
+            className={`h-9 px-4 text-[12px] font-medium rounded-xl transition ${billing === 'yearly' ? 'bg-sand-0 shadow text-[#1A1A1A]' : 'text-[#616161]'}`}
           >Yearly · save 17%</button>
         </div>
       </div>
@@ -84,7 +84,7 @@ export function SubscriptionPage() {
 
       {/* Two-up: invoices + payment methods */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-8">
-        <div className="lg:col-span-2 bg-white border border-[#EBEBEB] rounded-2xl overflow-hidden">
+        <div className="lg:col-span-2 bg-sand-0 border border-[#EBEBEB] rounded-2xl overflow-hidden">
           <div className="px-6 py-4 border-b border-[#F3F3F3] flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Receipt className="w-3.5 h-3.5 text-[#5B8DEF]" />
@@ -121,7 +121,7 @@ export function SubscriptionPage() {
           </table>
         </div>
 
-        <div className="bg-white border border-[#EBEBEB] rounded-2xl overflow-hidden">
+        <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl overflow-hidden">
           <div className="px-6 py-4 border-b border-[#F3F3F3]">
             <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Payment methods</h2>
             <p className="text-[11.5px] text-[#616161] mt-0.5">Local & international</p>
@@ -149,12 +149,12 @@ function PlanCard({ plan, billing, active }: { plan: Plan; billing: 'monthly' | 
   const price = billing === 'monthly' ? plan.pricePerMonth : Math.round(plan.pricePerYear / 12)
   return (
     <div
-      className={`relative bg-white rounded-2xl p-6 flex flex-col transition ${
+      className={`relative bg-sand-0 rounded-2xl p-6 flex flex-col transition ${
         plan.highlight ? 'border-2 border-[#5B8DEF] shadow-md' : 'border border-[#EBEBEB]'
       }`}
     >
       {plan.badge && (
-        <span className="absolute -top-2.5 left-6 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-lg uppercase tracking-wider">
+        <span className="absolute -top-2.5 left-6 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-sand-0 text-[10px] font-bold px-2.5 py-0.5 rounded-lg uppercase tracking-wider">
           {plan.badge}
         </span>
       )}
@@ -189,8 +189,8 @@ function PlanCard({ plan, billing, active }: { plan: Plan; billing: 'monthly' | 
           active
             ? 'bg-[#F3F3F3] text-[#9A9A9A] cursor-default'
             : plan.highlight
-            ? 'bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-white hover:opacity-95 shadow-sm'
-            : 'bg-[#1A1A1A] text-white hover:bg-[#303030]'
+            ? 'bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-sand-0 hover:opacity-95 shadow-sm'
+            : 'bg-[#1A1A1A] text-sand-0 hover:bg-[#303030]'
         }`}
       >
         {active ? 'Current plan' : plan.id === 'free' ? 'Downgrade' : (
@@ -213,8 +213,8 @@ function UsageMeter({ label, value, max, unit }: { label: string; value: number;
           {value} <span className="opacity-70">{unit}</span>
         </span>
       </div>
-      <div className="h-1 w-full bg-white/20 rounded-full overflow-hidden mt-1.5">
-        <div className="h-full bg-white" style={{ width: `${Math.min(pct, 100)}%` }} />
+      <div className="h-1 w-full bg-sand-0/20 rounded-full overflow-hidden mt-1.5">
+        <div className="h-full bg-sand-0" style={{ width: `${Math.min(pct, 100)}%` }} />
       </div>
     </div>
   )

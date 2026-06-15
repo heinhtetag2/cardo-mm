@@ -15,7 +15,7 @@ export function MyCardsPage() {
             All your digital cards: paper, AI, conference, personal.
           </p>
         </div>
-        <button className="h-11 px-5 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-white text-[13.5px] font-semibold rounded-xl hover:opacity-95 transition shadow-sm">
+        <button className="h-11 px-5 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-sand-0 text-[13.5px] font-semibold rounded-xl hover:opacity-95 transition shadow-sm">
           <Plus className="w-4 h-4" /> New card
         </button>
       </div>
@@ -39,20 +39,20 @@ function CardTile({ card, active, onClick }: { card: MyCard; active: boolean; on
   return (
     <button
       onClick={onClick}
-      className={`text-left bg-white border rounded-2xl overflow-hidden transition group ${
+      className={`text-left bg-sand-0 border rounded-2xl overflow-hidden transition group ${
         active ? 'border-[#5B8DEF] ring-2 ring-[#EEF2FF]' : 'border-[#EBEBEB] hover:border-[#5B8DEF]/40'
       }`}
     >
-      <div className={`relative h-40 bg-gradient-to-br ${card.gradient} p-5 text-white`}>
+      <div className={`relative h-40 bg-gradient-to-br ${card.gradient} p-5 text-sand-0`}>
         <div className="text-[11px] font-medium uppercase tracking-wider opacity-80">{card.style}</div>
         <div className="text-[15.5px] font-semibold mt-1">{DASH_USER.firstName} {DASH_USER.lastName}</div>
         <div className="text-[11.5px] opacity-90 truncate">{DASH_USER.role} · {DASH_USER.company}</div>
         {card.isPrimary && (
-          <span className="absolute top-3 right-3 text-[10px] font-semibold px-2 py-0.5 rounded-lg bg-white/20 backdrop-blur">
+          <span className="absolute top-3 right-3 text-[10px] font-semibold px-2 py-0.5 rounded-lg bg-sand-0/20 backdrop-blur">
             Primary
           </span>
         )}
-        <div className="absolute bottom-3 right-3 h-9 w-9 rounded-xl bg-white/15 backdrop-blur grid place-items-center">
+        <div className="absolute bottom-3 right-3 h-9 w-9 rounded-xl bg-sand-0/15 backdrop-blur grid place-items-center">
           <QrCode className="w-4 h-4" />
         </div>
       </div>
@@ -77,7 +77,7 @@ function CardDetail({ card }: { card: MyCard }) {
     { label: 'Shares', value: card.shares, Icon: Share2 },
   ]
   return (
-    <div className="bg-white border border-[#EBEBEB] rounded-2xl sticky top-0 overflow-hidden">
+    <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl sticky top-0 overflow-hidden">
       <div className="p-6 border-b border-[#F3F3F3]">
         <div className="flex items-start justify-between">
           <div>
@@ -89,13 +89,13 @@ function CardDetail({ card }: { card: MyCard }) {
           </button>
         </div>
 
-        <div className={`mt-4 h-48 rounded-2xl bg-gradient-to-br ${card.gradient} p-5 text-white relative`}>
+        <div className={`mt-4 h-48 rounded-2xl bg-gradient-to-br ${card.gradient} p-5 text-sand-0 relative`}>
           <div className="text-[10px] font-medium uppercase tracking-wider opacity-80">{card.style}</div>
           <div className="text-[18px] font-semibold mt-1.5">{DASH_USER.firstName} {DASH_USER.lastName}</div>
           <div className="text-[11.5px] opacity-90">{DASH_USER.role}</div>
           <div className="text-[11px] opacity-80 mt-0.5">{DASH_USER.company}</div>
           <div className="absolute bottom-4 left-5 text-[10.5px] opacity-80">{DASH_USER.email}</div>
-          <div className="absolute bottom-4 right-5 h-10 w-10 rounded-xl bg-white/15 backdrop-blur grid place-items-center">
+          <div className="absolute bottom-4 right-5 h-10 w-10 rounded-xl bg-sand-0/15 backdrop-blur grid place-items-center">
             <QrCode className="w-4 h-4" />
           </div>
         </div>

@@ -3,6 +3,17 @@
 @tailwind utilities;
 
 :root {
+  --color-base-sand-0: #fff;
+  --color-base-sand-10: #f8f7f7;
+  --color-base-sand-20: #ebebea;
+  --color-base-sand-30: #d8d6d4;
+  --color-base-sand-40: #b0adab;
+  --color-base-sand-50: #77736e;
+  --color-base-sand-60: #585450;
+  --color-base-sand-70: #3f3c39;
+  --color-base-sand-80: #2b2926;
+  --color-base-sand-90: #000;
+
   --canvas: 6 7 10;
   --surface: 15 16 21;
   --surface-elevated: 21 23 30;
@@ -65,7 +76,7 @@
 
 /* Custom Swapo S-mark logo */
 .swapo-s {
-  background: linear-gradient(135deg, #ffffff 0%, #d8e4ff 100%);
+  background: linear-gradient(135deg, var(--color-base-sand-0) 0%, #d8e4ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

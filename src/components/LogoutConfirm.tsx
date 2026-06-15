@@ -29,7 +29,7 @@ export function LogoutConfirm({
           </button>
           <button
             onClick={onConfirm}
-            className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[13.5px] font-semibold"
+            className="flex-1 h-11 rounded-xl bg-rose-500 text-sand-0 text-[13.5px] font-semibold"
           >
             {t('logout.confirm')}
           </button>

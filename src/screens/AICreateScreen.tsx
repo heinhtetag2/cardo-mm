@@ -182,7 +182,7 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
                       <p className="text-[11.5px] text-ink-dim mt-0.5">{t.desc}</p>
                       {styleId === t.id && (
                         <div className="absolute top-2 right-2 h-6 w-6 rounded-full bg-brand grid place-items-center">
-                          <Check size={13} strokeWidth={2.6} className="text-white" />
+                          <Check size={13} strokeWidth={2.6} className="text-sand-0" />
                         </div>
                       )}
                     </button>
@@ -194,13 +194,13 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
                       className={`relative p-3 rounded-2xl border text-left overflow-hidden ${styleId === s.id ? 'border-brand ring-2 ring-brand/30' : 'border-line/70'}`}
                     >
                       <div className={`h-20 rounded-xl bg-gradient-to-br ${s.accent} mb-3 grid place-items-center`}>
-                        <div className="h-7 w-12 rounded bg-white/20 backdrop-blur-sm" />
+                        <div className="h-7 w-12 rounded bg-sand-0/20 backdrop-blur-sm" />
                       </div>
                       <p className="text-[14px] font-semibold">{s.name}</p>
                       <p className="text-[11.5px] text-ink-dim mt-0.5">{s.desc}</p>
                       {styleId === s.id && (
                         <div className="absolute top-2 right-2 h-6 w-6 rounded-full bg-brand grid place-items-center">
-                          <Check size={13} strokeWidth={2.6} className="text-white" />
+                          <Check size={13} strokeWidth={2.6} className="text-sand-0" />
                         </div>
                       )}
                     </button>
@@ -246,14 +246,14 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
                   }}
                 />
                 {/* Top highlight */}
-                <div className="absolute inset-x-3 top-1.5 h-3 rounded-full bg-white/40 blur-[6px] pointer-events-none" />
+                <div className="absolute inset-x-3 top-1.5 h-3 rounded-full bg-sand-0/40 blur-[6px] pointer-events-none" />
                 {/* Inner edge */}
-                <div className="absolute inset-0 rounded-full border border-white/15 pointer-events-none" />
+                <div className="absolute inset-0 rounded-full border border-sand-0/15 pointer-events-none" />
                 {/* Icon */}
-                <Sparkles size={26} className="relative text-white drop-shadow-[0_2px_8px_rgba(255,255,255,0.5)]" strokeWidth={1.8} />
+                <Sparkles size={26} className="relative text-sand-0 drop-shadow-[0_2px_8px_rgba(255,255,255,0.5)]" strokeWidth={1.8} />
               </div>
               {/* Floating sparkle particles */}
-              <span className="absolute top-2 right-3 h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.8)] animate-float-a" />
+              <span className="absolute top-2 right-3 h-1.5 w-1.5 rounded-full bg-sand-0 shadow-[0_0_6px_rgba(255,255,255,0.8)] animate-float-a" />
               <span className="absolute bottom-4 left-1 h-1 w-1 rounded-full bg-brand-violet shadow-[0_0_6px_rgba(139,92,246,0.8)] animate-float-b" />
               <span className="absolute top-10 left-1 h-1 w-1 rounded-full bg-brand shadow-[0_0_6px_rgba(91,141,239,0.8)] animate-float-c" />
             </div>
@@ -296,14 +296,14 @@ export function AICreateScreen({ onBack, mode, onSave }: { onBack: () => void; m
           <div className="absolute bottom-0 inset-x-0 z-20 px-5 pb-6 pt-8 bg-gradient-to-t from-canvas via-canvas to-canvas/0 pointer-events-none">
             <div className="pointer-events-auto">
               {step < 2 ? (
-                <button onClick={next} className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center">
+                <button onClick={next} className="w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[15px] flex items-center justify-center">
                   {step === 1 ? t('aiCreate.cta.generate') : t('aiCreate.cta.next')}
                 </button>
               ) : (
                 <>
                   <button
                     onClick={save}
-                    className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center active:scale-[0.99] transition"
+                    className="w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[15px] flex items-center justify-center active:scale-[0.99] transition"
                   >
                     {isLogo ? t('aiCreate.cta.saveLogo') : t('aiCreate.cta.saveCard')}
                   </button>
@@ -335,11 +335,11 @@ function CardPreview({ index, name, role, industry, picked, onClick }: { index: 
         ${index === 0 ? 'from-[#1a2440] via-[#171b2c] to-[#0c0d14]' :
           index === 1 ? 'from-violet-500/40 via-fuchsia-500/30 to-canvas' :
           'from-emerald-500/40 via-teal-600/30 to-canvas'}`}>
-        <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-sand-0/10 blur-3xl" />
         <div className="relative p-5 flex flex-col h-full justify-between">
           <div className="flex items-start justify-between">
-            <p className="text-[10.5px] tracking-[0.22em] font-bold text-white">SWAPO·</p>
-            <div className="h-9 w-9 rounded-xl bg-white grid place-items-center text-zinc-950 font-black text-[13px]">S</div>
+            <p className="text-[10.5px] tracking-[0.22em] font-bold text-sand-0">SWAPO·</p>
+            <div className="h-9 w-9 rounded-xl bg-sand-0 grid place-items-center text-zinc-950 font-black text-[13px]">S</div>
           </div>
           <div>
             <p className="text-[19px] font-bold">{name}</p>
@@ -349,7 +349,7 @@ function CardPreview({ index, name, role, industry, picked, onClick }: { index: 
       </div>
       {picked && (
         <div className="absolute top-3 left-3 h-7 w-7 rounded-full bg-brand grid place-items-center shadow-glow">
-          <Check size={14} strokeWidth={2.6} className="text-white" />
+          <Check size={14} strokeWidth={2.6} className="text-sand-0" />
         </div>
       )}
     </button>
@@ -360,7 +360,7 @@ function LogoPreview({ index, brand, tone, type, picked, onClick }: { index: num
   const t = useT()
   const initials = brand.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase() || 'C'
   const palettes = [
-    { from: '#1a2440', to: '#0c0d14', mark: 'text-white', accent: 'bg-brand' },
+    { from: '#1a2440', to: '#0c0d14', mark: 'text-sand-0', accent: 'bg-brand' },
     { from: '#fef3c7', to: '#fde68a', mark: 'text-zinc-900', accent: 'bg-zinc-900' },
     { from: '#0c0d14', to: '#0c0d14', mark: 'text-brand', accent: 'bg-brand' },
   ]
@@ -380,7 +380,7 @@ function LogoPreview({ index, brand, tone, type, picked, onClick }: { index: num
         )}
         {type === 'lettermark' && (
           <div className={`h-16 w-16 rounded-2xl ${p.accent} grid place-items-center`}>
-            <p className="text-white text-[24px] font-black tracking-tight">{initials}</p>
+            <p className="text-sand-0 text-[24px] font-black tracking-tight">{initials}</p>
           </div>
         )}
         {type === 'symbol' && (
@@ -392,7 +392,7 @@ function LogoPreview({ index, brand, tone, type, picked, onClick }: { index: num
         {type === 'combination' && (
           <div className="flex items-center gap-3">
             <div className={`h-12 w-12 rounded-xl ${p.accent} grid place-items-center`}>
-              <p className="text-white text-[18px] font-black">{initials[0]}</p>
+              <p className="text-sand-0 text-[18px] font-black">{initials[0]}</p>
             </div>
             <p className={`text-[20px] font-bold tracking-tight ${p.mark}`}>{brand}</p>
           </div>
@@ -405,7 +405,7 @@ function LogoPreview({ index, brand, tone, type, picked, onClick }: { index: num
         </div>
         {picked && (
           <div className="h-7 w-7 rounded-full bg-brand grid place-items-center shadow-glow">
-            <Check size={14} strokeWidth={2.6} className="text-white" />
+            <Check size={14} strokeWidth={2.6} className="text-sand-0" />
           </div>
         )}
       </div>
@@ -429,14 +429,18 @@ function PromptField({
   optionalText: string
 }) {
   const MAX = 240
+  const [focused, setFocused] = useState(false)
   const ref = useRef<HTMLTextAreaElement | null>(null)
+  const filled = value.length > 0
+  const float = filled || focused
+  const label = `${labelText} · ${optionalText.toLowerCase()}`
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
     el.style.height = 'auto'
-    el.style.height = `${Math.min(el.scrollHeight, 168)}px`
-  }, [value])
+    el.style.height = `${Math.max(120, Math.min(el.scrollHeight, 168))}px`
+  }, [value, float])
 
   const apply = (s: string) => {
     const next = value.trim() ? `${value.trim()}, ${s.toLowerCase()}` : s
@@ -446,24 +450,31 @@ function PromptField({
 
   return (
     <div className="mb-3">
-      <div className="flex items-center justify-between mb-1.5 ml-1">
-        <label className="text-[11.5px] font-semibold text-ink-dim">
-          {labelText}
-          <span className="text-ink-dim/60 font-normal"> · {optionalText.toLowerCase()}</span>
-        </label>
-        <span className="text-[10.5px] tabular-nums text-ink-dim/70 mr-1">
+      <label className={`relative block rounded-2xl bg-surface-elevated border border-transparent transition ${focused ? 'bg-surface-higher ring-2 ring-ink/10' : ''}`}>
+        <span
+          aria-hidden
+          className={`pointer-events-none absolute left-4 transition-all duration-150 ${
+            float ? 'top-2.5 text-[11px] text-ink-dim leading-none' : 'top-4 text-[15px] text-ink-dim'
+          }`}
+        >
+          {label}
+        </span>
+        <textarea
+          ref={ref}
+          value={value}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          onChange={(e) => onChange(e.target.value.slice(0, MAX))}
+          placeholder={float ? placeholder : ''}
+          rows={4}
+          className={`w-full resize-none px-4 pb-3 bg-transparent outline-none text-[15px] leading-relaxed placeholder:text-ink-dim/60 min-h-[120px] ${
+            float ? 'pt-7' : 'pt-4 opacity-0 focus:opacity-100'
+          }`}
+        />
+        <span className="absolute bottom-2 right-3 text-[11px] tabular-nums text-ink-dim/70">
           {value.length}/{MAX}
         </span>
-      </div>
-
-      <textarea
-        ref={ref}
-        value={value}
-        onChange={(e) => onChange(e.target.value.slice(0, MAX))}
-        placeholder={placeholder}
-        rows={4}
-        className="w-full resize-none px-4 py-3.5 rounded-2xl border border-line/70 bg-surface text-[14px] leading-relaxed outline-none focus:border-brand/60 transition placeholder:text-ink-dim/60 min-h-[112px]"
-      />
+      </label>
 
       <div className="flex gap-1.5 mt-2.5 overflow-x-auto scrollbar-hide -mx-5 px-5 pb-1">
         {suggestions.map((s) => (
@@ -481,15 +492,32 @@ function PromptField({
   )
 }
 
-function Field({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+function Field({ label, value, onChange, hint }: { label: string; value: string; onChange: (v: string) => void; hint?: string }) {
+  const [focused, setFocused] = useState(false)
+  const filled = value.length > 0
+  const float = filled || focused
   return (
     <div className="mb-3">
-      <label className="block text-[11.5px] font-semibold text-ink-dim mb-1.5 ml-1">{label}</label>
-      <input
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full h-12 px-4 rounded-2xl border border-line/70 bg-surface text-[14px] outline-none focus:border-brand/60 transition"
-      />
+      <label className={`relative block rounded-2xl bg-surface-elevated border border-transparent transition ${focused ? 'bg-surface-higher ring-2 ring-ink/10' : ''}`}>
+        <span
+          aria-hidden
+          className={`pointer-events-none absolute left-4 transition-all duration-150 ${
+            float
+              ? 'top-2 text-[11px] text-ink-dim leading-none'
+              : 'top-1/2 -translate-y-1/2 text-[15px] text-ink-dim'
+          }`}
+        >
+          {label}
+        </span>
+        <input
+          value={value}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          onChange={(e) => onChange(e.target.value)}
+          className={`w-full h-[58px] bg-transparent outline-none text-[15px] text-ink px-4 ${float ? 'pt-5 pb-1.5' : ''}`}
+        />
+      </label>
+      {hint && <p className="text-[12px] text-ink-dim mt-1.5 ml-1">{hint}</p>}
     </div>
   )
 }
@@ -497,7 +525,7 @@ function Field({ label, value, onChange }: { label: string; value: string; onCha
 function SelectField({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: string[] }) {
   return (
     <div className="mb-3">
-      <label className="block text-[11.5px] font-semibold text-ink-dim mb-1.5 ml-1">{label}</label>
+      <p className="text-[12px] text-ink-dim mb-2 ml-1">{label}</p>
       <div className="flex flex-wrap gap-1.5">
         {options.map((o) => (
           <button key={o} onClick={() => onChange(o)}

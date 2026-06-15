@@ -14,6 +14,7 @@ import { EditContactScreen } from './screens/EditContactScreen'
 import { MyCardScreen } from './screens/MyCardScreen'
 import { AICreateScreen } from './screens/AICreateScreen'
 import { ScanScreen } from './screens/ScanScreen'
+import { ScanShareScreen } from './screens/ScanShareScreen'
 import { ManualEntryScreen } from './screens/ManualEntryScreen'
 import { SettingsScreen } from './screens/SettingsScreen'
 import { NearbyScreen } from './screens/NearbyScreen'
@@ -97,7 +98,7 @@ export default function App() {
         aria-label="Open Swapo dashboard"
       >
         <span className="h-8 w-8 rounded-full bg-brand-gradient grid place-items-center shadow-glow">
-          <LayoutDashboard size={15} className="text-white" strokeWidth={2} />
+          <LayoutDashboard size={15} className="text-sand-0" strokeWidth={2} />
         </span>
         <span className="text-[13px] font-semibold text-ink leading-tight text-left">
           Dashboard
@@ -115,7 +116,8 @@ export default function App() {
           {showTopBar && (
             <TopBar
               onBellClick={() => go({ kind: 'notifications' })}
-              onScanClick={tab === 'me' || tab === 'ai' ? undefined : () => go({ kind: 'register' })}
+              onScanClick={tab === 'me' || tab === 'ai' ? undefined : () => go({ kind: 'scan-share' })}
+              onProfileClick={() => goTab('me')}
             />
           )}
 
@@ -149,6 +151,7 @@ export default function App() {
           {current?.kind === 'my-card' && <MyCardScreen onBack={back} go={go} />}
           {current?.kind === 'ai-create' && <AICreateScreen onBack={back} mode={current.mode} onSave={addCreation} />}
           {current?.kind === 'register' && <RegisterScreen go={go} onBack={back} />}
+          {current?.kind === 'scan-share' && <ScanShareScreen onBack={back} go={go} />}
           {current?.kind === 'scan' && <ScanScreen onBack={back} onDone={() => goTab('cardo')} mode="card" />}
           {current?.kind === 'manual' && <ManualEntryScreen onBack={back} onDone={() => goTab('cardo')} />}
           {current?.kind === 'qr-scan' && <ScanScreen onBack={back} onDone={() => goTab('cardo')} mode="qr" />}

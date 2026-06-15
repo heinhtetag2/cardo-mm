@@ -51,7 +51,7 @@ export function ContactsPage() {
             {SAVED_CONTACTS.length} contacts collected across Myanmar.
           </p>
         </div>
-        <button className="h-11 px-5 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-white text-[13.5px] font-semibold rounded-xl hover:opacity-95 transition shadow-sm">
+        <button className="h-11 px-5 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-sand-0 text-[13.5px] font-semibold rounded-xl hover:opacity-95 transition shadow-sm">
           <Plus className="w-4 h-4" /> Add contact
         </button>
       </div>
@@ -64,19 +64,19 @@ export function ContactsPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search name, company, role…"
-            className="w-full h-11 pl-11 pr-4 bg-white border border-[#EBEBEB] rounded-2xl text-[13.5px] text-[#1A1A1A] placeholder:text-[#9A9A9A] focus:outline-none focus:border-[#5B8DEF] transition"
+            className="w-full h-11 pl-11 pr-4 bg-sand-0 border border-[#EBEBEB] rounded-2xl text-[13.5px] text-[#1A1A1A] placeholder:text-[#9A9A9A] focus:outline-none focus:border-[#5B8DEF] transition"
           />
         </div>
         <Pill items={[...ALL_TAGS]} value={tag} onChange={(v) => setTag(v as any)} icon={Tag} />
         <Pill items={[...ALL_CITIES]} value={city} onChange={(v) => setCity(v as any)} icon={MapPin} />
-        <button className="h-11 px-4 inline-flex items-center gap-1.5 bg-white border border-[#EBEBEB] hover:bg-[#FAFAFA] rounded-2xl text-[12.5px] font-medium text-[#1A1A1A] transition">
+        <button className="h-11 px-4 inline-flex items-center gap-1.5 bg-sand-0 border border-[#EBEBEB] hover:bg-[#FAFAFA] rounded-2xl text-[12.5px] font-medium text-[#1A1A1A] transition">
           <ArrowUpDown className="w-3.5 h-3.5" /> Sort
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start pb-8">
         {/* List */}
-        <div className="lg:col-span-2 bg-white border border-[#EBEBEB] rounded-2xl overflow-hidden">
+        <div className="lg:col-span-2 bg-sand-0 border border-[#EBEBEB] rounded-2xl overflow-hidden">
           <div className="px-5 sm:px-6 py-4 border-b border-[#F3F3F3] flex items-center justify-between">
             <span className="text-[12px] font-semibold uppercase tracking-wider text-[#616161]">
               {filtered.length} {filtered.length === 1 ? 'contact' : 'contacts'}
@@ -94,7 +94,7 @@ export function ContactsPage() {
                     active?.id === c.id ? 'bg-[#F8F8FF]' : 'hover:bg-[#FAFAFA]'
                   }`}
                 >
-                  <div className={`w-11 h-11 rounded-2xl bg-gradient-to-br ${ACCENT_BG[c.accent]} text-white grid place-items-center text-[13px] font-semibold shrink-0`}>
+                  <div className={`w-11 h-11 rounded-2xl bg-gradient-to-br ${ACCENT_BG[c.accent]} text-sand-0 grid place-items-center text-[13px] font-semibold shrink-0`}>
                     {initials(c.name)}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -132,14 +132,14 @@ export function ContactsPage() {
 
 function ContactDetail({ c }: { c: SavedContact }) {
   return (
-    <div className="bg-white border border-[#EBEBEB] rounded-2xl sticky top-0 overflow-hidden">
+    <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl sticky top-0 overflow-hidden">
       <div className={`h-28 bg-gradient-to-br ${ACCENT_BG[c.accent]} relative`}>
-        <button className="absolute top-3 right-3 p-1.5 rounded-xl text-white/80 hover:bg-white/15 transition">
+        <button className="absolute top-3 right-3 p-1.5 rounded-xl text-sand-0/80 hover:bg-sand-0/15 transition">
           <MoreHorizontal className="w-4 h-4" />
         </button>
       </div>
       <div className="px-6 -mt-8 pb-4">
-        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${ACCENT_BG[c.accent]} text-white grid place-items-center text-[18px] font-semibold ring-4 ring-white shadow`}>
+        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${ACCENT_BG[c.accent]} text-sand-0 grid place-items-center text-[18px] font-semibold ring-4 ring-sand-0 shadow`}>
           {initials(c.name)}
         </div>
         <div className="mt-3 flex items-center gap-1.5">
@@ -160,7 +160,7 @@ function ContactDetail({ c }: { c: SavedContact }) {
       </div>
       <div className="px-4 pb-4 grid grid-cols-2 gap-2">
         <button className="h-10 rounded-xl bg-[#F8F8F8] hover:bg-[#F3F3F3] text-[12.5px] font-medium text-[#1A1A1A] transition">Message</button>
-        <button className="h-10 rounded-xl bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] hover:opacity-95 text-[12.5px] font-semibold text-white transition">Open card</button>
+        <button className="h-10 rounded-xl bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] hover:opacity-95 text-[12.5px] font-semibold text-sand-0 transition">Open card</button>
       </div>
     </div>
   )
@@ -181,7 +181,7 @@ function Pill({ items, value, onChange, icon: Icon }: { items: string[]; value: 
     <div className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="h-11 px-4 inline-flex items-center gap-1.5 bg-white border border-[#EBEBEB] hover:bg-[#FAFAFA] rounded-2xl text-[12.5px] font-medium text-[#1A1A1A] transition"
+        className="h-11 px-4 inline-flex items-center gap-1.5 bg-sand-0 border border-[#EBEBEB] hover:bg-[#FAFAFA] rounded-2xl text-[12.5px] font-medium text-[#1A1A1A] transition"
       >
         <Icon className="w-3.5 h-3.5 text-[#616161]" />
         {value}
@@ -189,7 +189,7 @@ function Pill({ items, value, onChange, icon: Icon }: { items: string[]; value: 
       {open && (
         <>
           <button onClick={() => setOpen(false)} className="fixed inset-0 z-10 cursor-default" aria-hidden />
-          <div className="absolute top-full mt-1.5 z-20 w-44 bg-white border border-[#EBEBEB] rounded-xl shadow-lg p-1.5">
+          <div className="absolute top-full mt-1.5 z-20 w-44 bg-sand-0 border border-[#EBEBEB] rounded-xl shadow-lg p-1.5">
             {items.map((it) => (
               <button
                 key={it}

@@ -5,6 +5,7 @@ import {
   Copy, ExternalLink,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
+import { FloatingTextarea } from '../components/FloatingTextarea'
 import { useToast } from '../components/Toast'
 import type { Contact } from '../data'
 import type { View } from '../nav'
@@ -63,8 +64,8 @@ export function CardDetailScreen({
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-canvas/20 to-canvas/40" />
           <div className="relative flex flex-col h-full justify-between">
             <div className="flex items-start justify-between">
-              <div className="h-12 w-12 rounded-2xl bg-white/95 grid place-items-center text-zinc-950 font-bold text-[15px]">{initials}</div>
-              <span className="px-2.5 py-1 rounded-full bg-canvas/40 backdrop-blur text-[10.5px] font-semibold border border-white/15">{contact.city}</span>
+              <div className="h-12 w-12 rounded-2xl bg-sand-0/95 grid place-items-center text-zinc-950 font-bold text-[15px]">{initials}</div>
+              <span className="px-2.5 py-1 rounded-full bg-canvas/40 backdrop-blur text-[10.5px] font-semibold border border-sand-0/15">{contact.city}</span>
             </div>
             <div>
               <p className="text-[22px] font-bold tracking-tight leading-tight">{contact.name}</p>
@@ -150,15 +151,13 @@ export function CardDetailScreen({
       </div>
 
       {/* Notes */}
-      <SectionLabel>Notes</SectionLabel>
-      <div className="px-5 mb-5">
-        <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          onBlur={() => { if (notes.trim()) toast.show('Note saved') }}
+      <div className="px-5 mb-5 mt-5">
+        <FloatingTextarea
+          label="Notes"
           placeholder="Where you met, what you discussed, follow-up reminders…"
-          rows={4}
-          className="w-full p-4 rounded-2xl border border-line/70 bg-surface text-[14px] outline-none focus:border-brand/60 resize-none placeholder:text-ink-dim"
+          value={notes}
+          onChange={setNotes}
+          onBlur={() => { if (notes.trim()) toast.show('Note saved') }}
         />
       </div>
 
@@ -318,7 +317,7 @@ function DeleteAlert({ name, onConfirm, onClose }: { name: string; onConfirm: ()
           </button>
           <button
             onClick={onConfirm}
-            className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[13.5px] font-semibold"
+            className="flex-1 h-11 rounded-xl bg-rose-500 text-sand-0 text-[13.5px] font-semibold"
           >
             Delete
           </button>

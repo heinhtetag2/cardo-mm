@@ -42,7 +42,7 @@ function ToggleRow({ icon, label, sub, value, onChange }: { icon: React.ReactNod
         onClick={() => onChange(!value)}
         className={`relative h-7 w-12 rounded-full transition ${value ? 'bg-brand' : 'bg-surface-higher border border-line/70'}`}
       >
-        <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-white transition-all ${value ? 'left-[22px]' : 'left-0.5'}`} />
+        <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-sand-0 transition-all ${value ? 'left-[22px]' : 'left-0.5'}`} />
       </button>
     </div>
   )
@@ -84,7 +84,7 @@ export function SubscriptionScreen({ onBack }: { onBack: () => void }) {
       <div className="relative overflow-hidden p-5 rounded-[20px] border border-brand/30 bg-gradient-to-br from-brand/15 via-surface to-surface mb-6">
         <div className="flex items-center gap-3">
           <div className="h-12 w-12 rounded-2xl bg-brand-gradient grid place-items-center shadow-glow">
-            <Crown size={20} className="text-white" strokeWidth={1.8} />
+            <Crown size={20} className="text-sand-0" strokeWidth={1.8} />
           </div>
           <div className="flex-1">
             <p className="text-[15px] font-bold">Swapo Pro</p>
@@ -95,7 +95,7 @@ export function SubscriptionScreen({ onBack }: { onBack: () => void }) {
           <span className="text-[28px] font-bold">9,900 Ks</span>
           <span className="text-[12px] text-ink-dim">/month</span>
         </div>
-        <button className="mt-4 w-full py-3 rounded-2xl bg-brand text-white font-semibold text-[14px]">Upgrade now</button>
+        <button className="mt-4 w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[14px]">Upgrade now</button>
       </div>
 
       <SectionLabel>Choose plan</SectionLabel>
@@ -202,7 +202,7 @@ function ConfirmDialog({
         <p className="text-[12.5px] text-ink-dim text-center mt-1.5 leading-relaxed">{body}</p>
         <div className="flex gap-2 mt-5">
           <button onClick={onCancel} className="flex-1 h-11 rounded-xl border border-line/70 bg-surface-elevated text-[13.5px] font-semibold">Cancel</button>
-          <button onClick={onConfirm} className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[13.5px] font-semibold">{confirmLabel}</button>
+          <button onClick={onConfirm} className="flex-1 h-11 rounded-xl bg-rose-500 text-sand-0 text-[13.5px] font-semibold">{confirmLabel}</button>
         </div>
       </div>
     </div>
@@ -291,7 +291,7 @@ export function SecurityPhoneScreen({ onBack }: { onBack: () => void }) {
           <button
             disabled={number.replace(/\s/g, '').length < 9}
             onClick={() => setStep('verify')}
-            className="w-full h-12 rounded-2xl bg-brand text-white font-semibold text-[14px] disabled:bg-surface-higher disabled:text-ink-dim disabled:border disabled:border-line/70 transition"
+            className="w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[14px] disabled:bg-surface-elevated disabled:text-ink-dim transition"
           >
             Send code
           </button>
@@ -346,7 +346,7 @@ export function SecurityPhoneScreen({ onBack }: { onBack: () => void }) {
               toast.show('Phone number updated')
               setTimeout(onBack, 500)
             }}
-            className="w-full h-12 rounded-2xl bg-brand text-white font-semibold text-[14px] disabled:bg-surface-higher disabled:text-ink-dim disabled:border disabled:border-line/70 transition"
+            className="w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[14px] disabled:bg-surface-elevated disabled:text-ink-dim transition"
           >
             Verify & update
           </button>
@@ -554,9 +554,9 @@ export function AppearanceScreen({ onBack }: { onBack: () => void }) {
             key={id}
             onClick={() => setAccent(id)}
             style={{ backgroundColor: ACCENTS[id].hex }}
-            className={`h-10 w-10 rounded-full grid place-items-center transition ${accent === id ? 'ring-2 ring-white/80 ring-offset-2 ring-offset-surface' : ''}`}
+            className={`h-10 w-10 rounded-full grid place-items-center transition ${accent === id ? 'ring-2 ring-sand-0/80 ring-offset-2 ring-offset-surface' : ''}`}
           >
-            {accent === id && <Check size={16} className="text-white" strokeWidth={2.4} />}
+            {accent === id && <Check size={16} className="text-sand-0" strokeWidth={2.4} />}
           </button>
         ))}
       </div>
@@ -673,7 +673,7 @@ export function AboutScreen({ onBack }: { onBack: () => void }) {
     <Page title={t('about.title')} onBack={onBack}>
       <div className="flex flex-col items-center text-center pt-2 pb-6">
         <div className="h-16 w-16 rounded-2xl bg-brand-gradient grid place-items-center shadow-glow mb-3">
-          <Sparkles size={26} className="text-white" strokeWidth={1.8} />
+          <Sparkles size={26} className="text-sand-0" strokeWidth={1.8} />
         </div>
         <p className="text-[18px] font-bold">Swapo Myanmar</p>
         <p className="text-[12px] text-ink-dim mt-1">Version 1.0.0 (build 142)</p>

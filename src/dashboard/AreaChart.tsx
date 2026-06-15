@@ -67,7 +67,7 @@ export function AreaChart({ points, height = 240 }: { points: Pt[]; height?: num
 
       {/* Dots */}
       {xy.map((pt, i) => (
-        <circle key={i} cx={pt.x} cy={pt.y} r="3.5" fill="#fff" stroke="#5B8DEF" strokeWidth="2" />
+        <circle key={i} cx={pt.x} cy={pt.y} r="3.5" fill="var(--color-base-sand-0)" stroke="#5B8DEF" strokeWidth="2" />
       ))}
 
       {/* X-axis labels */}

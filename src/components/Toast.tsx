@@ -26,17 +26,17 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
           >
             {t.kind === 'success' && (
               <span className="h-5 w-5 rounded-full bg-emerald-500 grid place-items-center">
-                <Check size={12} strokeWidth={3} className="text-white" />
+                <Check size={12} strokeWidth={3} className="text-sand-0" />
               </span>
             )}
             {t.kind === 'error' && (
               <span className="h-5 w-5 rounded-full bg-rose-500 grid place-items-center">
-                <X size={12} strokeWidth={3} className="text-white" />
+                <X size={12} strokeWidth={3} className="text-sand-0" />
               </span>
             )}
             {t.kind === 'info' && (
               <span className="h-5 w-5 rounded-full bg-brand grid place-items-center">
-                <AlertCircle size={12} strokeWidth={3} className="text-white" />
+                <AlertCircle size={12} strokeWidth={3} className="text-sand-0" />
               </span>
             )}
             <span className="text-[12.5px] font-medium pr-1">{t.text}</span>

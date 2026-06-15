@@ -33,7 +33,7 @@ export function AnalyticsPage() {
       </div>
 
       {/* Big chart */}
-      <div className="bg-white border border-[#EBEBEB] rounded-2xl p-5 sm:p-7 mb-6">
+      <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl p-5 sm:p-7 mb-6">
         <div className="flex items-start justify-between mb-5 gap-3 flex-wrap">
           <div>
             <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Network growth</h2>
@@ -89,7 +89,7 @@ export function AnalyticsPage() {
 
       {/* Two-up: hourly pattern + device */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2 bg-white border border-[#EBEBEB] rounded-2xl p-6">
+        <div className="lg:col-span-2 bg-sand-0 border border-[#EBEBEB] rounded-2xl p-6">
           <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Best time to share</h2>
           <p className="text-[11.5px] text-[#616161] mt-0.5 mb-5">When most scans happen (Yangon time)</p>
           <div className="flex items-end gap-2 h-40">
@@ -125,7 +125,7 @@ export function AnalyticsPage() {
       </div>
 
       {/* Top performing cards */}
-      <div className="bg-white border border-[#EBEBEB] rounded-2xl overflow-hidden pb-2">
+      <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl overflow-hidden pb-2">
         <div className="px-6 py-5 border-b border-[#F3F3F3] flex items-center justify-between">
           <div>
             <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Top performing cards</h2>
@@ -159,7 +159,7 @@ export function AnalyticsPage() {
 
 function Kpi({ title, value, delta, positive }: { title: string; value: string; delta: number; positive: boolean }) {
   return (
-    <div className="bg-white border border-[#EBEBEB] rounded-2xl p-6">
+    <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl p-6">
       <div className="text-[12px] font-medium text-[#616161]">{title}</div>
       <div className="text-[34px] font-bold tabular-nums text-[#1A1A1A] mt-2.5 leading-none">{value}</div>
       <div className={`text-[11px] font-medium flex items-center gap-0.5 mt-2.5 ${positive ? 'text-[#047857]' : 'text-[#DC2626]'}`}>
@@ -172,7 +172,7 @@ function Kpi({ title, value, delta, positive }: { title: string; value: string; 
 
 function Panel({ title, subtitle, icon: Icon, children }: { title: string; subtitle: string; icon: React.ElementType; children: React.ReactNode }) {
   return (
-    <div className="bg-white border border-[#EBEBEB] rounded-2xl p-6">
+    <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl p-6">
       <div className="flex items-center gap-2 mb-1">
         <Icon className="w-3.5 h-3.5 text-[#5B8DEF]" />
         <h2 className="text-[16px] font-semibold text-[#1A1A1A]">{title}</h2>
@@ -190,7 +190,7 @@ function RangeSelect({ value, onChange }: { value: DashRange; onChange: (v: Dash
     <div className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="h-11 px-4 inline-flex items-center gap-2 bg-white border border-[#EBEBEB] rounded-xl text-[12.5px] font-medium text-[#1A1A1A] hover:bg-[#FAFAFA] transition"
+        className="h-11 px-4 inline-flex items-center gap-2 bg-sand-0 border border-[#EBEBEB] rounded-xl text-[12.5px] font-medium text-[#1A1A1A] hover:bg-[#FAFAFA] transition"
       >
         <Calendar className="w-3.5 h-3.5 text-[#616161]" />
         {current?.label}
@@ -199,7 +199,7 @@ function RangeSelect({ value, onChange }: { value: DashRange; onChange: (v: Dash
       {open && (
         <>
           <button onClick={() => setOpen(false)} className="fixed inset-0 z-10 cursor-default" aria-hidden />
-          <div className="absolute right-0 top-full mt-1.5 z-20 w-44 bg-white border border-[#EBEBEB] rounded-xl shadow-lg p-1.5">
+          <div className="absolute right-0 top-full mt-1.5 z-20 w-44 bg-sand-0 border border-[#EBEBEB] rounded-xl shadow-lg p-1.5">
             {RANGE_OPTIONS.map((o) => (
               <button
                 key={o.value}

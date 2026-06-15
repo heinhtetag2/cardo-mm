@@ -10,6 +10,7 @@ export type View =
   | { kind: 'ai-create'; mode: 'card' | 'logo' }
   | { kind: 'register' }
   | { kind: 'scan' }
+  | { kind: 'scan-share' }
   | { kind: 'manual' }
   | { kind: 'qr-scan' }
   | { kind: 'settings' }

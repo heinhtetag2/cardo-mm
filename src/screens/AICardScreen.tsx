@@ -179,14 +179,14 @@ function CreationRow({ c, onPreview, onMore }: { c: Creation; onPreview: () => v
         {isCard ? (
           <div className="h-14 w-20 rounded-xl bg-gradient-to-br from-[#1a2440] via-[#171b2c] to-[#0c0d14] flex-shrink-0 relative overflow-hidden">
             <div className="absolute inset-0 p-2 flex flex-col justify-between">
-              <div className="h-2 w-6 rounded-sm bg-white/40" />
-              <div className="h-1.5 w-10 rounded-sm bg-white/70" />
+              <div className="h-2 w-6 rounded-sm bg-sand-0/40" />
+              <div className="h-1.5 w-10 rounded-sm bg-sand-0/70" />
             </div>
           </div>
         ) : (
           <div className="h-14 w-20 rounded-xl bg-surface-elevated border border-line/60 grid place-items-center flex-shrink-0">
             <div className="h-7 w-7 rounded-full bg-brand/80 grid place-items-center">
-              <span className="text-white text-[10px] font-black">
+              <span className="text-sand-0 text-[10px] font-black">
                 {(c.name[0] || 'C').toUpperCase()}
               </span>
             </div>
@@ -305,15 +305,15 @@ function PreviewSheet({
         <div className="px-5 pt-2 pb-5">
           {isCard ? (
             <div className="relative aspect-[1.7/1] rounded-[20px] overflow-hidden bg-gradient-to-br from-[#1a2440] via-[#171b2c] to-[#0c0d14] border border-line/60 shadow-soft">
-              <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-white/10 blur-3xl" />
+              <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-sand-0/10 blur-3xl" />
               <div className="relative p-6 flex flex-col h-full justify-between">
                 <div className="flex items-start justify-between">
-                  <p className="text-[10.5px] tracking-[0.22em] font-bold text-white">SWAPO·</p>
-                  <div className="h-9 w-9 rounded-xl bg-white grid place-items-center text-zinc-950 font-black text-[13px]">S</div>
+                  <p className="text-[10.5px] tracking-[0.22em] font-bold text-sand-0">SWAPO·</p>
+                  <div className="h-9 w-9 rounded-xl bg-sand-0 grid place-items-center text-zinc-950 font-black text-[13px]">S</div>
                 </div>
                 <div>
-                  <p className="text-[22px] font-bold text-white">{creation.name}</p>
-                  <p className="text-[12.5px] text-white/60 mt-1">
+                  <p className="text-[22px] font-bold text-sand-0">{creation.name}</p>
+                  <p className="text-[12.5px] text-sand-0/60 mt-1">
                     {creation.role}{creation.role && creation.industry ? ' · ' : ''}{creation.industry}
                   </p>
                 </div>
@@ -322,11 +322,11 @@ function PreviewSheet({
           ) : (
             <div className="relative aspect-[1.7/1] rounded-[20px] overflow-hidden bg-gradient-to-br from-[#1a2440] to-[#0c0d14] border border-line/60 shadow-soft grid place-items-center">
               {creation.styleId === 'wordmark' && (
-                <p className="text-[34px] font-bold tracking-tight text-white">{creation.name}</p>
+                <p className="text-[34px] font-bold tracking-tight text-sand-0">{creation.name}</p>
               )}
               {creation.styleId === 'lettermark' && (
                 <div className="h-24 w-24 rounded-3xl bg-brand grid place-items-center">
-                  <p className="text-white text-[36px] font-black tracking-tight">{initials}</p>
+                  <p className="text-sand-0 text-[36px] font-black tracking-tight">{initials}</p>
                 </div>
               )}
               {creation.styleId === 'symbol' && (
@@ -337,9 +337,9 @@ function PreviewSheet({
               {creation.styleId === 'combination' && (
                 <div className="flex items-center gap-4">
                   <div className="h-16 w-16 rounded-2xl bg-brand grid place-items-center">
-                    <p className="text-white text-[24px] font-black">{initials[0]}</p>
+                    <p className="text-sand-0 text-[24px] font-black">{initials[0]}</p>
                   </div>
-                  <p className="text-[28px] font-bold tracking-tight text-white">{creation.name}</p>
+                  <p className="text-[28px] font-bold tracking-tight text-sand-0">{creation.name}</p>
                 </div>
               )}
             </div>
@@ -522,7 +522,7 @@ function EditSheet({ creation, onSave, onClose }: { creation: Creation; onSave: 
           <button
             onClick={save}
             disabled={!name.trim()}
-            className="flex-1 h-12 pt-px rounded-2xl bg-brand text-white text-[14px] font-semibold disabled:opacity-40 inline-flex items-center justify-center"
+            className="flex-1 h-[52px] rounded-full bg-sand-0 text-black text-[14px] font-semibold disabled:opacity-40 disabled:bg-surface-elevated disabled:text-ink-dim inline-flex items-center justify-center"
           >
             {t('ai.edit.save')}
           </button>
@@ -532,15 +532,32 @@ function EditSheet({ creation, onSave, onClose }: { creation: Creation; onSave: 
   )
 }
 
-function Field({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+function Field({ label, value, onChange, hint }: { label: string; value: string; onChange: (v: string) => void; hint?: string }) {
+  const [focused, setFocused] = useState(false)
+  const filled = value.length > 0
+  const float = filled || focused
   return (
     <div className="mb-3">
-      <label className="block text-[12px] font-medium text-ink-dim mb-1.5 ml-1">{label}</label>
-      <input
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full h-12 px-4 rounded-2xl border border-line/70 bg-surface text-[14px] outline-none focus:border-brand/60 transition"
-      />
+      <label className={`relative block rounded-2xl bg-surface-elevated border border-transparent transition ${focused ? 'bg-surface-higher ring-2 ring-ink/10' : ''}`}>
+        <span
+          aria-hidden
+          className={`pointer-events-none absolute left-4 transition-all duration-150 ${
+            float
+              ? 'top-2 text-[11px] text-ink-dim leading-none'
+              : 'top-1/2 -translate-y-1/2 text-[15px] text-ink-dim'
+          }`}
+        >
+          {label}
+        </span>
+        <input
+          value={value}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          onChange={(e) => onChange(e.target.value)}
+          className={`w-full h-[58px] bg-transparent outline-none text-[15px] text-ink px-4 ${float ? 'pt-5 pb-1.5' : ''}`}
+        />
+      </label>
+      {hint && <p className="text-[12px] text-ink-dim mt-1.5 ml-1">{hint}</p>}
     </div>
   )
 }
@@ -548,7 +565,7 @@ function Field({ label, value, onChange }: { label: string; value: string; onCha
 function Chips({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: string[] }) {
   return (
     <div className="mb-3">
-      <label className="block text-[12px] font-medium text-ink-dim mb-1.5 ml-1">{label}</label>
+      <p className="text-[12px] text-ink-dim mb-2 ml-1">{label}</p>
       <div className="flex flex-wrap gap-1.5">
         {options.map((o) => (
           <button key={o} onClick={() => onChange(o)}
@@ -588,7 +605,7 @@ function DeleteAlert({ creation, onConfirm, onClose }: { creation: Creation; onC
           </button>
           <button
             onClick={onConfirm}
-            className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[13.5px] font-semibold"
+            className="flex-1 h-11 rounded-xl bg-rose-500 text-sand-0 text-[13.5px] font-semibold"
           >
             {t('ai.delete.confirm')}
           </button>

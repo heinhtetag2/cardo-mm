@@ -1,22 +1,32 @@
-import { Bell, ScanLine } from 'lucide-react'
+import { Bell, ScanLine, User } from 'lucide-react'
+import { me } from '../data'
 
 export function TopBar({
   onBellClick,
   onScanClick,
+  onProfileClick,
   hasUnread = true,
 }: {
   onBellClick?: () => void
   onScanClick?: () => void
+  onProfileClick?: () => void
   hasUnread?: boolean
 }) {
   return (
     <header className="relative z-30 flex items-center justify-between px-5 pt-12 pb-4">
-      <div className="flex items-center gap-2.5">
-        <SwapoMark />
-        <span className="text-[19px] font-bold tracking-tight">
-          SWAPO<span className="text-brand">.</span>
+      <button
+        onClick={onProfileClick}
+        aria-label="Profile"
+        className="flex items-center gap-2.5 -ml-1 pl-1 pr-3 py-1 rounded-full active:bg-surface-elevated transition min-w-0"
+      >
+        <span className="h-10 w-10 grid place-items-center rounded-full bg-surface-elevated border border-line/60 flex-shrink-0">
+          <User size={17} className="text-ink/90" strokeWidth={1.8} />
         </span>
-      </div>
+        <span className="text-left leading-tight min-w-0">
+          <span className="block text-[14px] font-semibold text-ink truncate">{me.name}</span>
+          <span className="block text-[11.5px] text-ink-dim truncate -mt-0.5">{me.role}</span>
+        </span>
+      </button>
       <div className="flex items-center gap-2">
         <button
           onClick={onBellClick}
@@ -37,15 +47,5 @@ export function TopBar({
         )}
       </div>
     </header>
-  )
-}
-
-function SwapoMark() {
-  return (
-    <div className="relative h-9 w-9 rounded-[10px] bg-gradient-to-br from-white to-white/85 grid place-items-center shadow-glow">
-      <span className="font-black text-[18px] -tracking-[0.04em] text-canvas leading-none">S</span>
-      <span className="absolute top-1.5 right-1.5 h-1 w-1 rounded-full bg-brand" />
-      <span className="absolute bottom-1.5 left-1.5 h-1 w-1 rounded-full bg-brand-violet" />
-    </div>
   )
 }

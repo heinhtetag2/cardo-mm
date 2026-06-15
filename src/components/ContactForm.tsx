@@ -1,12 +1,11 @@
 import { useState, type ReactNode } from 'react'
-import {
-  Briefcase, Building2, Camera, Mail, Phone, User,
-} from 'lucide-react'
+import { Camera } from 'lucide-react'
 import { InputRow } from './InputRow'
 import { LocationPicker, LocationPickerRow } from './LocationPicker'
 import { WebsiteRow } from './WebsiteRow'
+import { Button } from './Button'
+import { FloatingTextarea } from './FloatingTextarea'
 import { useT } from '../i18n'
-import type { LocationOption } from '../locations'
 
 export type ContactDraft = {
   name: string
@@ -67,16 +66,16 @@ export function ContactForm({
         {topBanner && <div className="mb-5">{topBanner}</div>}
 
         <SectionLabel>{t('form.section.identity')}</SectionLabel>
-        <div className="space-y-3 mb-6">
-          <InputRow icon={<User size={15} />}      placeholder={t('form.placeholder.name')}    value={data.name}    onChange={setStr('name')} />
-          <InputRow icon={<Briefcase size={15} />} placeholder={t('form.placeholder.role')}    value={data.role}    onChange={setStr('role')} />
-          <InputRow icon={<Building2 size={15} />} placeholder={t('form.placeholder.company')} value={data.company} onChange={setStr('company')} />
+        <div className="space-y-2.5 mb-6">
+          <InputRow placeholder={t('form.placeholder.name')}    value={data.name}    onChange={setStr('name')} />
+          <InputRow placeholder={t('form.placeholder.role')}    value={data.role}    onChange={setStr('role')} />
+          <InputRow placeholder={t('form.placeholder.company')} value={data.company} onChange={setStr('company')} />
         </div>
 
         <SectionLabel>{t('form.section.contact')}</SectionLabel>
-        <div className="space-y-3 mb-6">
-          <InputRow icon={<Phone size={15} />} placeholder={t('form.placeholder.phone')} value={data.phone} onChange={setStr('phone')} type="tel" />
-          <InputRow icon={<Mail size={15} />}  placeholder={t('form.placeholder.email')} value={data.email} onChange={setStr('email')} type="email" />
+        <div className="space-y-2.5 mb-6">
+          <InputRow placeholder={t('form.placeholder.phone')} value={data.phone} onChange={setStr('phone')} type="tel" />
+          <InputRow placeholder={t('form.placeholder.email')} value={data.email} onChange={setStr('email')} type="email" />
           <WebsiteRow value={data.website} onChange={setStr('website')} />
           <LocationPickerRow value={data.city} onTap={() => setPickerOpen(true)} />
         </div>
@@ -99,23 +98,19 @@ export function ContactForm({
           })}
         </div>
 
-        <SectionLabel>{t('form.section.notes')}</SectionLabel>
-        <textarea
+        <FloatingTextarea
+          label={t('form.section.notes')}
           placeholder={t('form.placeholder.notes')}
-          rows={4}
           value={data.notes}
-          onChange={(e) => setStr('notes')(e.target.value)}
-          className="w-full p-4 rounded-2xl border border-line/70 bg-surface text-[14px] outline-none focus:border-brand/60 resize-none placeholder:text-ink-dim"
+          onChange={setStr('notes')}
+          rows={4}
         />
       </div>
 
       <div className="absolute bottom-0 inset-x-0 px-5 pb-6 pt-3 bg-gradient-to-t from-canvas via-canvas to-canvas/0">
-        <button
-          onClick={() => onSave(data)}
-          className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center"
-        >
+        <Button onClick={() => onSave(data)}>
           {saveLabel ?? t('form.saveDefault')}
-        </button>
+        </Button>
       </div>
 
       {pickerOpen && (

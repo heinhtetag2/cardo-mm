@@ -34,7 +34,7 @@ export function SettingsScreen({
           className="w-full p-4 rounded-[20px] border border-brand/30 bg-gradient-to-br from-brand/15 via-surface to-surface mb-6 flex items-center gap-3.5"
         >
           <div className="h-11 w-11 rounded-2xl bg-brand-gradient grid place-items-center shadow-glow">
-            <Star size={17} className="text-white" strokeWidth={1.8} />
+            <Star size={17} className="text-sand-0" strokeWidth={1.8} />
           </div>
           <div className="flex-1 text-left">
             <p className="text-[14px] font-semibold">{t('settings.upgrade')}</p>
@@ -123,7 +123,7 @@ function ToggleRow({ icon, label, sub, value, onChange }: { icon: React.ReactNod
         onClick={() => onChange(!value)}
         className={`relative h-7 w-12 rounded-full transition ${value ? 'bg-brand' : 'bg-surface-higher border border-line/70'}`}
       >
-        <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-white transition-all ${value ? 'left-[22px]' : 'left-0.5'}`} />
+        <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-sand-0 transition-all ${value ? 'left-[22px]' : 'left-0.5'}`} />
       </button>
     </div>
   )

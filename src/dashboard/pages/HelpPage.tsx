@@ -19,7 +19,7 @@ export function HelpPage() {
         {HELP_LINKS.map((l, i) => (
           <button
             key={l.title}
-            className="text-left bg-white border border-[#EBEBEB] rounded-2xl p-5 hover:border-[#5B8DEF]/40 transition group"
+            className="text-left bg-sand-0 border border-[#EBEBEB] rounded-2xl p-5 hover:border-[#5B8DEF]/40 transition group"
           >
             <div className={`w-10 h-10 rounded-xl grid place-items-center mb-4 ${i === 3 ? 'bg-[#FFF1EE] text-[#FF3C21]' : 'bg-[#EEF2FF] text-[#5B8DEF]'}`}>
               {i === 3 ? <Mail className="w-4 h-4" /> : <BookOpen className="w-4 h-4" />}
@@ -36,7 +36,7 @@ export function HelpPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start pb-8">
         {/* FAQ */}
-        <div className="lg:col-span-2 bg-white border border-[#EBEBEB] rounded-2xl overflow-hidden">
+        <div className="lg:col-span-2 bg-sand-0 border border-[#EBEBEB] rounded-2xl overflow-hidden">
           <div className="px-6 py-5 border-b border-[#F3F3F3]">
             <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Frequently asked</h2>
             <p className="text-[11.5px] text-[#616161] mt-0.5">Most-asked questions from Yangon teams</p>
@@ -65,8 +65,8 @@ export function HelpPage() {
         </div>
 
         {/* Contact card */}
-        <div className="bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] rounded-2xl p-6 text-white">
-          <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur grid place-items-center">
+        <div className="bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] rounded-2xl p-6 text-sand-0">
+          <div className="w-10 h-10 rounded-xl bg-sand-0/15 backdrop-blur grid place-items-center">
             <MessageCircle className="w-5 h-5" />
           </div>
           <h2 className="text-[18px] font-semibold mt-4">Talk to a human</h2>
@@ -81,7 +81,7 @@ export function HelpPage() {
               <MessageCircle className="w-3.5 h-3.5" /> Chat with us (8a–8p MMT)
             </a>
           </div>
-          <button className="mt-6 w-full h-11 bg-white text-[#5B8DEF] text-[13px] font-semibold rounded-xl hover:bg-white/95 transition">
+          <button className="mt-6 w-full h-11 bg-sand-0 text-[#5B8DEF] text-[13px] font-semibold rounded-xl hover:bg-sand-0/95 transition">
             Open a ticket
           </button>
         </div>

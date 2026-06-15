@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import {
-  ChevronLeft, ChevronDown, Sparkles, Camera, Bell, Radar, Check,
-  User, Briefcase, Building2, Mail, X, Search, Phone, Wand2,
+  ChevronLeft, ChevronDown, Camera, Bell, Radar, Check,
+  X, Search, Wand2,
 } from 'lucide-react'
 import { InputRow } from '../components/InputRow'
 import { LocationPicker, LocationPickerRow } from '../components/LocationPicker'
 import { WebsiteRow } from '../components/WebsiteRow'
+import { Button } from '../components/Button'
+import { AuthScreen, type AuthResult } from './AuthScreen'
 import { useT } from '../i18n'
 
 type Country = { code: string; name: string; flag: string; dial: string }
@@ -37,8 +39,9 @@ const countries: Country[] = [
 ]
 
 type Step =
-  | 'welcome'
-  | 'feat'
+  | 'splash'
+  | 'intro'
+  | 'auth'
   | 'phone'
   | 'otp'
   | 'profile'
@@ -71,7 +74,7 @@ export function OnboardingScreen({
     { eyebrow: t('onb.feat.s2.eyebrow'), title: t('onb.feat.s2.title'), body: t('onb.feat.s2.body') },
     { eyebrow: t('onb.feat.s3.eyebrow'), title: t('onb.feat.s3.title'), body: t('onb.feat.s3.body') },
   ]
-  const [step, setStep] = useState<Step>('welcome')
+  const [step, setStep] = useState<Step>('splash')
   const [slide, setSlide] = useState(0)
   const [isSignIn, setIsSignIn] = useState(false)
   const totalSlides = slides.length
@@ -103,11 +106,8 @@ export function OnboardingScreen({
   }
 
   const next = () => {
-    if (step === 'welcome') return setStep('feat')
-    if (step === 'feat') {
-      if (slide < totalSlides - 1) return setSlide(slide + 1)
-      return setStep('phone')
-    }
+    if (step === 'splash') return setStep('intro')
+    if (step === 'intro') return setStep('auth')
     if (step === 'phone') return setStep('otp')
     if (step === 'otp') {
       if (isSignIn) return onDone(data)
@@ -119,15 +119,8 @@ export function OnboardingScreen({
   }
 
   const back = () => {
-    if (step === 'feat') {
-      if (slide > 0) return setSlide(slide - 1)
-      return setStep('welcome')
-    }
-    if (step === 'phone') {
-      if (isSignIn) { setIsSignIn(false); return setStep('welcome') }
-      setSlide(totalSlides - 1)
-      return setStep('feat')
-    }
+    if (step === 'auth') return setStep('intro')
+    if (step === 'phone') return setStep('auth')
     if (step === 'otp') return setStep('phone')
     if (step === 'profile') return setStep('otp')
     if (step === 'permissions') return setStep('profile')
@@ -136,20 +129,35 @@ export function OnboardingScreen({
 
   return (
     <div className="relative h-full w-full bg-canvas flex flex-col overflow-hidden">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[460px] bg-glow-radial" />
-
-      {step === 'welcome' && (
-        <Welcome onContinue={next} onSignIn={() => { setIsSignIn(true); setStep('phone') }} />
+      {step !== 'splash' && step !== 'intro' && (
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[460px] bg-glow-radial" />
       )}
 
-      {step === 'feat' && (
-        <Features
+      {step === 'splash' && <Splash onAdvance={() => setStep('intro')} />}
+
+      {step === 'intro' && (
+        <Intro
           slides={slides}
           slide={slide}
+          setSlide={setSlide}
           total={totalSlides}
-          onBack={back}
-          onSkip={() => setStep('phone')}
-          onNext={next}
+          onCreate={() => { setIsSignIn(false); setStep('auth') }}
+          onSignIn={() => { setIsSignIn(true); setStep('auth') }}
+        />
+      )}
+
+      {step === 'auth' && (
+        <AuthScreen
+          isSignIn={isSignIn}
+          setIsSignIn={setIsSignIn}
+          onBack={() => setStep('intro')}
+          onUsePhone={() => setStep('phone')}
+          onComplete={(info: AuthResult) => {
+            if (info.name) setName(info.name)
+            if (info.email) setEmail(info.email)
+            if (isSignIn) onDone({ ...data, name: info.name ?? data.name, email: info.email ?? data.email })
+            else setStep('profile')
+          }}
         />
       )}
 
@@ -200,120 +208,109 @@ export function OnboardingScreen({
   )
 }
 
-/* ───────── Welcome ───────── */
+/* ───────── Splash ───────── */
 
-function Welcome({ onContinue, onSignIn }: { onContinue: () => void; onSignIn: () => void }) {
-  const t = useT()
+function Splash({ onAdvance }: { onAdvance: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onAdvance, 1400)
+    return () => clearTimeout(t)
+  }, [onAdvance])
+
   return (
-    <div className="relative flex-1 flex flex-col px-7 pt-20 pb-10 animate-fade-in overflow-hidden">
-      <WelcomeBackdrop />
-      <div className="relative flex items-center gap-3">
-        <div className="relative h-11 w-11 rounded-[12px] bg-gradient-to-br from-white to-white/85 grid place-items-center shadow-glow">
-          <span className="font-black text-[22px] -tracking-[0.04em] text-canvas leading-none">S</span>
-          <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-brand" />
-          <span className="absolute bottom-1.5 left-1.5 h-1.5 w-1.5 rounded-full bg-brand-violet" />
-        </div>
-        <span className="text-[22px] font-bold tracking-tight">
-          SWAPO<span className="text-brand">.</span>
-        </span>
+    <div
+      onClick={onAdvance}
+      className="absolute inset-0 bg-sand-0 grid place-items-center animate-fade-in cursor-pointer"
+    >
+      <span className="text-[42px] font-bold tracking-[-0.04em] text-canvas">
+        SWAPO<span className="text-brand">.</span>
+      </span>
+    </div>
+  )
+}
+
+/* ───────── Intro carousel (Revolut-style) ───────── */
+
+const SLIDE_MS = 5000
+
+function Intro({
+  slides, slide, setSlide, total, onCreate, onSignIn,
+}: {
+  slides: Slide[]
+  slide: number
+  setSlide: (i: number) => void
+  total: number
+  onCreate: () => void
+  onSignIn: () => void
+}) {
+  const t = useT()
+  const startX = useRef<number | null>(null)
+  const s = slides[slide]
+
+  // Auto-advance through slides; stop on the last one.
+  useEffect(() => {
+    if (slide >= total - 1) return
+    const id = setTimeout(() => setSlide(slide + 1), SLIDE_MS)
+    return () => clearTimeout(id)
+  }, [slide, total, setSlide])
+
+  const onTouchStart = (e: React.TouchEvent) => { startX.current = e.touches[0].clientX }
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (startX.current == null) return
+    const dx = e.changedTouches[0].clientX - startX.current
+    if (Math.abs(dx) > 48) {
+      if (dx < 0 && slide < total - 1) setSlide(slide + 1)
+      if (dx > 0 && slide > 0) setSlide(slide - 1)
+    }
+    startX.current = null
+  }
+
+  return (
+    <div
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      className="absolute inset-0 bg-black text-sand-0 overflow-hidden flex flex-col animate-fade-in"
+    >
+      <IntroBackdrop />
+
+      {/* Top segmented progress (Stories-style) */}
+      <div className="relative z-10 pt-12 px-5 flex items-center gap-1">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setSlide(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            className="flex-1 h-[2.5px] rounded-full bg-sand-0/15 overflow-hidden"
+          >
+            <span
+              key={`fill-${i}-${slide}`}
+              className="block h-full bg-sand-0"
+              style={
+                i < slide
+                  ? { width: '100%' }
+                  : i === slide
+                  ? { width: '0%', animation: `introFill ${SLIDE_MS}ms linear forwards` }
+                  : { width: '0%' }
+              }
+            />
+          </button>
+        ))}
       </div>
 
-      <div className="relative mt-auto mb-12 animate-slide-up">
-        <p className="text-[12px] font-semibold text-brand mb-3">{t('onb.welcome.kicker')}</p>
-        <h1 className="text-[36px] font-bold tracking-[-0.02em] leading-[1.04] text-balance">
-          {t('onb.welcome.h1.1')}<br />{t('onb.welcome.h1.2')}
+      {/* Headline + body */}
+      <div className="relative z-10 px-6 mt-7" key={`c-${slide}`}>
+        <h1
+          className="uppercase font-black tracking-[-0.01em] leading-[1.0] text-balance whitespace-pre-line animate-slide-up"
+          style={{ fontSize: '32px' }}
+        >
+          {s.title}
         </h1>
-        <p className="text-[14px] text-ink-muted mt-5 leading-relaxed max-w-[300px]">
-          {t('onb.welcome.tagline')}
+        <p className="text-[14px] text-sand-0/55 mt-4 leading-relaxed max-w-[320px] animate-slide-up">
+          {s.body}
         </p>
       </div>
 
-      <div className="relative space-y-2.5">
-        <button
-          onClick={onContinue}
-          className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand-gradient text-white shadow-glow font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
-        >
-          {t('onb.welcome.cta')}
-        </button>
-        <button
-          onClick={onSignIn}
-          className="w-full pt-[15px] pb-3.5 rounded-2xl border border-line/70 bg-surface/60 text-[14.5px] font-medium text-ink-muted hover:border-line-strong transition"
-        >
-          {t('onb.welcome.signin')}
-        </button>
-      </div>
-    </div>
-  )
-}
-
-function WelcomeBackdrop() {
-  return (
-    <div aria-hidden="true" className="absolute inset-x-0 top-[14%] h-[44%] grid place-items-center pointer-events-none">
-      <div className="absolute h-[380px] w-[380px] rounded-full bg-brand/20 blur-[100px]" />
-      <div className="absolute h-[260px] w-[260px] rounded-full bg-brand-violet/15 blur-[90px] translate-x-12 translate-y-6" />
-
-      <div className="relative w-[280px] aspect-[1.7/1]">
-        <div
-          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-surface-higher to-surface border border-line/60 shadow-soft"
-          style={{ transform: 'translate(-44px, 26px) rotate(-11deg)' }}
-        />
-
-        <div
-          className="absolute inset-0 rounded-2xl bg-brand-gradient shadow-soft overflow-hidden"
-          style={{ transform: 'translate(-16px, 10px) rotate(-4deg)' }}
-        >
-          <div className="absolute top-4 left-5">
-            <div className="h-2 w-16 rounded bg-white/90 mb-1" />
-            <div className="h-1.5 w-20 rounded bg-white/55" />
-          </div>
-          <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
-            <div className="space-y-1">
-              <div className="h-1 w-20 rounded bg-white/45" />
-              <div className="h-1 w-14 rounded bg-white/40" />
-            </div>
-            <div className="h-7 w-7 rounded-lg bg-white/20 backdrop-blur-sm grid place-items-center">
-              <span className="text-[10px] font-black text-white leading-none">S</span>
-            </div>
-          </div>
-        </div>
-
-        <div
-          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white to-zinc-100 shadow-soft overflow-hidden"
-          style={{ transform: 'translate(12px, -6px) rotate(5deg)' }}
-        >
-          <div className="absolute top-4 left-5 flex items-start gap-2.5">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-brand to-brand-violet shrink-0" />
-            <div className="pt-0.5 space-y-1">
-              <div className="h-2 w-16 rounded bg-zinc-800" />
-              <div className="h-1.5 w-20 rounded bg-zinc-400" />
-            </div>
-          </div>
-          <div className="absolute bottom-4 left-5 right-5 space-y-1.5">
-            <div className="h-1.5 w-28 rounded bg-zinc-300" />
-            <div className="h-1.5 w-20 rounded bg-zinc-300" />
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/* ───────── Feature carousel ───────── */
-
-function Features({
-  slides, slide, total, onBack, onSkip, onNext,
-}: {
-  slides: Slide[]
-  slide: number; total: number
-  onBack: () => void; onSkip: () => void; onNext: () => void
-}) {
-  const t = useT()
-  const s = slides[slide]
-  return (
-    <div className="relative flex-1 flex flex-col">
-      <TopBar onBack={onBack} onSkip={onSkip} />
-
-      <div className="relative flex-1 grid place-items-center px-7" key={`v-${slide}`}>
+      {/* Hero visual */}
+      <div className="relative z-10 flex-1 min-h-0 grid place-items-center px-6 py-4" key={`v-${slide}`}>
         <div className="animate-scale-in">
           {slide === 0 && <CaptureVisual />}
           {slide === 1 && <ExchangeVisual />}
@@ -321,29 +318,81 @@ function Features({
         </div>
       </div>
 
-      <div className="px-7 pb-10 pt-2" key={`c-${slide}`}>
-        <div className="animate-slide-up">
-          <p className="text-[12px] font-semibold text-brand mb-2">
-            {s.eyebrow}
-          </p>
-          <h2 className="text-[28px] font-bold tracking-[-0.015em] leading-[1.08] text-balance whitespace-pre-line">
-            {s.title}
-          </h2>
-          <p className="text-[13.5px] text-ink-muted leading-relaxed mt-3 max-w-[320px]">
-            {s.body}
-          </p>
-        </div>
-
-        <div className="mt-7 flex items-center justify-between">
-          <Dots total={total} active={slide} />
-          <button
-            onClick={onNext}
-            className="h-12 px-5 pt-px rounded-2xl bg-brand text-white text-[14.5px] font-semibold flex items-center justify-center active:scale-[0.99] transition"
-          >
-            {slide < total - 1 ? t('onb.feat.continue') : t('onb.welcome.cta')}
-          </button>
-        </div>
+      {/* CTAs */}
+      <div className="relative z-10 px-6 pb-9 pt-2 space-y-2.5">
+        <button
+          onClick={onCreate}
+          className="w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[15px] active:scale-[0.99] transition"
+        >
+          {t('onb.welcome.cta')}
+        </button>
+        <button
+          onClick={onSignIn}
+          className="w-full h-[52px] rounded-full bg-sand-0/[0.06] border border-sand-0/15 text-sand-0 font-medium text-[15px] active:scale-[0.99] active:bg-sand-0/10 transition"
+        >
+          {t('onb.welcome.signin')}
+        </button>
       </div>
+
+      <style>{`
+        @keyframes introFill {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+      `}</style>
+    </div>
+  )
+}
+
+function IntroBackdrop() {
+  const stars = useMemo(() => {
+    let seed = 11
+    const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280 }
+    return Array.from({ length: 42 }, () => ({
+      top: rnd() * 100,
+      left: rnd() * 100,
+      opacity: 0.15 + rnd() * 0.55,
+      size: rnd() < 0.85 ? 1 : 2,
+    }))
+  }, [])
+
+  return (
+    <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Soft purple/violet glow rising from below */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-[78%]"
+        style={{
+          background:
+            'radial-gradient(70% 90% at 50% 100%, rgba(120,90,255,0.38) 0%, rgba(120,90,255,0.20) 22%, rgba(70,40,180,0.10) 45%, transparent 70%)',
+        }}
+      />
+
+      {/* Radial rays from bottom-center */}
+      <div
+        className="absolute left-1/2 bottom-[-30%] -translate-x-1/2 w-[180%] aspect-square"
+        style={{
+          background:
+            'conic-gradient(from 200deg at 50% 50%, transparent 0deg, rgba(255,255,255,0.07) 4deg, transparent 9deg, transparent 18deg, rgba(255,255,255,0.05) 23deg, transparent 28deg, transparent 40deg, rgba(255,255,255,0.06) 45deg, transparent 50deg, transparent 64deg, rgba(255,255,255,0.04) 69deg, transparent 74deg, transparent 86deg, rgba(255,255,255,0.06) 92deg, transparent 97deg, transparent 110deg, rgba(255,255,255,0.05) 115deg, transparent 120deg, transparent 130deg, rgba(255,255,255,0.04) 135deg, transparent 140deg)',
+          opacity: 0.85,
+          WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 24%, transparent 64%)',
+          maskImage: 'radial-gradient(circle at 50% 50%, black 24%, transparent 64%)',
+        }}
+      />
+
+      {/* Stars */}
+      {stars.map((s, i) => (
+        <div
+          key={i}
+          className="absolute rounded-full bg-white"
+          style={{
+            top: `${s.top}%`,
+            left: `${s.left}%`,
+            height: `${s.size}px`,
+            width: `${s.size}px`,
+            opacity: s.opacity,
+          }}
+        />
+      ))}
     </div>
   )
 }
@@ -385,7 +434,6 @@ function PhonePane({
 
       <div className="flex-1 flex flex-col px-5 pt-4 pb-10">
         <div className="px-2">
-          <StepEyebrow>{isSignIn ? t('onb.phone.signin.eyebrow') : t('onb.phone.eyebrow')}</StepEyebrow>
           <Headline>{isSignIn ? t('onb.otp.signin.title') : t('onb.phone.title')}</Headline>
           <SubBody>
             {isSignIn ? t('onb.otp.signin.body') : t('onb.phone.body')}
@@ -399,11 +447,11 @@ function PhonePane({
               type="button"
               onClick={() => setPickerOpen(true)}
               aria-label="Select country"
-              className="flex items-center gap-2 px-3 h-12 rounded-2xl border border-line/70 bg-surface text-[14px] font-medium active:bg-surface-elevated hover:border-line-strong transition"
+              className="flex items-center gap-2 px-3.5 h-[58px] rounded-2xl bg-surface-elevated border border-transparent text-[15px] font-medium active:bg-surface-higher transition"
             >
-              <span className="text-[14px] leading-none">{country.flag}</span>
+              <span className="text-[15px] leading-none">{country.flag}</span>
               <span className="text-ink tabular-nums">+{country.dial}</span>
-              <ChevronDown size={13} className="text-ink-dim" strokeWidth={2} />
+              <ChevronDown size={14} className="text-ink-dim" strokeWidth={2} />
             </button>
             <input
               autoFocus
@@ -411,10 +459,10 @@ function PhonePane({
               value={phone}
               onChange={(e) => setPhone(format(e.target.value))}
               placeholder={placeholder}
-              className="flex-1 min-w-0 h-12 px-4 rounded-2xl border border-line/70 bg-surface text-[14px] tabular-nums tracking-wide outline-none focus:border-brand/60 transition placeholder:text-ink-dim"
+              className="flex-1 min-w-0 h-[58px] px-4 rounded-2xl bg-surface-elevated border border-transparent text-[15px] tabular-nums tracking-wide outline-none focus:bg-surface-higher focus:ring-2 focus:ring-ink/10 transition placeholder:text-ink-dim"
             />
           </div>
-          <p className="text-[11.5px] text-ink-dim mt-2 ml-1">
+          <p className="text-[12px] text-ink-dim mt-1.5 ml-1">
             {t('onb.privacy.note')}
           </p>
         </div>
@@ -422,7 +470,7 @@ function PhonePane({
         <button
           onClick={onNext}
           disabled={!valid}
-          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
+          className="mt-auto w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 disabled:bg-surface-elevated disabled:text-ink-dim transition active:scale-[0.99]"
         >
           {t('onb.phone.cta')}
         </button>
@@ -491,7 +539,6 @@ function OtpPane({
 
       <div className="flex-1 flex flex-col px-5 pt-4 pb-10">
         <div className="px-2">
-          <StepEyebrow>{tt('onb.otp.eyebrow')}</StepEyebrow>
           <Headline>{tt('onb.otp.title')}</Headline>
           <SubBody>
             {tt('onb.otp.body', { phone: `+${country.dial} ${phone || '—'}` })}
@@ -511,9 +558,9 @@ function OtpPane({
                 onChange={(e) => set(i, e.target.value)}
                 onKeyDown={(e) => onKey(i, e)}
                 onPaste={onPaste}
-                className={`w-full h-14 rounded-2xl border bg-surface text-[18px] font-semibold text-center tabular-nums outline-none transition
-                  ${otp[i] ? 'border-brand/60' : 'border-line/70'}
-                  focus:border-brand/60`}
+                className={`w-full h-16 rounded-2xl bg-surface-elevated border border-transparent text-[20px] font-semibold text-center tabular-nums outline-none transition
+                  ${otp[i] ? 'bg-surface-higher ring-2 ring-ink/15' : ''}
+                  focus:bg-surface-higher focus:ring-2 focus:ring-ink/15`}
               />
             ))}
           </div>
@@ -535,7 +582,7 @@ function OtpPane({
         <button
           onClick={onNext}
           disabled={!valid}
-          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
+          className="mt-auto w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 disabled:bg-surface-elevated disabled:text-ink-dim transition active:scale-[0.99]"
         >
           {tt('common.confirm')}
         </button>
@@ -575,7 +622,6 @@ function ProfilePane({
 
       <div className="flex-1 min-h-0 overflow-y-auto scrollbar-hide px-5 pt-4 pb-6">
         <div className="px-2">
-          <StepEyebrow>{t('onb.profile.eyebrow')}</StepEyebrow>
           <Headline>{t('onb.profile.title')}</Headline>
           <SubBody>{t('onb.profile.subtitle')}</SubBody>
         </div>
@@ -596,27 +642,27 @@ function ProfilePane({
         </div>
 
         <SectionLabel>{t('onb.profile.section.identity')}</SectionLabel>
-        <div className="space-y-3 mb-6">
-          <InputRow icon={<User size={15} />}      placeholder={t('onb.profile.placeholder.name')}    value={name}    onChange={setName} autoFocus />
-          <InputRow icon={<Briefcase size={15} />} placeholder={t('onb.profile.placeholder.role')}    value={role}    onChange={setRole} />
-          <InputRow icon={<Building2 size={15} />} placeholder={t('onb.profile.placeholder.company')} value={company} onChange={setCompany} />
+        <div className="space-y-2.5 mb-6">
+          <InputRow placeholder={t('onb.profile.placeholder.name')}    value={name}    onChange={setName} autoFocus />
+          <InputRow placeholder={t('onb.profile.placeholder.role')}    value={role}    onChange={setRole} />
+          <InputRow placeholder={t('onb.profile.placeholder.company')} value={company} onChange={setCompany} />
         </div>
 
         <SectionLabel>{t('onb.profile.section.contact')}</SectionLabel>
-        <div className="space-y-3 mb-6">
-          <InputRow icon={<Phone size={15} />} placeholder={`+${country.dial} 9 …`} value={phone} onChange={setPhone} type="tel" inputMode="tel" />
-          <InputRow icon={<Mail size={15} />}  placeholder={t('onb.profile.placeholder.email')} value={email} onChange={setEmail} type="email" inputMode="email" />
+        <div className="space-y-2.5 mb-6">
+          <InputRow placeholder={`+${country.dial} 9 …`} value={phone} onChange={setPhone} type="tel" inputMode="tel" />
+          <InputRow placeholder={t('onb.profile.placeholder.email')} value={email} onChange={setEmail} type="email" inputMode="email" />
           <WebsiteRow value={website} onChange={setWebsite} />
           <LocationPickerRow value={city} onTap={() => setPickerOpen(true)} />
         </div>
 
         <SectionLabel>{t('onb.profile.help')}</SectionLabel>
-        <div className="rounded-[20px] border border-line/60 bg-surface/60 p-4 mb-2">
+        <div className="rounded-2xl bg-surface-elevated border border-transparent focus-within:bg-surface-higher focus-within:ring-2 focus-within:ring-ink/10 p-4 mb-2 transition">
           <textarea
             value={bio}
             onChange={(e) => setBio(e.target.value.slice(0, BIO_MAX))}
             rows={3}
-            className="w-full bg-transparent outline-none text-[13.5px] leading-relaxed resize-none placeholder:text-ink-dim"
+            className="w-full bg-transparent outline-none text-[14px] leading-relaxed resize-none placeholder:text-ink-dim"
             placeholder=""
           />
           <p className="text-[11px] text-ink-dim mt-1.5 text-right tabular-nums">{bio.length} / {BIO_MAX}</p>
@@ -627,7 +673,7 @@ function ProfilePane({
         <button
           onClick={onNext}
           disabled={!valid}
-          className="w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 transition active:scale-[0.99]"
+          className="w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[15px] flex items-center justify-center disabled:opacity-40 disabled:bg-surface-elevated disabled:text-ink-dim transition active:scale-[0.99]"
         >
           {t('onb.profile.continue')}
         </button>
@@ -659,7 +705,6 @@ function PermissionsPane({
       <TopBar onBack={onBack} onSkip={onNext} />
 
       <div className="flex-1 flex flex-col px-7 pt-4 pb-10">
-        <StepEyebrow>{t('onb.permissions.eyebrow')}</StepEyebrow>
         <Headline>{t('onb.permissions.title')}</Headline>
         <SubBody>{t('onb.permissions.body')}</SubBody>
 
@@ -682,7 +727,7 @@ function PermissionsPane({
 
         <button
           onClick={onNext}
-          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
+          className="mt-auto w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
         >
           {t('onb.permissions.continue')}
         </button>
@@ -713,7 +758,7 @@ function PermissionRow({
           className={`relative h-6 w-10 rounded-full transition flex-shrink-0 mt-1
             ${value ? 'bg-brand' : 'bg-surface-higher border border-line/70'}`}
         >
-          <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all ${value ? 'left-[18px]' : 'left-0.5'}`} />
+          <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-sand-0 transition-all ${value ? 'left-[18px]' : 'left-0.5'}`} />
         </button>
       </div>
     </div>
@@ -738,9 +783,6 @@ function DonePane({
           <div className="h-12 w-12 rounded-full bg-brand/12 border border-brand/30 grid place-items-center mb-5">
             <Check size={20} className="text-brand" strokeWidth={2.4} />
           </div>
-          <p className="text-[12px] font-semibold text-brand mb-2">
-            {t('common.done')}
-          </p>
           <Headline>
             {t('onb.done.title')}<br />
             <span className="text-ink">{(data.name || 'friend').split(' ')[0]}.</span>
@@ -760,15 +802,15 @@ function DonePane({
                 <p className="text-[10.5px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
                 <p className="text-[10px] font-medium text-ink-dim mt-1">{data.city || 'Yangon'}</p>
               </div>
-              <div className="h-10 w-10 rounded-xl bg-white/95 grid place-items-center text-zinc-950 font-black text-[14px]">
+              <div className="h-10 w-10 rounded-xl bg-sand-0/95 grid place-items-center text-zinc-950 font-black text-[14px]">
                 {initials}
               </div>
             </div>
             <div className="relative">
-              <p className="text-[19px] font-bold text-white tracking-tight leading-tight">
+              <p className="text-[19px] font-bold text-sand-0 tracking-tight leading-tight">
                 {data.name || 'Your name'}
               </p>
-              <p className="text-[12px] text-white/55 mt-0.5">
+              <p className="text-[12px] text-sand-0/55 mt-0.5">
                 {[data.role, data.company].filter(Boolean).join(' · ') || 'Your role'}
               </p>
             </div>
@@ -779,7 +821,7 @@ function DonePane({
 
         <button
           onClick={onEnter}
-          className="mt-auto w-full pt-[15px] pb-3.5 rounded-2xl bg-brand text-white font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
+          className="mt-auto w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[15px] flex items-center justify-center transition active:scale-[0.99]"
         >
           {t('onb.done.cta')}
         </button>
@@ -820,10 +862,6 @@ function Headline({ children }: { children: React.ReactNode }) {
 
 function SubBody({ children }: { children: React.ReactNode }) {
   return <p className="text-[13.5px] text-ink-muted leading-relaxed mt-3 max-w-[320px]">{children}</p>
-}
-
-function StepEyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="text-[12px] font-semibold text-brand mb-2">{children}</p>
 }
 
 function SectionLabel({ children }: { children: ReactNode }) {
@@ -921,21 +959,6 @@ function CountryPicker({
   )
 }
 
-function Dots({ total, active }: { total: number; active: number }) {
-  return (
-    <div className="flex items-center gap-1.5">
-      {Array.from({ length: total }).map((_, i) => (
-        <span
-          key={i}
-          className={`h-1.5 rounded-full transition-all duration-300 ${
-            i === active ? 'w-6 bg-ink' : 'w-1.5 bg-line-strong'
-          }`}
-        />
-      ))}
-    </div>
-  )
-}
-
 /* ───────── Visuals ───────── */
 
 function CaptureVisual() {
@@ -949,14 +972,14 @@ function CaptureVisual() {
         <div className="absolute inset-0 p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between">
             <p className="text-[10px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
-            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-zinc-950 font-black text-[11px]">S</div>
+            <div className="h-8 w-8 rounded-lg bg-sand-0/95 grid place-items-center text-zinc-950 font-black text-[11px]">S</div>
           </div>
           <div>
-            <p className="text-[18px] font-bold text-white tracking-tight">Su Su Aung</p>
-            <p className="text-[11.5px] text-white/55 mt-1">Brand Manager · Yangon</p>
+            <p className="text-[18px] font-bold text-sand-0 tracking-tight">Su Su Aung</p>
+            <p className="text-[11.5px] text-sand-0/55 mt-1">Brand Manager · Yangon</p>
             <div className="mt-2.5 flex gap-1">
-              <div className="h-[3px] w-12 rounded-full bg-white/15" />
-              <div className="h-[3px] w-8 rounded-full bg-white/15" />
+              <div className="h-[3px] w-12 rounded-full bg-sand-0/15" />
+              <div className="h-[3px] w-8 rounded-full bg-sand-0/15" />
             </div>
           </div>
         </div>
@@ -978,7 +1001,7 @@ function ExchangeVisual() {
       <div className="absolute inset-0 -m-12 rounded-full border border-brand/15" />
       <div className="absolute inset-0 -m-24 rounded-full border border-brand/8" />
 
-      <div className="relative h-[180px] w-[180px] rounded-3xl bg-white p-4 grid place-items-center shadow-soft">
+      <div className="relative h-[180px] w-[180px] rounded-3xl bg-sand-0 p-4 grid place-items-center shadow-soft">
         <SmallFauxQR />
       </div>
 
@@ -1001,11 +1024,11 @@ function PersonalizeVisual() {
         <div className="absolute inset-0 p-5 flex flex-col justify-between">
           <div className="flex items-start justify-between">
             <p className="text-[10px] tracking-[0.22em] font-bold text-brand">SWAPO·</p>
-            <div className="h-8 w-8 rounded-lg bg-white/95 grid place-items-center text-zinc-950 font-black text-[11px]">S</div>
+            <div className="h-8 w-8 rounded-lg bg-sand-0/95 grid place-items-center text-zinc-950 font-black text-[11px]">S</div>
           </div>
           <div>
-            <p className="text-[18px] font-bold text-white tracking-tight">Your name here</p>
-            <p className="text-[11.5px] text-white/55 mt-1">Your role · Your city</p>
+            <p className="text-[18px] font-bold text-sand-0 tracking-tight">Your name here</p>
+            <p className="text-[11.5px] text-sand-0/55 mt-1">Your role · Your city</p>
           </div>
         </div>
       </div>
@@ -1037,7 +1060,7 @@ function SmallFauxQR() {
   return (
     <div className="grid grid-cols-[repeat(13,1fr)] gap-[2px] w-full h-full">
       {cells.flatMap((row, r) => row.map((on, c) => (
-        <div key={`${r}-${c}`} className={`aspect-square ${on ? 'bg-zinc-950' : 'bg-white'}`} />
+        <div key={`${r}-${c}`} className={`aspect-square ${on ? 'bg-zinc-950' : 'bg-sand-0'}`} />
       )))}
     </div>
   )

@@ -74,7 +74,7 @@ export function HomeScreen({ go, setTab }: { go: (v: View) => void; setTab: (t: 
                 <button onClick={() => go({ kind: 'my-card' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-ink text-canvas text-[13px] font-semibold whitespace-nowrap">
                   <QrCode size={15} strokeWidth={2.4} /> {t('home.share')}
                 </button>
-                <button onClick={() => go({ kind: 'register' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/20 bg-white/10 text-white text-[13px] font-medium whitespace-nowrap">
+                <button onClick={() => go({ kind: 'register' })} className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-sand-0/20 bg-sand-0/10 text-sand-0 text-[13px] font-medium whitespace-nowrap">
                   <Plus size={15} strokeWidth={2.4} /> {t('home.add')}
                 </button>
               </div>
@@ -135,7 +135,7 @@ export function HomeScreen({ go, setTab }: { go: (v: View) => void; setTab: (t: 
             onClick={() => go({ kind: 'card-detail', contact: c })}
             className="w-full flex items-center gap-3 p-3 rounded-2xl border border-line/60 bg-surface/60 hover:bg-surface-elevated transition-colors"
           >
-            <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${c.accent} grid place-items-center text-[13px] font-bold text-white`}>
+            <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${c.accent} grid place-items-center text-[13px] font-bold text-sand-0`}>
               {c.name.split(' ').map(p => p[0]).slice(0, 2).join('')}
             </div>
             <div className="flex-1 text-left min-w-0">
@@ -206,7 +206,7 @@ function QuickAction({ icon, label, highlight, onClick }: { icon: React.ReactNod
         }`}
     >
       <span className={highlight ? 'text-brand' : 'text-ink'}>{icon}</span>
-      <span className={`text-[12px] font-medium ${highlight ? 'text-white' : 'text-ink-muted'}`}>{label}</span>
+      <span className={`text-[12px] font-medium ${highlight ? 'text-sand-0' : 'text-ink-muted'}`}>{label}</span>
     </button>
   )
 }

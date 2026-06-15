@@ -1,4 +1,4 @@
-import { Home, IdCard, Wand2, User } from 'lucide-react'
+import { Home, IdCard, Wand2 } from 'lucide-react'
 import { useT } from '../i18n'
 
 export type Tab = 'home' | 'cardo' | 'ai' | 'me'
@@ -7,7 +7,6 @@ const items: { key: Tab; tKey: string; Icon: typeof Home }[] = [
   { key: 'home',  tKey: 'tab.home',  Icon: Home },
   { key: 'cardo', tKey: 'tab.cards', Icon: IdCard },
   { key: 'ai',    tKey: 'tab.ai',    Icon: Wand2 },
-  { key: 'me',    tKey: 'tab.me',    Icon: User },
 ]
 
 export function BottomNav({ active, onChange }: { active: Tab; onChange: (t: Tab) => void }) {

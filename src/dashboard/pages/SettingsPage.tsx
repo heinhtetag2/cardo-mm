@@ -49,7 +49,7 @@ export function SettingsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 items-start pb-8">
         {/* Section list */}
-        <nav className="bg-white border border-[#EBEBEB] rounded-2xl p-3 sticky top-0 space-y-5">
+        <nav className="bg-sand-0 border border-[#EBEBEB] rounded-2xl p-3 sticky top-0 space-y-5">
           {NAV_GROUPS.map((group) => (
             <div key={group.label}>
               <div className="px-3 mb-2 text-[10.5px] font-semibold uppercase tracking-wider text-[#9A9A9A]">
@@ -98,7 +98,7 @@ export function SettingsPage() {
 
 function Card({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white border border-[#EBEBEB] rounded-2xl mb-5 overflow-hidden">
+    <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl mb-5 overflow-hidden">
       <div className="px-6 py-5 border-b border-[#F3F3F3]">
         <h2 className="text-[16px] font-semibold text-[#1A1A1A]">{title}</h2>
         {subtitle && <p className="text-[11.5px] text-[#616161] mt-0.5">{subtitle}</p>}
@@ -122,7 +122,7 @@ function Input({ value, placeholder }: { value?: string; placeholder?: string })
     <input
       defaultValue={value}
       placeholder={placeholder}
-      className="w-full h-11 px-4 bg-[#F8F8F8] border border-transparent rounded-xl text-[13px] text-[#1A1A1A] placeholder:text-[#9A9A9A] focus:outline-none focus:bg-white focus:border-[#5B8DEF] transition"
+      className="w-full h-11 px-4 bg-[#F8F8F8] border border-transparent rounded-xl text-[13px] text-[#1A1A1A] placeholder:text-[#9A9A9A] focus:outline-none focus:bg-sand-0 focus:border-[#5B8DEF] transition"
     />
   )
 }
@@ -131,7 +131,7 @@ function ProfileSection() {
   return (
     <Card title="Profile" subtitle="What people see when they save your card">
       <div className="flex items-center gap-4 mb-6">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] text-white grid place-items-center text-[20px] font-semibold">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#5B8DEF] to-[#8B5CF6] text-sand-0 grid place-items-center text-[20px] font-semibold">
           {DASH_USER.initials}
         </div>
         <div>
@@ -154,7 +154,7 @@ function ProfileSection() {
       </div>
       <div className="mt-3 flex items-center justify-end gap-2">
         <button className="h-10 px-4 text-[12.5px] font-medium text-[#616161] hover:text-[#1A1A1A] transition">Cancel</button>
-        <button className="h-10 px-5 inline-flex items-center gap-1.5 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-white text-[12.5px] font-semibold rounded-xl hover:opacity-95 transition">
+        <button className="h-10 px-5 inline-flex items-center gap-1.5 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-sand-0 text-[12.5px] font-semibold rounded-xl hover:opacity-95 transition">
           Save changes
         </button>
       </div>
@@ -183,7 +183,7 @@ function LanguageSection() {
               </div>
               {active && (
                 <span className="w-5 h-5 rounded-full bg-[#5B8DEF] grid place-items-center">
-                  <Check className="w-3 h-3 text-white" />
+                  <Check className="w-3 h-3 text-sand-0" />
                 </span>
               )}
             </button>
@@ -325,7 +325,7 @@ function IntegrationsSection() {
               className={`h-10 px-4 text-[12.5px] font-medium rounded-xl transition ${
                 a.connected
                   ? 'bg-[#ECFDF5] text-[#047857] hover:bg-[#D1FAE5]'
-                  : 'bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-white hover:opacity-95'
+                  : 'bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] text-sand-0 hover:opacity-95'
               }`}
             >
               {a.connected ? 'Connected' : 'Connect'}
@@ -375,7 +375,7 @@ function Toggle({ on, onChange }: { on: boolean; onChange: () => void }) {
       role="switch"
       aria-checked={on}
     >
-      <span className={`absolute top-0.5 h-5 w-5 bg-white rounded-full shadow transition-transform ${on ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
+      <span className={`absolute top-0.5 h-5 w-5 bg-sand-0 rounded-full shadow transition-transform ${on ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
     </button>
   )
 }

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Search, Share2, MapPin, Plus, Star, ChevronDown, X, Check } from 'lucide-react'
+import { Search, Share2, MapPin, Star, ChevronDown, X, Check } from 'lucide-react'
 import type { View } from '../nav'
 import { contacts, type Contact } from '../data'
 import { useT } from '../i18n'
@@ -35,19 +35,9 @@ export function CardoScreen({
 
   return (
     <div className="px-5 pt-2 animate-fade-in">
-      <div className="flex items-end justify-between mb-1">
-        <div>
-          <h1 className="text-[26px] font-bold tracking-tight">{t('cards.titleMy')}</h1>
-          <p className="text-[13px] text-ink-dim mt-0.5">{t('cards.subtitle', { n: contacts.length })}</p>
-        </div>
-        <button
-          onClick={() => go({ kind: 'register' })}
-          aria-label={t('cards.add')}
-          className="inline-flex items-center gap-1.5 h-10 px-3.5 rounded-full bg-brand/12 border border-brand/30 text-brand text-[13px] font-semibold hover:bg-brand/20 transition"
-        >
-          <Plus size={15} strokeWidth={2.4} />
-          <span>{t('cards.add')}</span>
-        </button>
+      <div className="mb-1">
+        <h1 className="text-[26px] font-bold tracking-tight">{t('cards.titleMy')}</h1>
+        <p className="text-[13px] text-ink-dim mt-0.5">{t('cards.subtitle', { n: contacts.length })}</p>
       </div>
 
       <div className="mt-5 mb-4">
@@ -134,8 +124,8 @@ function CardFeatureItem({ contact, onClick }: { contact: Contact; onClick: () =
     >
       <div className={`relative aspect-[16/9] bg-gradient-to-br ${contact.accent} overflow-hidden`}>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-canvas/10 to-canvas/50" />
-        <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-white/10 blur-2xl" />
-        <div className="absolute right-4 bottom-4 text-[44px] font-black tracking-tight text-white/15 leading-none select-none">
+        <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-sand-0/10 blur-2xl" />
+        <div className="absolute right-4 bottom-4 text-[44px] font-black tracking-tight text-sand-0/15 leading-none select-none">
           {initials}
         </div>
         <div className="absolute top-4 left-4 h-11 w-11 rounded-full bg-canvas/90 backdrop-blur grid place-items-center border border-line/70 shadow-soft">

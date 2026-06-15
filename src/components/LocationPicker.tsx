@@ -9,18 +9,28 @@ export function LocationPickerRow({
   placeholder?: string
   onTap: () => void
 }) {
-  const empty = !value || value === placeholder
+  const filled = Boolean(value) && value !== placeholder
   return (
     <button
       type="button"
       onClick={onTap}
-      className="w-full flex items-center gap-3 h-12 px-4 rounded-2xl border border-line/70 bg-surface text-left active:bg-surface-elevated transition"
+      className="relative w-full h-[58px] rounded-2xl bg-surface-elevated border border-transparent text-left active:bg-surface-higher transition"
     >
-      <span className="text-ink-dim"><MapPin size={15} /></span>
-      <span className={`flex-1 text-[14px] truncate ${empty ? 'text-ink-dim' : 'text-ink'}`}>
-        {value || placeholder}
+      <span
+        className={`pointer-events-none absolute left-4 transition-all duration-150 ${
+          filled
+            ? 'top-2 text-[11px] text-ink-dim leading-none'
+            : 'top-1/2 -translate-y-1/2 text-[15px] text-ink-dim'
+        }`}
+      >
+        {placeholder}
       </span>
-      <ChevronDown size={15} className="text-ink-dim" />
+      {filled && (
+        <span className="absolute left-4 right-12 bottom-1.5 text-[15px] text-ink truncate">
+          {value}
+        </span>
+      )}
+      <ChevronDown size={15} className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-dim" />
     </button>
   )
 }

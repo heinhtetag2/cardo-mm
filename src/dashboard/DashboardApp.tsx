@@ -21,7 +21,7 @@ export function DashboardApp({ onExit }: { onExit: () => void }) {
   const [page, setPage] = useState<DashPage>('home')
 
   return (
-    <div className="fixed inset-0 z-50 flex bg-white text-[#1A1A1A] font-sans overflow-hidden animate-fade-in">
+    <div className="fixed inset-0 z-50 flex bg-sand-0 text-[#1A1A1A] font-sans overflow-hidden animate-fade-in">
       <Sidebar page={page} onNavigate={setPage} onExit={onExit} />
       <main className="flex-1 overflow-hidden flex flex-col relative min-w-0 bg-[#FAFAFA]">
         {page === 'home' && <HomePage onNavigate={setPage} />}
@@ -90,15 +90,15 @@ function HomePage({ onNavigate }: { onNavigate: (p: DashPage) => void }) {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="relative h-11 w-11 inline-flex items-center justify-center bg-white border border-[#EBEBEB] rounded-2xl hover:bg-[#FAFAFA] transition">
+          <button className="relative h-11 w-11 inline-flex items-center justify-center bg-sand-0 border border-[#EBEBEB] rounded-2xl hover:bg-[#FAFAFA] transition">
             <Bell className="w-4 h-4 text-[#1A1A1A]" />
             {unread > 0 && (
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#FF3C21] ring-2 ring-white" />
+              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#FF3C21] ring-2 ring-sand-0" />
             )}
           </button>
           <button
             onClick={() => onNavigate('my-cards')}
-            className="h-11 px-5 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] hover:opacity-95 text-white text-[13.5px] font-semibold rounded-xl transition shadow-sm"
+            className="h-11 px-5 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#5B8DEF] to-[#8B5CF6] hover:opacity-95 text-sand-0 text-[13.5px] font-semibold rounded-xl transition shadow-sm"
           >
             Share my card
             <ArrowRight className="w-4 h-4" />
@@ -107,7 +107,7 @@ function HomePage({ onNavigate }: { onNavigate: (p: DashPage) => void }) {
       </div>
 
       {/* Trust level banner */}
-      <div className="bg-white border border-[#EBEBEB] rounded-2xl p-5 sm:p-6 mb-6 flex items-center gap-4">
+      <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl p-5 sm:p-6 mb-6 flex items-center gap-4">
         <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[#FEFCE8] to-[#FCD34D] grid place-items-center shrink-0">
           <Trophy className="w-6 h-6 text-[#A16207]" />
         </div>
@@ -130,11 +130,11 @@ function HomePage({ onNavigate }: { onNavigate: (p: DashPage) => void }) {
           <button
             key={s.title}
             onClick={s.onClick}
-            className="text-left bg-white border border-[#EBEBEB] rounded-2xl p-6 flex flex-col justify-center hover:border-[#5B8DEF]/40 transition group"
+            className="text-left bg-sand-0 border border-[#EBEBEB] rounded-2xl p-6 flex flex-col justify-center hover:border-[#5B8DEF]/40 transition group"
           >
             <div className="flex justify-between items-start mb-5">
               <span className="text-[12.5px] font-medium text-[#616161]">{s.title}</span>
-              <div className={`p-2 rounded-xl transition ${s.accent ? 'bg-[#EEF2FF] text-[#5B8DEF] group-hover:bg-[#5B8DEF] group-hover:text-white' : 'bg-[#F3F3F3] text-[#4A4A4A] group-hover:bg-[#5B8DEF] group-hover:text-white'}`}>
+              <div className={`p-2 rounded-xl transition ${s.accent ? 'bg-[#EEF2FF] text-[#5B8DEF] group-hover:bg-[#5B8DEF] group-hover:text-sand-0' : 'bg-[#F3F3F3] text-[#4A4A4A] group-hover:bg-[#5B8DEF] group-hover:text-sand-0'}`}>
                 <s.Icon className="w-4 h-4" />
               </div>
             </div>
@@ -152,7 +152,7 @@ function HomePage({ onNavigate }: { onNavigate: (p: DashPage) => void }) {
       </div>
 
       {/* Network growth chart */}
-      <div className="bg-white border border-[#EBEBEB] rounded-2xl p-5 sm:p-7 mb-6">
+      <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl p-5 sm:p-7 mb-6">
         <div className="flex justify-between items-start mb-6 gap-3 flex-wrap">
           <div>
             <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Network growth</h2>
@@ -179,7 +179,7 @@ function HomePage({ onNavigate }: { onNavigate: (p: DashPage) => void }) {
 
       {/* Two-up: tag breakdown + recent activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start pb-8">
-        <div className="bg-white border border-[#EBEBEB] rounded-2xl overflow-hidden">
+        <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl overflow-hidden">
           <div className="px-5 sm:px-6 pt-5 pb-4 flex items-start justify-between gap-4">
             <div>
               <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Contacts by tag</h2>
@@ -212,7 +212,7 @@ function HomePage({ onNavigate }: { onNavigate: (p: DashPage) => void }) {
           </ul>
         </div>
 
-        <div className="bg-white border border-[#EBEBEB] rounded-2xl overflow-hidden">
+        <div className="bg-sand-0 border border-[#EBEBEB] rounded-2xl overflow-hidden">
           <div className="px-5 sm:px-6 pt-5 pb-4 flex items-start justify-between gap-4">
             <div>
               <h2 className="text-[16px] font-semibold text-[#1A1A1A]">Recent activity</h2>
@@ -262,7 +262,7 @@ function RangeSelect({ value, onChange }: { value: DashRange; onChange: (v: Dash
     <div className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="h-10 px-3.5 inline-flex items-center gap-2 bg-white border border-[#EBEBEB] rounded-xl text-[12.5px] font-medium text-[#1A1A1A] hover:bg-[#FAFAFA] transition"
+        className="h-10 px-3.5 inline-flex items-center gap-2 bg-sand-0 border border-[#EBEBEB] rounded-xl text-[12.5px] font-medium text-[#1A1A1A] hover:bg-[#FAFAFA] transition"
       >
         <Calendar className="w-3.5 h-3.5 text-[#616161]" />
         {current?.label}
@@ -271,7 +271,7 @@ function RangeSelect({ value, onChange }: { value: DashRange; onChange: (v: Dash
       {open && (
         <>
           <button onClick={() => setOpen(false)} className="fixed inset-0 z-10 cursor-default" aria-hidden />
-          <div className="absolute right-0 top-full mt-1.5 z-20 w-44 bg-white border border-[#EBEBEB] rounded-xl shadow-lg p-1.5">
+          <div className="absolute right-0 top-full mt-1.5 z-20 w-44 bg-sand-0 border border-[#EBEBEB] rounded-xl shadow-lg p-1.5">
             {RANGE_OPTIONS.map((o) => (
               <button
                 key={o.value}

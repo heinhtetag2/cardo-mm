@@ -63,12 +63,12 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
       {/* Top bar — only during camera/scanning phases */}
       {phase !== 'review' && (
         <header className="relative z-30 flex items-center justify-between px-4 pt-12 pb-3">
-          <button onClick={onBack} className="h-10 w-10 grid place-items-center rounded-full bg-black/50 backdrop-blur border border-white/10">
-            <ChevronLeft size={20} className="text-white" strokeWidth={2} />
+          <button onClick={onBack} className="h-10 w-10 grid place-items-center rounded-full bg-black/50 backdrop-blur border border-sand-0/10">
+            <ChevronLeft size={20} className="text-sand-0" strokeWidth={2} />
           </button>
-          <p className="text-[13.5px] font-semibold text-white/90">{headerTitle}</p>
-          <button onClick={() => setFlash((f) => !f)} className="h-10 w-10 grid place-items-center rounded-full bg-black/50 backdrop-blur border border-white/10">
-            {flash ? <Zap size={16} className="text-amber-300" fill="currentColor" /> : <ZapOff size={16} className="text-white/80" />}
+          <p className="text-[13.5px] font-semibold text-sand-0/90">{headerTitle}</p>
+          <button onClick={() => setFlash((f) => !f)} className="h-10 w-10 grid place-items-center rounded-full bg-black/50 backdrop-blur border border-sand-0/10">
+            {flash ? <Zap size={16} className="text-amber-300" fill="currentColor" /> : <ZapOff size={16} className="text-sand-0/80" />}
           </button>
         </header>
       )}
@@ -79,7 +79,7 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
             <>
               {/* Mock QR code in viewfinder */}
               <div className="absolute inset-0 grid place-items-center">
-                <div className="relative w-[64%] aspect-square rounded-2xl bg-white p-4 grid place-items-center">
+                <div className="relative w-[64%] aspect-square rounded-2xl bg-sand-0 p-4 grid place-items-center">
                   <FauxQR />
                 </div>
               </div>
@@ -98,7 +98,7 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
             <>
               {/* Mock paper card in viewfinder */}
               <div className="absolute inset-0 grid place-items-center">
-                <div className="relative w-[78%] aspect-[1.7/1] rounded-2xl bg-gradient-to-br from-white/95 to-white/85 shadow-2xl rotate-[-2deg]">
+                <div className="relative w-[78%] aspect-[1.7/1] rounded-2xl bg-gradient-to-br from-sand-0/95 to-sand-0/85 shadow-2xl rotate-[-2deg]">
                   <div className="absolute top-4 left-5 right-5 flex items-start justify-between">
                     <div>
                       <div className="h-2.5 w-16 rounded bg-zinc-800 mb-1.5" />
@@ -127,8 +127,8 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
 
           {/* Hint */}
           <div className="absolute top-32 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-            <div className="px-3 py-1.5 rounded-full bg-black/60 backdrop-blur border border-white/10">
-              <p className="text-[12px] text-white/90">
+            <div className="px-3 py-1.5 rounded-full bg-black/60 backdrop-blur border border-sand-0/10">
+              <p className="text-[12px] text-sand-0/90">
                 {isQR
                   ? t('scan.hint.qr')
                   : side === 'front'
@@ -137,9 +137,9 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
               </p>
             </div>
             {!isQR && (
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur border border-white/10">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur border border-sand-0/10">
                 <SideDot active={side === 'front'} done={side === 'back'} label={t('scan.flip.front')} />
-                <span className="h-px w-3 bg-white/20" />
+                <span className="h-px w-3 bg-sand-0/20" />
                 <SideDot active={side === 'back'} done={false} label={t('scan.flip.back')} />
               </div>
             )}
@@ -194,10 +194,10 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
       {phase === 'scan' && (
         <div className="absolute bottom-0 inset-x-0 px-6 pb-9 pt-4 z-30">
           <div className="flex items-center justify-between max-w-md mx-auto">
-            <button onClick={() => toast.show(t('scan.toast.openLib'), 'info')} className="h-12 w-12 rounded-2xl bg-white/10 backdrop-blur border border-white/15 grid place-items-center">
-              <ImageIcon size={18} className="text-white" strokeWidth={1.8} />
+            <button onClick={() => toast.show(t('scan.toast.openLib'), 'info')} className="h-12 w-12 rounded-2xl bg-sand-0/10 backdrop-blur border border-sand-0/15 grid place-items-center">
+              <ImageIcon size={18} className="text-sand-0" strokeWidth={1.8} />
             </button>
-            <button onClick={capture} className="h-[72px] w-[72px] rounded-full bg-white grid place-items-center">
+            <button onClick={capture} className="h-[72px] w-[72px] rounded-full bg-sand-0 grid place-items-center">
               <div className="h-[60px] w-[60px] rounded-full border-[3px] border-canvas" />
             </button>
             <span className="w-12" />
@@ -231,13 +231,13 @@ function ProcessingOverlay({ isQR, captionOverride }: { isQR: boolean; captionOv
           {[0, 1, 2].map((i) => (
             <span
               key={i}
-              className="h-1.5 w-1.5 rounded-full bg-white"
+              className="h-1.5 w-1.5 rounded-full bg-sand-0"
               style={{ animation: `dotsBounce 1.2s ease-in-out infinite`, animationDelay: `${i * 0.15}s` }}
             />
           ))}
         </div>
-        <p className="text-[15px] font-semibold text-white">{title}</p>
-        <p className="text-[12.5px] text-white/55 mt-1.5 leading-relaxed">{sub}</p>
+        <p className="text-[15px] font-semibold text-sand-0">{title}</p>
+        <p className="text-[12.5px] text-sand-0/55 mt-1.5 leading-relaxed">{sub}</p>
       </div>
     </div>
   )
@@ -250,7 +250,7 @@ function FlipOverlay({ onContinue, onSkip }: { onContinue: () => void; onSkip: (
       <div className="text-center max-w-[320px]">
         <div className="relative mx-auto mb-6 w-44 aspect-[1.7/1]" style={{ perspective: '900px' }}>
           <div
-            className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/95 to-white/85 shadow-2xl"
+            className="absolute inset-0 rounded-2xl bg-gradient-to-br from-sand-0/95 to-sand-0/85 shadow-2xl"
             style={{
               transformStyle: 'preserve-3d',
               animation: 'flipCard 1.8s ease-in-out infinite',
@@ -270,16 +270,16 @@ function FlipOverlay({ onContinue, onSkip }: { onContinue: () => void; onSkip: (
           </div>
         </div>
 
-        <h2 className="text-[20px] font-bold text-white tracking-tight">{t('scan.flip.title')}</h2>
-        <p className="text-[12.5px] text-white/60 mt-2 leading-relaxed">
+        <h2 className="text-[20px] font-bold text-sand-0 tracking-tight">{t('scan.flip.title')}</h2>
+        <p className="text-[12.5px] text-sand-0/60 mt-2 leading-relaxed">
           {t('scan.flip.body')}
         </p>
 
         <div className="flex flex-col gap-2.5 mt-6">
-          <button onClick={onContinue} className="w-full h-12 rounded-2xl bg-white text-black font-semibold text-[14px] active:scale-[0.99] transition">
+          <button onClick={onContinue} className="w-full h-12 rounded-2xl bg-sand-0 text-black font-semibold text-[14px] active:scale-[0.99] transition">
             {t('scan.flip.continue')}
           </button>
-          <button onClick={onSkip} className="w-full h-11 text-[13.5px] font-medium text-white/70 active:text-white/90 transition">
+          <button onClick={onSkip} className="w-full h-11 text-[13.5px] font-medium text-sand-0/70 active:text-sand-0/90 transition">
             {t('scan.flip.skip')}
           </button>
         </div>
@@ -301,10 +301,10 @@ function SideDot({ active, done, label }: { active: boolean; done: boolean; labe
     <span className="flex items-center gap-1">
       <span
         className={`h-1.5 w-1.5 rounded-full transition ${
-          done ? 'bg-emerald-400' : active ? 'bg-white' : 'bg-white/25'
+          done ? 'bg-emerald-400' : active ? 'bg-sand-0' : 'bg-sand-0/25'
         }`}
       />
-      <span className={`text-[10.5px] font-semibold tracking-wider uppercase ${active ? 'text-white' : done ? 'text-emerald-400' : 'text-white/40'}`}>
+      <span className={`text-[10.5px] font-semibold tracking-wider uppercase ${active ? 'text-sand-0' : done ? 'text-emerald-400' : 'text-sand-0/40'}`}>
         {label}
       </span>
     </span>
@@ -334,6 +334,6 @@ function Corner({ pos }: { pos: 'tl' | 'tr' | 'bl' | 'br' }) {
     bl: 'bottom-0 left-0 border-b-2 border-l-2 rounded-bl-2xl',
     br: 'bottom-0 right-0 border-b-2 border-r-2 rounded-br-2xl',
   }
-  return <div className={`absolute ${map[pos]} w-7 h-7 border-white`} />
+  return <div className={`absolute ${map[pos]} w-7 h-7 border-sand-0`} />
 }
 

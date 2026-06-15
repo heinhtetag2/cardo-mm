@@ -40,7 +40,7 @@ export function NearbyScreen({ onBack, go }: { onBack: () => void; go: (v: View)
                 />
               ))}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-brand-gradient grid place-items-center shadow-glow">
-                <Radio size={18} className="text-white" />
+                <Radio size={18} className="text-sand-0" />
               </div>
               {/* Avatar pins */}
               {nearby.map((p) => (
@@ -70,7 +70,7 @@ export function NearbyScreen({ onBack, go }: { onBack: () => void; go: (v: View)
               onClick={() => go({ kind: 'exchange', name: p.name, role: p.role, accent: p.accent, phone: p.phone, email: p.email, website: p.website, city: p.city })}
               className="w-full flex items-center gap-3 p-3 rounded-2xl border border-line/60 bg-surface/60 hover:bg-surface-elevated transition"
             >
-              <div className={`relative h-12 w-12 rounded-xl bg-gradient-to-br ${p.accent} grid place-items-center text-[14px] font-bold text-white`}>
+              <div className={`relative h-12 w-12 rounded-xl bg-gradient-to-br ${p.accent} grid place-items-center text-[14px] font-bold text-sand-0`}>
                 {initials}
                 <span className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-canvas grid place-items-center">
                   <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -101,7 +101,7 @@ function AvatarPin({ name, accent, top, left }: { name: string; accent: string; 
   return (
     <div className="absolute" style={{ top, left, transform: 'translate(-50%, -50%)' }}>
       <span className="absolute -inset-1 rounded-full bg-brand/20 animate-ping [animation-duration:1.8s]" />
-      <div className={`relative h-9 w-9 rounded-full bg-gradient-to-br ${accent} grid place-items-center text-[11px] font-bold text-white border-2 border-surface-elevated`}>
+      <div className={`relative h-9 w-9 rounded-full bg-gradient-to-br ${accent} grid place-items-center text-[11px] font-bold text-sand-0 border-2 border-surface-elevated`}>
         {initials}
       </div>
     </div>

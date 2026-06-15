@@ -54,7 +54,7 @@ export function EditCardScreen({ onBack }: { onBack: () => void }) {
       <SubScreenHeader
         title={t('editCard.title')}
         onBack={onBack}
-        right={<button onClick={save} className="px-3.5 h-9 pt-px rounded-full bg-brand text-white text-[12.5px] font-semibold inline-flex items-center justify-center">{t('common.save')}</button>}
+        right={<button onClick={save} className="px-3.5 h-9 pt-px rounded-full bg-sand-0 text-black text-[12.5px] font-semibold inline-flex items-center justify-center">{t('common.save')}</button>}
       />
 
       <div className="px-5 pb-8">
@@ -285,7 +285,7 @@ function DeleteAccountConfirm({ onClose, onConfirm }: { onClose: () => void; onC
           <button
             onClick={onConfirm}
             disabled={!ok}
-            className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[13.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex-1 h-11 rounded-xl bg-rose-500 text-sand-0 text-[13.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Delete
           </button>
@@ -312,7 +312,7 @@ export function EditDisplayNameScreen({ onBack }: { onBack: () => void }) {
       title={t('editName.title')}
       onBack={onBack}
       right={
-        <button onClick={save} disabled={!dirty} className="px-3.5 h-9 pt-px rounded-full bg-brand text-white text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+        <button onClick={save} disabled={!dirty} className="px-3.5 h-9 pt-px rounded-full bg-sand-0 text-black text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
           Save
         </button>
       }
@@ -353,7 +353,7 @@ export function EditRecoveryEmailScreen({ onBack }: { onBack: () => void }) {
       title="Recovery email"
       onBack={onBack}
       right={
-        <button onClick={save} disabled={!valid || !dirty} className="px-3.5 h-9 pt-px rounded-full bg-brand text-white text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+        <button onClick={save} disabled={!valid || !dirty} className="px-3.5 h-9 pt-px rounded-full bg-sand-0 text-black text-[12.5px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
           Save
         </button>
       }
@@ -415,7 +415,7 @@ export function LinkedAccountsScreen({ onBack }: { onBack: () => void }) {
               className={`h-8 px-3.5 rounded-full text-[12px] font-semibold transition ${
                 linked[p]
                   ? 'border border-line/70 bg-surface-elevated text-ink-muted'
-                  : 'bg-brand text-white'
+                  : 'bg-brand text-sand-0'
               }`}
             >
               {linked[p] ? 'Disconnect' : 'Connect'}
@@ -497,7 +497,7 @@ export function AnalyticsScreen({ onBack }: { onBack: () => void }) {
       <Group>
         {contacts.slice(0, 4).map((c) => (
           <button key={c.id} className="w-full flex items-center gap-3 px-4 py-3 border-b border-line/40 last:border-0 text-left">
-            <div className={`h-9 w-9 rounded-xl bg-gradient-to-br ${c.accent} grid place-items-center text-[12px] font-bold text-white`}>
+            <div className={`h-9 w-9 rounded-xl bg-gradient-to-br ${c.accent} grid place-items-center text-[12px] font-bold text-sand-0`}>
               {c.name.split(' ').map((p) => p[0]).slice(0, 2).join('')}
             </div>
             <div className="flex-1 min-w-0">
@@ -729,7 +729,7 @@ function TermsModal({ onClose }: { onClose: () => void }) {
         <div className="px-5 pt-3 pb-6 border-t border-line/40 bg-canvas flex-shrink-0">
           <button
             onClick={onClose}
-            className="w-full h-12 pt-px rounded-2xl bg-brand text-white font-semibold text-[14px] active:scale-[0.98] transition-transform inline-flex items-center justify-center"
+            className="w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[14px] active:scale-[0.99] transition inline-flex items-center justify-center"
           >
             Got it
           </button>
@@ -813,7 +813,7 @@ export function SearchScreen({ onBack, go, initial = '' }: { onBack: () => void;
                     onClick={() => go({ kind: 'card-detail', contact: c })}
                     className="w-full flex items-center gap-3 p-3 rounded-2xl border border-line/60 bg-surface/60"
                   >
-                    <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${c.accent} grid place-items-center text-[13px] font-bold text-white`}>
+                    <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${c.accent} grid place-items-center text-[13px] font-bold text-sand-0`}>
                       {c.name.split(' ').map((p) => p[0]).slice(0, 2).join('')}
                     </div>
                     <div className="flex-1 text-left min-w-0">
@@ -885,7 +885,7 @@ export function FilterScreen({ onBack }: { onBack: () => void }) {
       </div>
 
       <div className="absolute bottom-0 inset-x-0 px-5 pb-6 pt-3 bg-gradient-to-t from-canvas via-canvas to-canvas/0">
-        <button onClick={apply} className="w-full h-12 pt-px rounded-2xl bg-brand text-white font-semibold text-[14.5px] flex items-center justify-center">
+        <button onClick={apply} className="w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[14.5px] flex items-center justify-center">
           Show results
         </button>
       </div>
@@ -984,7 +984,7 @@ export function ExchangeScreen({
             </div>
 
             {/* Their avatar */}
-            <div className={`h-16 w-16 rounded-full bg-gradient-to-br ${accent} grid place-items-center text-white font-semibold text-[16px]`}>
+            <div className={`h-16 w-16 rounded-full bg-gradient-to-br ${accent} grid place-items-center text-sand-0 font-semibold text-[16px]`}>
               {initials}
             </div>
           </div>
@@ -1007,7 +1007,7 @@ export function ExchangeScreen({
 
             <button
               onClick={send}
-              className="w-full h-12 pt-px rounded-2xl bg-brand text-white font-semibold text-[14.5px] flex items-center justify-center"
+              className="w-full h-[52px] rounded-full bg-sand-0 text-black font-semibold text-[14.5px] flex items-center justify-center"
             >
               Send exchange request
             </button>
@@ -1039,7 +1039,7 @@ export function ExchangeScreen({
             </p>
             <button
               onClick={viewTheirCard}
-              className="mt-6 w-full h-12 pt-px rounded-2xl bg-brand text-white text-[14.5px] font-semibold inline-flex items-center justify-center"
+              className="mt-6 w-full h-[52px] rounded-full bg-sand-0 text-black text-[14.5px] font-semibold inline-flex items-center justify-center"
             >
               View their card
             </button>
@@ -1062,7 +1062,7 @@ function ShareItem({ label, value, on }: { label: string; value: string; on: boo
         onClick={() => setV(!v)}
         className={`relative h-6 w-10 rounded-full transition ${v ? 'bg-brand' : 'bg-surface-higher border border-line/70'}`}
       >
-        <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all ${v ? 'left-[18px]' : 'left-0.5'}`} />
+        <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-sand-0 transition-all ${v ? 'left-[18px]' : 'left-0.5'}`} />
       </button>
     </div>
   )
