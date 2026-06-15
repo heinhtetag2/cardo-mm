@@ -1,14 +1,12 @@
-import { Bell, ScanLine, User } from 'lucide-react'
+import { Bell, User } from 'lucide-react'
 import { me } from '../data'
 
 export function TopBar({
   onBellClick,
-  onScanClick,
   onProfileClick,
   hasUnread = true,
 }: {
   onBellClick?: () => void
-  onScanClick?: () => void
   onProfileClick?: () => void
   hasUnread?: boolean
 }) {
@@ -36,15 +34,6 @@ export function TopBar({
           <Bell size={17} className="text-ink/90" strokeWidth={1.8} />
           {hasUnread && <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-brand ring-2 ring-canvas" />}
         </button>
-        {onScanClick && (
-          <button
-            onClick={onScanClick}
-            className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/60 backdrop-blur hover:border-brand/50 transition"
-            aria-label="Scan card"
-          >
-            <ScanLine size={18} className="text-ink/90" strokeWidth={1.8} />
-          </button>
-        )}
       </div>
     </header>
   )

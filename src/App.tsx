@@ -116,7 +116,6 @@ export default function App() {
           {showTopBar && (
             <TopBar
               onBellClick={() => go({ kind: 'notifications' })}
-              onScanClick={tab === 'me' || tab === 'ai' ? undefined : () => go({ kind: 'scan-share' })}
               onProfileClick={() => goTab('me')}
             />
           )}
