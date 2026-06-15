@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Search, QrCode, Wand2, Plus, Radar, Gift, ChevronRight } from 'lucide-react'
+import { Search, QrCode, Wand2, Plus, Radar, ChevronRight } from 'lucide-react'
 import type { Tab, View } from '../nav'
 import { contacts, ads, type Ad } from '../data'
 import { SectionHeader } from '../components/SectionHeader'
@@ -117,9 +117,9 @@ export function HomeScreen({ go, setTab }: { go: (v: View) => void; setTab: (t: 
 
       {/* Quick actions */}
       <div className="grid grid-cols-3 gap-2.5 mb-7">
-        <QuickAction icon={<QrCode size={18} />} label={t('home.scanQr')}   onClick={() => go({ kind: 'qr-scan' })} />
-        <QuickAction icon={<Wand2 size={18} />}  label={t('home.generate')} onClick={() => setTab('ai')} />
-        <QuickAction icon={<Radar size={18} />}  label={t('home.nearby')}   onClick={() => go({ kind: 'nearby' })} />
+        <QuickAction icon={<QrCode size={18} />} label={t('home.shareCard')} onClick={() => go({ kind: 'my-card' })} />
+        <QuickAction icon={<Wand2 size={18} />}  label={t('home.generate')}  onClick={() => setTab('ai')} />
+        <QuickAction icon={<Radar size={18} />}  label={t('home.nearby')}    onClick={() => go({ kind: 'nearby' })} />
       </div>
 
       {/* Recently saved */}
@@ -146,18 +146,6 @@ export function HomeScreen({ go, setTab }: { go: (v: View) => void; setTab: (t: 
           </button>
         ))}
       </div>
-
-      {/* Referral */}
-      <button onClick={() => go({ kind: 'invite' })} className="relative w-full p-4 rounded-[20px] border border-brand/25 bg-brand/8 flex items-center gap-3.5 mb-4 overflow-hidden">
-        <div className="h-11 w-11 rounded-xl border border-brand/30 bg-brand/15 grid place-items-center">
-          <Gift size={17} className="text-brand" strokeWidth={1.8} />
-        </div>
-        <div className="flex-1 text-left">
-          <p className="text-[14.5px] font-semibold">{t('home.referral.title')}</p>
-          <p className="text-[12px] text-ink-dim mt-0.5">{t('home.referral.sub')}</p>
-        </div>
-        <ChevronRight size={18} className="text-ink-dim" strokeWidth={1.8} />
-      </button>
     </div>
   )
 }

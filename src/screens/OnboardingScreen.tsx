@@ -108,22 +108,13 @@ export function OnboardingScreen({
   const next = () => {
     if (step === 'splash') return setStep('intro')
     if (step === 'intro') return setStep('auth')
-    if (step === 'phone') return setStep('otp')
-    if (step === 'otp') {
-      if (isSignIn) return onDone(data)
-      return setStep('profile')
-    }
-    if (step === 'profile') return setStep('permissions')
     if (step === 'permissions') return setStep('done')
     onDone(data)
   }
 
   const back = () => {
     if (step === 'auth') return setStep('intro')
-    if (step === 'phone') return setStep('auth')
-    if (step === 'otp') return setStep('phone')
-    if (step === 'profile') return setStep('otp')
-    if (step === 'permissions') return setStep('profile')
+    if (step === 'permissions') return setStep('auth')
     if (step === 'done') return setStep('permissions')
   }
 
@@ -151,12 +142,10 @@ export function OnboardingScreen({
           isSignIn={isSignIn}
           setIsSignIn={setIsSignIn}
           onBack={() => setStep('intro')}
-          onUsePhone={() => setStep('phone')}
           onComplete={(info: AuthResult) => {
             if (info.name) setName(info.name)
             if (info.email) setEmail(info.email)
-            if (isSignIn) onDone({ ...data, name: info.name ?? data.name, email: info.email ?? data.email })
-            else setStep('profile')
+            setStep('permissions')
           }}
         />
       )}

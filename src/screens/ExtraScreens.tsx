@@ -5,6 +5,7 @@ import {
   Share2, Copy, Mail, MessageCircle, Gift,
   ArrowUpRight, Users, ArrowRightLeft,
   Smartphone, Star, User, Image as ImageIcon, Plug, AlertTriangle,
+  Pencil, Building2, Sparkles,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { LocationPicker } from '../components/LocationPicker'
@@ -132,6 +133,9 @@ export function EditCardScreen({ onBack, autoScan = false }: { onBack: () => voi
           <p className="text-[11px] text-ink-dim mt-2 text-right">{bio.length} / 160</p>
         </div>
 
+        <SectionLabel>Card history</SectionLabel>
+        <CardHistory />
+
         <button
           onClick={() => toast.show('Are you sure? (mock)', 'info')}
           className="w-full p-3.5 rounded-2xl border border-rose-500/30 bg-rose-500/8 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400"
@@ -150,6 +154,49 @@ export function EditCardScreen({ onBack, autoScan = false }: { onBack: () => voi
       )}
 
       {scanOpen && <CardScanOverlay onClose={() => setScanOpen(false)} onFill={applyScan} />}
+    </div>
+  )
+}
+
+function CardHistory() {
+  const items = [
+    { icon: <Check size={13} strokeWidth={2.4} />, label: 'Card is active', time: 'In use now', active: true },
+    { icon: <Pencil size={12} strokeWidth={2} />, label: 'Updated role · Product Designer', time: '2 days ago' },
+    { icon: <Camera size={12} strokeWidth={2} />, label: 'Changed profile photo', time: '5 days ago' },
+    { icon: <Building2 size={12} strokeWidth={2} />, label: 'Updated company · Independent', time: '2 weeks ago' },
+    { icon: <Sparkles size={12} strokeWidth={2} />, label: 'Card created', time: 'Mar 2026' },
+  ]
+  return (
+    <div className="rounded-[20px] border border-line/60 bg-surface/60 p-4 mb-5">
+      <ol className="relative">
+        {items.map((it, i) => (
+          <li key={i} className="relative flex gap-3 pb-4 last:pb-0">
+            {i < items.length - 1 && (
+              <span className="absolute left-[13px] top-7 -bottom-0.5 w-px bg-line/60" />
+            )}
+            <span
+              className={`relative z-10 h-7 w-7 rounded-full grid place-items-center flex-shrink-0 border ${
+                it.active
+                  ? 'bg-brand/15 border-brand/40 text-brand'
+                  : 'bg-surface-higher border-line/60 text-ink-muted'
+              }`}
+            >
+              {it.icon}
+            </span>
+            <div className="flex-1 min-w-0 pt-1">
+              <p className={`text-[13px] font-medium leading-tight ${it.active ? 'text-ink' : 'text-ink-muted'}`}>
+                {it.label}
+              </p>
+              <p className="text-[11px] text-ink-dim mt-0.5">{it.time}</p>
+            </div>
+            {it.active && (
+              <span className="self-start mt-0.5 px-2 py-0.5 rounded-full bg-brand/15 text-brand text-[10px] font-semibold border border-brand/25">
+                Active
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
     </div>
   )
 }
@@ -216,12 +263,7 @@ export function AccountScreen({ onBack, go }: { onBack: () => void; go: (v: View
 
       <SectionLabel>{t('account.signin')}</SectionLabel>
       <Group>
-        <AccountRow icon={<Smartphone size={15} />} label={t('account.row.phone')} value={account.loginPhoneMasked} onClick={() => go({ kind: 'security' })} />
-      </Group>
-
-      <SectionLabel>{t('account.plan')}</SectionLabel>
-      <Group>
-        <AccountRow icon={<Star size={15} />} label={t('account.row.subscription')} value={planLabel} onClick={() => go({ kind: 'subscription' })} />
+        <AccountRow icon={<Mail size={15} />} label={t('account.row.email')} value={account.recoveryEmail} onClick={() => go({ kind: 'account-email' })} />
       </Group>
 
       <button

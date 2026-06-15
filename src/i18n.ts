@@ -69,6 +69,7 @@ const en: Dict = {
   'home.find': 'Find a contact',
   'home.searchPlaceholder': 'Search by name, company…',
   'home.scanQr': 'Scan QR',
+  'home.shareCard': 'Share card',
   'home.generate': 'Generate',
   'home.nearby': 'Nearby',
   'home.recent': 'Recently saved',
@@ -495,6 +496,7 @@ const en: Dict = {
   'account.delete.confirm': 'Permanently delete your account and all saved cards? This cannot be undone.',
   'account.row.displayName': 'Display name',
   'account.row.phone': 'Phone',
+  'account.row.email': 'Email',
   'account.row.subscription': 'Subscription',
 
   // Edit display name
@@ -797,6 +799,7 @@ const my: Dict = {
   'home.find': 'ဆက်သွယ်သူ ရှာဖွေရန်',
   'home.searchPlaceholder': 'အမည်၊ ကုမ္ပဏီဖြင့် ရှာရန်…',
   'home.scanQr': 'QR ဖတ်ရန်',
+  'home.shareCard': 'ကတ် မျှဝေ',
   'home.generate': 'ဖန်တီးရန်',
   'home.nearby': 'အနီးအနား',
   'home.recent': 'မကြာသေးမီ သိမ်းဆည်းခဲ့',
@@ -1223,6 +1226,7 @@ const my: Dict = {
   'account.delete.confirm': 'သင့်အကောင့်နှင့် သိမ်းထားသည့် ကတ်အားလုံးကို အပြီးတိုင်ဖျက်မလား။ ပြန်လည် မရနိုင်ပါ။',
   'account.row.displayName': 'ဖော်ပြသည့်အမည်',
   'account.row.phone': 'ဖုန်း',
+  'account.row.email': 'အီးမေးလ်',
   'account.row.subscription': 'စာရင်းသွင်းမှု',
 
   // Edit display name

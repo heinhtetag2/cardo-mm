@@ -2,7 +2,7 @@ import { useState } from 'react'
 import {
   Phone, Mail, Globe, MapPin, Tag, Calendar, MessageCircle, Share2,
   MoreHorizontal, X, Star, Pencil, Trash2, AlertTriangle, Plus,
-  Copy, ExternalLink,
+  Copy, ExternalLink, UserPlus, Clock, IdCard,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { FloatingTextarea } from '../components/FloatingTextarea'
@@ -30,8 +30,20 @@ export function CardDetailScreen({
   const [addingTag, setAddingTag] = useState(false)
   const [newTag, setNewTag] = useState('')
   const [notes, setNotes] = useState('')
+  const [connState, setConnState] = useState<'none' | 'pending' | 'connected'>('none')
 
   const initials = contact.name.split(' ').map((p) => p[0]).slice(0, 2).join('')
+  const firstName = contact.name.split(' ')[0]
+
+  const sendRequest = () => {
+    setConnState('pending')
+    toast.show(`Connection request sent to ${firstName}`)
+    // Mock: the other person accepts after a moment and shares their card.
+    window.setTimeout(() => {
+      setConnState('connected')
+      toast.show(`${firstName} accepted — business card shared`)
+    }, 2600)
+  }
 
   const copy = (label: string, value: string) => {
     navigator.clipboard?.writeText(value)
@@ -162,7 +174,7 @@ export function CardDetailScreen({
       </div>
 
       {/* Actions */}
-      <div className="px-5 pb-8">
+      <div className="px-5 pb-3">
         <button
           onClick={() => setConfirmDelete(true)}
           className="w-full p-3.5 rounded-2xl border border-rose-500/30 bg-rose-500/8 flex items-center justify-center gap-2 text-[14px] font-semibold text-rose-400 transition"
@@ -170,6 +182,41 @@ export function CardDetailScreen({
           <Trash2 size={15} strokeWidth={1.8} />
           <span>Delete contact</span>
         </button>
+      </div>
+
+      {/* Spacer so content clears the sticky bar */}
+      <div className="h-24" />
+
+      {/* Connection request — sticky bottom bar */}
+      <div className="sticky bottom-0 inset-x-0 px-5 pt-5 pb-7 bg-gradient-to-t from-canvas via-canvas to-transparent">
+        {connState === 'none' && (
+          <button
+            onClick={sendRequest}
+            className="w-full h-[52px] rounded-2xl bg-brand text-sand-0 font-semibold text-[15px] flex items-center justify-center gap-2 active:scale-[0.99] transition shadow-glow"
+          >
+            <UserPlus size={18} strokeWidth={2} />
+            Send connection request
+          </button>
+        )}
+
+        {connState === 'pending' && (
+          <div className="w-full h-[52px] rounded-2xl border border-line/70 bg-surface flex items-center justify-center gap-2.5 text-[14.5px] font-semibold text-ink-muted">
+            <Clock size={17} strokeWidth={1.9} className="text-brand animate-pulse" />
+            Request sent · Waiting for {firstName}
+          </div>
+        )}
+
+        {connState === 'connected' && (
+          <div className="w-full rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3.5 flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 grid place-items-center flex-shrink-0">
+              <IdCard size={18} className="text-emerald-400" strokeWidth={1.9} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[13.5px] font-semibold text-emerald-300">Connected with {firstName}</p>
+              <p className="text-[11.5px] text-ink-dim mt-0.5">Business card shared · saved to your contacts</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* More menu sheet */}

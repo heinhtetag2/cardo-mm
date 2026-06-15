@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import {
-  ChevronLeft, Mail, Phone, Eye, EyeOff, Loader2, MailCheck,
+  ChevronLeft, Mail, Eye, EyeOff, Loader2, MailCheck,
 } from 'lucide-react'
 import { useT } from '../i18n'
 
@@ -13,13 +13,11 @@ export function AuthScreen({
   isSignIn,
   setIsSignIn,
   onBack,
-  onUsePhone,
   onComplete,
 }: {
   isSignIn: boolean
   setIsSignIn: (v: boolean) => void
   onBack: () => void
-  onUsePhone: () => void
   onComplete: (info: AuthResult) => void
 }) {
   const [step, setStep] = useState<AuthStep>('landing')
@@ -48,7 +46,6 @@ export function AuthScreen({
           onBack={onBack}
           onSocial={startSocial}
           onEmail={() => setStep('email')}
-          onPhone={onUsePhone}
         />
       )}
 
@@ -90,14 +87,13 @@ export function AuthScreen({
 /* ───────── Landing — method chooser ───────── */
 
 function Landing({
-  isSignIn, setIsSignIn, onBack, onSocial, onEmail, onPhone,
+  isSignIn, setIsSignIn, onBack, onSocial, onEmail,
 }: {
   isSignIn: boolean
   setIsSignIn: (v: boolean) => void
   onBack: () => void
   onSocial: (p: Provider) => void
   onEmail: () => void
-  onPhone: () => void
 }) {
   const t = useT()
   return (
@@ -119,7 +115,6 @@ function Landing({
 
         <div className="space-y-2.5">
           <SecondaryRow icon={<Mail size={18} strokeWidth={1.9} />} label={t('auth.email')} onClick={onEmail} />
-          <SecondaryRow icon={<Phone size={18} strokeWidth={1.9} />} label={t('auth.phone')} onClick={onPhone} />
         </div>
 
         <div className="mt-auto pt-7">
