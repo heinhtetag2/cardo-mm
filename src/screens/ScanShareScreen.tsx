@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Zap, ZapOff, Image as ImageIcon } from 'lucide-react'
+import { X, Zap, ZapOff, Image as ImageIcon, PenLine, Check, Sparkles } from 'lucide-react'
 import { useToast } from '../components/Toast'
 import { ContactForm } from '../components/ContactForm'
 import { MyCardShare } from '../components/MyCardShare'
@@ -23,14 +23,16 @@ export function ScanShareScreen({
   const [flash, setFlash] = useState(false)
   const [phase, setPhase] = useState<Phase>('idle')
   const [side, setSide] = useState<Side>('front')
+  const [shutter, setShutter] = useState(0)
 
   const capture = () => {
+    setShutter((s) => s + 1)
     if (side === 'front') {
       setPhase('processing')
-      setTimeout(() => setPhase('flip'), 900)
+      setTimeout(() => setPhase('flip'), 2100)
     } else {
       setPhase('processing')
-      setTimeout(() => setPhase('review'), 1500)
+      setTimeout(() => setPhase('review'), 2400)
     }
   }
 
@@ -41,7 +43,7 @@ export function ScanShareScreen({
 
   const skipBack = () => {
     setPhase('processing')
-    setTimeout(() => setPhase('review'), 1100)
+    setTimeout(() => setPhase('review'), 2200)
   }
 
   const resetScan = () => {
@@ -93,6 +95,15 @@ export function ScanShareScreen({
   return (
     <div className="absolute inset-0 bg-black overflow-hidden animate-fade-in">
       {mode === 'scan' ? <CameraBackdrop /> : <ShareBackdrop />}
+
+      {/* Shutter flash */}
+      {shutter > 0 && (
+        <div
+          key={shutter}
+          className="absolute inset-0 z-50 bg-white pointer-events-none"
+          style={{ animation: 'shutterFlash 360ms ease-out forwards' }}
+        />
+      )}
 
       {/* Top bar */}
       <header className="relative z-30 flex items-center justify-between px-5 pt-12 pb-3">
@@ -170,8 +181,9 @@ export function ScanShareScreen({
 
         <button
           onClick={() => go({ kind: 'manual' })}
-          className="text-[13px] font-medium text-sand-0/75 active:text-sand-0 transition"
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-sand-0/10 backdrop-blur border border-sand-0/15 text-[13px] font-medium text-sand-0/90 active:scale-[0.97] active:bg-sand-0/15 transition"
         >
+          <PenLine size={14} strokeWidth={1.9} className="text-sand-0/80" />
           {t('scanShare.manual')}
         </button>
       </div>
@@ -188,17 +200,38 @@ function ScanBody({
   hint: string
   side: Side
 }) {
-  const t = useT()
   return (
     <>
-      {/* Frame — bracket corners */}
+      {/* Frame — bracket corners + live scan sweep */}
       <div className="absolute inset-0 grid place-items-center pointer-events-none">
         <div className="relative w-[82%] aspect-[1.7/1]">
           <Corner pos="tl" />
           <Corner pos="tr" />
           <Corner pos="bl" />
           <Corner pos="br" />
-          <div className="absolute inset-x-3 top-0 h-[2px] bg-gradient-to-r from-transparent via-brand to-transparent shadow-glow rounded-full animate-[scanShareLine_2.2s_linear_infinite]" />
+
+          {/* Active scan area (clipped) */}
+          <div className="absolute inset-[6px] overflow-hidden rounded-[20px]">
+            {/* subtle scanline texture */}
+            <div
+              className="absolute inset-0 opacity-40"
+              style={{
+                backgroundImage:
+                  'repeating-linear-gradient(to bottom, rgba(99,71,255,0.05) 0px, rgba(99,71,255,0.05) 1px, transparent 1px, transparent 4px)',
+              }}
+            />
+            {/* sweeping head: glow band + bright line, moving together */}
+            <div className="absolute inset-x-0" style={{ animation: 'scanSweep 2.6s ease-in-out infinite' }}>
+              <div
+                className="absolute inset-x-0 -top-12 h-24"
+                style={{ background: 'linear-gradient(to bottom, transparent, rgba(99,71,255,0.32), transparent)' }}
+              />
+              <div
+                className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-brand to-transparent"
+                style={{ filter: 'drop-shadow(0 0 7px rgba(99,71,255,0.95))' }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -210,38 +243,122 @@ function ScanBody({
       </div>
 
       {/* Processing overlay */}
-      {processing && (
-        <div className="absolute inset-0 z-40 grid place-items-center bg-black/75 backdrop-blur-md animate-fade-in">
-          <div className="text-center px-8">
-            <div className="flex items-center justify-center gap-1.5 mb-4">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className="h-1.5 w-1.5 rounded-full bg-sand-0"
-                  style={{ animation: 'dotsBounce 1.2s ease-in-out infinite', animationDelay: `${i * 0.15}s` }}
-                />
-              ))}
-            </div>
-            <p className="text-[15px] font-semibold text-sand-0">
-              {side === 'front' ? t('scan.proc.front') : t('scan.proc.card.title')}
-            </p>
-            <p className="text-[12.5px] text-sand-0/55 mt-1.5">{t('scan.proc.holdSteady')}</p>
-          </div>
-        </div>
-      )}
+      {processing && <ScanProcessing side={side} />}
 
       <style>{`
-        @keyframes scanShareLine {
-          0% { transform: translateY(0%) }
-          50% { transform: translateY(100%) }
-          100% { transform: translateY(0%) }
+        @keyframes scanSweep {
+          0% { top: 0%; }
+          50% { top: 100%; }
+          100% { top: 0%; }
         }
-        @keyframes dotsBounce {
-          0%, 60%, 100% { transform: translateY(0); opacity: 0.4 }
-          30% { transform: translateY(-4px); opacity: 1 }
+        @keyframes shutterFlash {
+          0% { opacity: 0.85 }
+          100% { opacity: 0 }
         }
       `}</style>
     </>
+  )
+}
+
+function ScanProcessing({ side }: { side: Side }) {
+  const t = useT()
+  const fields = [
+    t('scan.detect.name'),
+    t('scan.detect.role'),
+    t('scan.detect.company'),
+    t('scan.detect.phone'),
+    t('scan.detect.email'),
+    t('scan.detect.address'),
+  ]
+  return (
+    <div className="absolute inset-0 z-40 grid place-items-center bg-black/80 backdrop-blur-md animate-fade-in px-8">
+      <div className="w-full max-w-[300px] flex flex-col items-center">
+        {/* Captured card being scanned */}
+        <div className="relative w-44 aspect-[1.7/1] rounded-2xl overflow-hidden bg-gradient-to-br from-sand-0/95 to-sand-0/85 shadow-2xl">
+          <div className="absolute top-3 left-4 right-4 flex items-start justify-between">
+            <div>
+              <div className="h-2 w-12 rounded bg-zinc-800 mb-1" />
+              <div className="h-1.5 w-16 rounded bg-zinc-400" />
+            </div>
+            <div className="h-5 w-5 rounded bg-zinc-800" />
+          </div>
+          <div className="absolute bottom-3 left-4 right-4 space-y-1">
+            <div className="h-1 w-20 rounded bg-zinc-500" />
+            <div className="h-1 w-16 rounded bg-zinc-500" />
+            <div className="h-1 w-12 rounded bg-zinc-500" />
+          </div>
+          {/* Scanning grid wash */}
+          <div className="absolute inset-0 bg-brand/10" />
+          {/* Sweeping beam */}
+          <div
+            className="absolute inset-x-0 h-14 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to bottom, transparent, rgba(99,71,255,0.55), transparent)',
+              animation: 'beamSweep 1.1s ease-in-out infinite',
+            }}
+          />
+          <div
+            className="absolute inset-x-0 h-[2px] bg-brand shadow-glow pointer-events-none"
+            style={{ animation: 'beamLine 1.1s ease-in-out infinite' }}
+          />
+        </div>
+
+        {/* Title */}
+        <div className="flex items-center gap-1.5 mt-5">
+          <Sparkles size={15} className="text-brand" style={{ animation: 'sparklePulse 1.4s ease-in-out infinite' }} />
+          <p className="text-[15px] font-semibold text-sand-0">
+            {side === 'front' ? t('scan.proc.front') : t('scan.detect.reading')}
+          </p>
+        </div>
+        <p className="text-[12px] text-sand-0/55 mt-1">{t('scan.detect.extracting')}</p>
+
+        {/* Detected field chips */}
+        <div className="flex flex-wrap justify-center gap-1.5 mt-4">
+          {fields.map((f, i) => (
+            <span
+              key={f}
+              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-0/10 border border-sand-0/15 opacity-0"
+              style={{ animation: 'chipPop 0.4s ease-out forwards', animationDelay: `${0.2 + i * 0.22}s` }}
+            >
+              <Check size={11} className="text-emerald-400" strokeWidth={2.6} />
+              <span className="text-[11.5px] font-medium text-sand-0/90">{f}</span>
+            </span>
+          ))}
+        </div>
+
+        {/* Progress bar */}
+        <div className="mt-5 h-1 w-44 rounded-full bg-sand-0/12 overflow-hidden">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-brand/70 to-brand"
+            style={{ animation: 'progressFill 2.1s ease-out forwards' }}
+          />
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes beamSweep {
+          0% { top: -14%; }
+          100% { top: 100%; }
+        }
+        @keyframes beamLine {
+          0% { top: 0; }
+          100% { top: 100%; }
+        }
+        @keyframes sparklePulse {
+          0%, 100% { opacity: 0.6; transform: scale(0.92); }
+          50% { opacity: 1; transform: scale(1.08); }
+        }
+        @keyframes chipPop {
+          0% { opacity: 0; transform: translateY(6px) scale(0.9); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes progressFill {
+          0% { width: 0%; }
+          70% { width: 82%; }
+          100% { width: 100%; }
+        }
+      `}</style>
+    </div>
   )
 }
 

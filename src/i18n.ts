@@ -398,6 +398,14 @@ const en: Dict = {
   'scanShare.hint': 'Place a business card in the frame',
   'scanShare.manual': 'Type details manually',
   'scanShare.library': 'Open photo library (mock)',
+  'scan.detect.reading': 'Reading card…',
+  'scan.detect.extracting': 'Extracting contact details',
+  'scan.detect.name': 'Name',
+  'scan.detect.role': 'Role',
+  'scan.detect.company': 'Company',
+  'scan.detect.phone': 'Phone',
+  'scan.detect.email': 'Email',
+  'scan.detect.address': 'Address',
 
   // Manual entry
   'manual.title': 'Enter manually',
@@ -1111,6 +1119,14 @@ const my: Dict = {
   'scanShare.hint': 'ကတ်ကို ဘောင်အတွင်း ထား',
   'scanShare.manual': 'ကိုယ်တိုင် ရိုက်ထည့်',
   'scanShare.library': 'ဓာတ်ပုံ library ဖွင့် (mock)',
+  'scan.detect.reading': 'ကတ် ဖတ်နေသည်…',
+  'scan.detect.extracting': 'ဆက်သွယ်အချက်အလက်များ ထုတ်နေသည်',
+  'scan.detect.name': 'အမည်',
+  'scan.detect.role': 'ရာထူး',
+  'scan.detect.company': 'ကုမ္ပဏီ',
+  'scan.detect.phone': 'ဖုန်း',
+  'scan.detect.email': 'အီးမေးလ်',
+  'scan.detect.address': 'လိပ်စာ',
 
   // Manual
   'manual.title': 'ကိုယ်တိုင်ထည့်',
