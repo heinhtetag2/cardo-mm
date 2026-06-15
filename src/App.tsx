@@ -194,7 +194,7 @@ export default function App() {
             />
           )}
 
-          {showBottomNav && <BottomNav active={tab} onChange={goTab} />}
+          {showBottomNav && <BottomNav active={tab} onChange={goTab} onScan={() => go({ kind: 'scan-share' })} />}
         </div>
         </ToastProvider>
       </PhoneFrame>

@@ -356,6 +356,7 @@ const en: Dict = {
 
   // Register / Add card
   'register.title': 'Add a card',
+  'register.scanTab': 'Scan',
   'register.scan.title': 'Scan a card',
   'register.scan.desc': 'Photograph a paper card. We extract the details.',
   'register.qr.title': 'Scan QR code',
@@ -1086,6 +1087,7 @@ const my: Dict = {
 
   // Register
   'register.title': 'ကတ်ထည့်ရန်',
+  'register.scanTab': 'စကင်',
   'register.scan.title': 'ကတ်ဓာတ်ပုံရိုက်',
   'register.scan.desc': 'စက္ကူကတ်ကို ဓာတ်ပုံရိုက်ပါ။ အချက်အလက်များကို ထုတ်ပေးမည်။',
   'register.qr.title': 'QR code ဖတ်',
