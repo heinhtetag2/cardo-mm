@@ -171,7 +171,7 @@ export default function App() {
           {current?.kind === 'help' && <HelpScreen onBack={back} />}
           {current?.kind === 'about' && <AboutScreen onBack={back} />}
           {current?.kind === 'notifications' && <NotificationsScreen onBack={back} go={go} />}
-          {current?.kind === 'edit-card' && <EditCardScreen onBack={back} />}
+          {current?.kind === 'edit-card' && <EditCardScreen onBack={back} autoScan={current.scan} />}
           {current?.kind === 'account' && <AccountScreen onBack={back} go={go} />}
           {current?.kind === 'account-display-name' && <EditDisplayNameScreen onBack={back} />}
           {current?.kind === 'account-email' && <EditRecoveryEmailScreen onBack={back} />}

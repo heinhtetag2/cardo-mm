@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import {
   Search, X, Check, Camera, Calendar, Trash2,
-  MapPin, ChevronRight,
+  MapPin, ChevronRight, ScanLine,
   Share2, Copy, Mail, MessageCircle, Gift,
   ArrowUpRight, Users, ArrowRightLeft,
   Smartphone, Star, User, Image as ImageIcon, Plug, AlertTriangle,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { LocationPicker } from '../components/LocationPicker'
+import { CardScanOverlay } from '../components/CardScanOverlay'
 import { useToast } from '../components/Toast'
 import { contacts, me, account, type Contact } from '../data'
 import { useT } from '../i18n'
@@ -31,7 +32,7 @@ function Page({ title, onBack, right, children }: { title: string; onBack: () =>
 
 /* ---------- Edit Card ---------- */
 
-export function EditCardScreen({ onBack }: { onBack: () => void }) {
+export function EditCardScreen({ onBack, autoScan = false }: { onBack: () => void; autoScan?: boolean }) {
   const toast = useToast()
   const t = useT()
   const [name, setName] = useState(me.name)
@@ -43,10 +44,25 @@ export function EditCardScreen({ onBack }: { onBack: () => void }) {
   const [website, setWebsite] = useState(me.website)
   const [bio, setBio] = useState(me.bio)
   const [cityPickerOpen, setCityPickerOpen] = useState(false)
+  const [scanOpen, setScanOpen] = useState(autoScan)
 
   const save = () => {
     toast.show('Card saved')
     setTimeout(onBack, 600)
+  }
+
+  // Mock extraction from the user's own paper card — fields they then edit.
+  const applyScan = () => {
+    setName('Hein Htet')
+    setRole('Senior Product Designer')
+    setCompany('Bagan Studio')
+    setCity('Yangon')
+    setPhone('+95 9 770 112 233')
+    setEmail('hein@baganstudio.mm')
+    setWebsite('baganstudio.mm')
+    setBio('Designing calm, useful products from Yangon.')
+    setScanOpen(false)
+    toast.show(t('myCard.scan.filled'))
   }
 
   return (
@@ -73,6 +89,21 @@ export function EditCardScreen({ onBack }: { onBack: () => void }) {
           </div>
           <button onClick={() => toast.show('Photo removed', 'info')} className="text-[12px] text-ink-dim">Remove photo</button>
         </div>
+
+        {/* Scan a paper card to auto-fill */}
+        <button
+          onClick={() => setScanOpen(true)}
+          className="w-full mb-5 p-4 rounded-[20px] border border-brand/25 bg-brand/8 flex items-center gap-3.5 active:scale-[0.99] transition"
+        >
+          <div className="h-11 w-11 rounded-2xl bg-brand-gradient grid place-items-center shadow-glow flex-shrink-0">
+            <ScanLine size={18} className="text-sand-0" strokeWidth={1.8} />
+          </div>
+          <div className="flex-1 text-left">
+            <p className="text-[14px] font-semibold leading-tight">{t('myCard.scanFill')}</p>
+            <p className="text-[11.5px] text-ink-dim mt-0.5">{t('myCard.scanFill.sub')}</p>
+          </div>
+          <ChevronRight size={16} className="text-ink-dim flex-shrink-0" strokeWidth={1.8} />
+        </button>
 
         <SectionLabel>Identity</SectionLabel>
         <Group>
@@ -117,6 +148,8 @@ export function EditCardScreen({ onBack }: { onBack: () => void }) {
           onClose={() => setCityPickerOpen(false)}
         />
       )}
+
+      {scanOpen && <CardScanOverlay onClose={() => setScanOpen(false)} onFill={applyScan} />}
     </div>
   )
 }

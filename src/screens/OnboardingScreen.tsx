@@ -212,18 +212,74 @@ export function OnboardingScreen({
 
 function Splash({ onAdvance }: { onAdvance: () => void }) {
   useEffect(() => {
-    const t = setTimeout(onAdvance, 1400)
+    const t = setTimeout(onAdvance, 2200)
     return () => clearTimeout(t)
   }, [onAdvance])
 
   return (
     <div
       onClick={onAdvance}
-      className="absolute inset-0 bg-sand-0 grid place-items-center animate-fade-in cursor-pointer"
+      className="absolute inset-0 bg-sand-0 grid place-items-center cursor-pointer overflow-hidden"
     >
-      <span className="text-[42px] font-bold tracking-[-0.04em] text-canvas">
-        SWAPO<span className="text-brand">.</span>
+      <span
+        className="flex items-end text-[42px] font-bold tracking-[-0.04em] text-canvas"
+        style={{ animation: 'splashSettle 2.2s ease-in-out forwards' }}
+      >
+        {/* Wordmark — clean left-to-right wipe reveal */}
+        <span
+          className="relative inline-block"
+          style={{ animation: 'splashReveal 0.9s cubic-bezier(0.16,1,0.3,1) both' }}
+        >
+          SWAPO
+          {/* sheen sweep across the letters */}
+          <span
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(100deg, transparent 35%, rgba(255,255,255,0.7) 50%, transparent 65%)',
+              mixBlendMode: 'overlay',
+              transform: 'translateX(-120%)',
+              animation: 'splashSheen 1.1s ease-in-out 0.7s both',
+            }}
+          />
+        </span>
+        {/* Brand dot — bouncy pop with a soft pulsing glow */}
+        <span
+          className="inline-block text-brand"
+          style={{
+            animation:
+              'splashDot 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.62s both, splashDotGlow 2.2s ease-in-out 1.3s infinite',
+          }}
+        >
+          .
+        </span>
       </span>
+
+      <style>{`
+        @keyframes splashReveal {
+          0%   { clip-path: inset(0 100% 0 0); transform: translateY(8px); }
+          100% { clip-path: inset(0 0 0 0);   transform: translateY(0); }
+        }
+        @keyframes splashSheen {
+          0%   { transform: translateX(-120%); }
+          100% { transform: translateX(120%); }
+        }
+        @keyframes splashDot {
+          0%   { opacity: 0; transform: scale(0); }
+          60%  { opacity: 1; transform: scale(1.4); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes splashDotGlow {
+          0%, 100% { filter: drop-shadow(0 0 0 rgba(99,71,255,0)); }
+          50%      { filter: drop-shadow(0 0 9px rgba(99,71,255,0.7)); }
+        }
+        @keyframes splashSettle {
+          0%   { transform: scale(0.96); opacity: 0.85; }
+          18%  { transform: scale(1);    opacity: 1; }
+          88%  { transform: scale(1);    opacity: 1; }
+          100% { transform: scale(1.04); opacity: 0; }
+        }
+      `}</style>
     </div>
   )
 }

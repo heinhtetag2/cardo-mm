@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   Bell, Globe, Lock, Database, Shield, Moon, Accessibility, ChevronRight, CreditCard, Star,
-  HelpCircle, Info, Share2, LogOut,
+  HelpCircle, Info, LogOut,
 } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { LogoutConfirm } from '../components/LogoutConfirm'
@@ -67,7 +67,6 @@ export function SettingsScreen({
         <SectionLabel>{t('settings.section.helpAbout')}</SectionLabel>
         <Group>
           <NavRow icon={<HelpCircle size={15} />} label={t('settings.help')}   sub={t('settings.help.sub')}   onClick={() => go({ kind: 'help' })} />
-          <NavRow icon={<Share2 size={15} />}     label={t('settings.invite')} sub={t('settings.invite.sub')} onClick={() => go({ kind: 'invite' })} />
           <NavRow icon={<Info size={15} />}       label={t('settings.about')}  sub={t('settings.about.sub')}  onClick={() => go({ kind: 'about' })} />
         </Group>
 

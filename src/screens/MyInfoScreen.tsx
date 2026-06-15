@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronRight, IdCard, Settings, MapPin, Bell, HelpCircle, FileText, LogOut, Pencil } from 'lucide-react'
+import { ChevronRight, IdCard, Settings, MapPin, Bell, HelpCircle, FileText, LogOut, Pencil, Gift } from 'lucide-react'
 import { LogoutConfirm } from '../components/LogoutConfirm'
 import { account } from '../data'
 import { useT } from '../i18n'
@@ -35,6 +35,22 @@ export function MyInfoScreen({ go, onLogout }: { go: (v: View) => void; onLogout
           </span>
         </div>
         <div className="absolute -top-12 -right-12 h-40 w-40 rounded-full bg-brand/8 blur-3xl pointer-events-none" />
+      </button>
+
+      {/* Invite friends — earn AI credits */}
+      <button
+        onClick={() => go({ kind: 'invite' })}
+        className="relative w-full overflow-hidden rounded-[20px] border border-brand/25 bg-brand/8 flex items-center gap-3.5 p-4 mb-5"
+      >
+        <div className="h-11 w-11 rounded-2xl bg-brand-gradient grid place-items-center shadow-glow flex-shrink-0">
+          <Gift size={18} className="text-sand-0" strokeWidth={1.8} />
+        </div>
+        <div className="flex-1 text-left min-w-0">
+          <p className="text-[14px] font-semibold leading-tight">{t('me.invite')}</p>
+          <p className="text-[11.5px] text-ink-dim mt-0.5">{t('me.invite.sub')}</p>
+        </div>
+        <ChevronRight size={16} className="text-ink-dim flex-shrink-0" strokeWidth={1.8} />
+        <div className="absolute -top-8 -right-8 h-28 w-28 rounded-full bg-brand/10 blur-2xl pointer-events-none" />
       </button>
 
       <SectionLabel>{t('me.section.activity')}</SectionLabel>

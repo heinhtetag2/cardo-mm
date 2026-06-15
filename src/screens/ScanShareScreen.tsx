@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Zap, ZapOff, Image as ImageIcon, PenLine, Check, Sparkles } from 'lucide-react'
+import { X, Zap, ZapOff, Image as ImageIcon, PenLine, Check, Loader2 } from 'lucide-react'
 import { useToast } from '../components/Toast'
 import { ContactForm } from '../components/ContactForm'
 import { MyCardShare } from '../components/MyCardShare'
@@ -24,13 +24,16 @@ export function ScanShareScreen({
   const [phase, setPhase] = useState<Phase>('idle')
   const [side, setSide] = useState<Side>('front')
   const [shutter, setShutter] = useState(0)
+  const [reading, setReading] = useState(false)
 
   const capture = () => {
     setShutter((s) => s + 1)
     if (side === 'front') {
+      setReading(false)
       setPhase('processing')
-      setTimeout(() => setPhase('flip'), 2100)
+      setTimeout(() => setPhase('flip'), 1500)
     } else {
+      setReading(true)
       setPhase('processing')
       setTimeout(() => setPhase('review'), 2400)
     }
@@ -42,12 +45,14 @@ export function ScanShareScreen({
   }
 
   const skipBack = () => {
+    setReading(true)
     setPhase('processing')
-    setTimeout(() => setPhase('review'), 2200)
+    setTimeout(() => setPhase('review'), 2400)
   }
 
   const resetScan = () => {
     setSide('front')
+    setReading(false)
     setPhase('idle')
   }
 
@@ -142,7 +147,7 @@ export function ScanShareScreen({
 
       {/* Body */}
       {mode === 'scan' && (
-        <ScanBody processing={phase === 'processing'} hint={scanHint} side={side} />
+        <ScanBody processing={phase === 'processing'} hint={scanHint} extracting={reading} />
       )}
       {mode === 'share' && (
         <div className="absolute inset-0 z-10 flex items-center justify-center px-5 pt-16 pb-48">
@@ -194,11 +199,11 @@ export function ScanShareScreen({
 /* ───────── Sub-components ───────── */
 
 function ScanBody({
-  processing, hint, side,
+  processing, hint, extracting,
 }: {
   processing: boolean
   hint: string
-  side: Side
+  extracting: boolean
 }) {
   return (
     <>
@@ -243,7 +248,7 @@ function ScanBody({
       </div>
 
       {/* Processing overlay */}
-      {processing && <ScanProcessing side={side} />}
+      {processing && <ScanProcessing extracting={extracting} />}
 
       <style>{`
         @keyframes scanSweep {
@@ -260,7 +265,7 @@ function ScanBody({
   )
 }
 
-function ScanProcessing({ side }: { side: Side }) {
+function ScanProcessing({ extracting }: { extracting: boolean }) {
   const t = useT()
   const fields = [
     t('scan.detect.name'),
@@ -305,32 +310,38 @@ function ScanProcessing({ side }: { side: Side }) {
 
         {/* Title */}
         <div className="flex items-center gap-1.5 mt-5">
-          <Sparkles size={15} className="text-brand" style={{ animation: 'sparklePulse 1.4s ease-in-out infinite' }} />
+          <Loader2 size={15} className="text-brand animate-spin" strokeWidth={2.4} />
           <p className="text-[15px] font-semibold text-sand-0">
-            {side === 'front' ? t('scan.proc.front') : t('scan.detect.reading')}
+            {extracting ? t('scan.detect.reading') : t('scan.proc.front')}
           </p>
         </div>
-        <p className="text-[12px] text-sand-0/55 mt-1">{t('scan.detect.extracting')}</p>
+        <p className="text-[12px] text-sand-0/55 mt-1">
+          {extracting ? t('scan.detect.extracting') : t('scan.proc.holdSteady')}
+        </p>
 
-        {/* Detected field chips */}
-        <div className="flex flex-wrap justify-center gap-1.5 mt-4">
-          {fields.map((f, i) => (
-            <span
-              key={f}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-sand-0/10 border border-sand-0/15 opacity-0"
-              style={{ animation: 'chipPop 0.4s ease-out forwards', animationDelay: `${0.2 + i * 0.22}s` }}
-            >
-              <Check size={11} className="text-emerald-400" strokeWidth={2.6} />
-              <span className="text-[11.5px] font-medium text-sand-0/90">{f}</span>
-            </span>
-          ))}
-        </div>
+        {/* Detected fields — clean checklist, only while extracting */}
+        {extracting && (
+          <div className="mt-4 flex flex-col gap-0.5 w-[176px]">
+            {fields.map((f, i) => (
+              <div
+                key={f}
+                className="flex items-center gap-2.5 py-1 opacity-0"
+                style={{ animation: 'fieldIn 0.4s ease-out forwards', animationDelay: `${0.15 + i * 0.16}s` }}
+              >
+                <span className="h-[18px] w-[18px] rounded-full bg-emerald-400/12 grid place-items-center flex-shrink-0">
+                  <Check size={11} className="text-emerald-400" strokeWidth={3} />
+                </span>
+                <span className="text-[13px] text-sand-0/80">{f}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Progress bar */}
         <div className="mt-5 h-1 w-44 rounded-full bg-sand-0/12 overflow-hidden">
           <div
             className="h-full rounded-full bg-gradient-to-r from-brand/70 to-brand"
-            style={{ animation: 'progressFill 2.1s ease-out forwards' }}
+            style={{ animation: `progressFill ${extracting ? '2.3s' : '1.4s'} ease-out forwards` }}
           />
         </div>
       </div>
@@ -344,13 +355,9 @@ function ScanProcessing({ side }: { side: Side }) {
           0% { top: 0; }
           100% { top: 100%; }
         }
-        @keyframes sparklePulse {
-          0%, 100% { opacity: 0.6; transform: scale(0.92); }
-          50% { opacity: 1; transform: scale(1.08); }
-        }
-        @keyframes chipPop {
-          0% { opacity: 0; transform: translateY(6px) scale(0.9); }
-          100% { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes fieldIn {
+          0% { opacity: 0; transform: translateX(-6px); }
+          100% { opacity: 1; transform: translateX(0); }
         }
         @keyframes progressFill {
           0% { width: 0%; }

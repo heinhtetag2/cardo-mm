@@ -76,24 +76,34 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
       {phase === 'scan' && (
         <>
           {isQR ? (
-            <>
-              {/* Mock QR code in viewfinder */}
-              <div className="absolute inset-0 grid place-items-center">
-                <div className="relative w-[64%] aspect-square rounded-2xl bg-sand-0 p-4 grid place-items-center">
-                  <FauxQR />
+            /* Square viewfinder with live glowing sweep */
+            <div className="absolute inset-0 grid place-items-center pointer-events-none">
+              <div className="relative w-[72%] aspect-square">
+                <Corner pos="tl" />
+                <Corner pos="tr" />
+                <Corner pos="bl" />
+                <Corner pos="br" />
+                <div className="absolute inset-[6px] overflow-hidden rounded-[20px]">
+                  <div
+                    className="absolute inset-0 opacity-40"
+                    style={{
+                      backgroundImage:
+                        'repeating-linear-gradient(to bottom, rgba(99,71,255,0.05) 0px, rgba(99,71,255,0.05) 1px, transparent 1px, transparent 4px)',
+                    }}
+                  />
+                  <div className="absolute inset-x-0" style={{ animation: 'scanSweep 2.6s ease-in-out infinite' }}>
+                    <div
+                      className="absolute inset-x-0 -top-12 h-24"
+                      style={{ background: 'linear-gradient(to bottom, transparent, rgba(99,71,255,0.32), transparent)' }}
+                    />
+                    <div
+                      className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-brand to-transparent"
+                      style={{ filter: 'drop-shadow(0 0 7px rgba(99,71,255,0.95))' }}
+                    />
+                  </div>
                 </div>
               </div>
-              {/* Square viewfinder corners */}
-              <div className="absolute inset-0 grid place-items-center pointer-events-none">
-                <div className="relative w-[68%] aspect-square">
-                  <Corner pos="tl" />
-                  <Corner pos="tr" />
-                  <Corner pos="bl" />
-                  <Corner pos="br" />
-                  <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-brand to-transparent shadow-glow animate-[scan_2s_linear_infinite]" />
-                </div>
-              </div>
-            </>
+            </div>
           ) : (
             <>
               {/* Mock paper card in viewfinder */}
@@ -207,6 +217,11 @@ export function ScanScreen({ onBack, onDone, mode = 'card' }: { onBack: () => vo
 
       <style>{`
         @keyframes scan { 0% { top: 0 } 100% { top: 100% } }
+        @keyframes scanSweep {
+          0% { top: 0%; }
+          50% { top: 100%; }
+          100% { top: 0%; }
+        }
         @keyframes dotsBounce {
           0%, 60%, 100% { transform: translateY(0); opacity: 0.4 }
           30% { transform: translateY(-4px); opacity: 1 }
@@ -308,22 +323,6 @@ function SideDot({ active, done, label }: { active: boolean; done: boolean; labe
         {label}
       </span>
     </span>
-  )
-}
-
-function FauxQR() {
-  return (
-    <div className="grid grid-cols-7 gap-[3px] w-full h-full">
-      {Array.from({ length: 49 }).map((_, i) => {
-        const isCorner =
-          (i < 3 || (i >= 7 && i < 10) || (i >= 14 && i < 17)) ||
-          (i % 7 >= 4 && i < 21) ||
-          (i >= 28 && i % 7 < 3) ||
-          (i >= 35 && i < 42 && i % 7 < 3)
-        const filled = isCorner || (i * 7 + 3) % 5 === 0 || (i * 11) % 7 === 0
-        return <div key={i} className={`rounded-sm ${filled ? 'bg-zinc-900' : 'bg-transparent'}`} />
-      })}
-    </div>
   )
 }
 

@@ -29,7 +29,7 @@ export type View =
   | { kind: 'help' }
   | { kind: 'about' }
   | { kind: 'notifications' }
-  | { kind: 'edit-card' }
+  | { kind: 'edit-card'; scan?: boolean }
   | { kind: 'account' }
   | { kind: 'account-display-name' }
   | { kind: 'account-email' }

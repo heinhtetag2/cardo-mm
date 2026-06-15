@@ -1,4 +1,4 @@
-import { Pencil } from 'lucide-react'
+import { Pencil, ScanLine } from 'lucide-react'
 import { SubScreenHeader } from '../components/SubScreenHeader'
 import { MyCardShare } from '../components/MyCardShare'
 import { useT } from '../i18n'
@@ -11,9 +11,22 @@ export function MyCardScreen({ onBack, go }: { onBack: () => void; go: (v: View)
     <div className="absolute inset-0 bg-canvas overflow-y-auto scrollbar-hide animate-fade-in">
       <div className="absolute inset-x-0 top-0 h-[420px] bg-glow-radial pointer-events-none" />
       <SubScreenHeader title={t('myCard.title')} onBack={onBack} right={
-        <button onClick={() => go({ kind: 'edit-card' })} className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80">
-          <Pencil size={16} strokeWidth={1.8} />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => go({ kind: 'edit-card', scan: true })}
+            aria-label={t('myCard.scanFill')}
+            className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80"
+          >
+            <ScanLine size={16} strokeWidth={1.8} />
+          </button>
+          <button
+            onClick={() => go({ kind: 'edit-card' })}
+            aria-label={t('myCard.edit')}
+            className="h-10 w-10 grid place-items-center rounded-full border border-line/70 bg-surface/80"
+          >
+            <Pencil size={16} strokeWidth={1.8} />
+          </button>
+        </div>
       } />
 
       <div className="relative px-5 pt-2 pb-8">
